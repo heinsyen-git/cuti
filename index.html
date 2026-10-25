@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>
+/* ==========================================================================
+   Satu file untuk dua tempat:
+   - Dibuka dari Apps Script  → memakai google.script.run bawaan Google.
+   - Dibuka dari GitHub Pages → otomatis memakai penghubung ke alamat di bawah.
+   GANTI alamat ini bila link Web App (/exec) berubah.
+   ========================================================================== */
+var GAS_URL = "https://script.google.com/macros/s/AKfycbzQ7DN1p011kRUh2WhBZRtZMMy8Ho1jN6QkVNxN-usUzLX-UvTmmUjEBf7WtnSK414/exec";
+(function () {
+  if (window.google && google.script && google.script.run) return;   // di dalam Apps Script / VPS
+  function runner(ok, fail) {
+    return new Proxy({}, { get: function (_, name) {
+      if (name === "withSuccessHandler") return function (f) { return runner(f, fail); };
+      if (name === "withFailureHandler") return function (f) { return runner(ok, f); };
+      return function () {
+        var args = Array.prototype.slice.call(arguments);
+        fetch(GAS_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: name, args: args }), redirect: "follow", credentials: "omit" })
+          .then(function (r) { return r.text(); })
+          .then(function (t) {
+            var d; try { d = JSON.parse(t); } catch (e) { throw new Error("Respons server tidak dikenali. Pastikan Kode.gs terbaru sudah diterbitkan dengan akses \"Siapa saja\"."); }
+            if (d.ok) { if (ok) ok(d.result); } else if (fail) fail(new Error(d.error));
+          })
+          .catch(function (e) { if (fail) fail(new Error(/Respons server/.test(e.message) ? e.message : "Koneksi ke server gagal. Periksa internet Anda, lalu coba lagi.")); });
+      };
+    }});
+  }
+  window.google = { script: { run: runner(null, null) } };
+})();
+</script>
 <base target="_top">
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -598,7 +627,7 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-25";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.10.13-26";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
