@@ -383,7 +383,7 @@ tr.grp-row td{background:var(--surface-2);padding:0;border-top:1px solid var(--l
 <script>
 /* ================= Bahasa tampilan: Indonesia / Korea ================= */
 var LANG = (function () { try { return localStorage.getItem("bukuCutiLang") || "id"; } catch (e) { return "id"; } })();
-var LOCALE = LANG === "ko" ? "ko-KR" : LOCALE;
+var LOCALE = LANG === "ko" ? "ko-KR" : "id-ID";
 var KO = {
   /* umum & topbar */
   "Buku Cuti HRD": "HRD 휴가 관리", "Saldo Cuti Saya": "내 휴가 잔여", "Persetujuan Director": "이사 승인",
@@ -420,6 +420,8 @@ var KO = {
   "Kuota cuti tahunan (hari)": "연차 할당 (일)", "No. karyawan (opsional)": "사번 (선택)", "Simpan akun": "계정 저장",
   "Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD. Jika ada yang tidak sesuai, hubungi tim HRD.": "신청은 이사 승인 후 인사 관리자가 최종 승인합니다. 문제가 있으면 인사팀에 문의하세요.",
   "Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD. Jika ada yang tidak sesuai, hubungi tim HRD.": "새 신청은 인사팀이 결정할 때까지 승인 대기 상태입니다. 문제가 있으면 인사팀에 문의하세요.",
+  "Cari nama, divisi, jabatan, atau nomor karyawan": "이름, 부서, 직책, 사번 검색", "Cari nama, divisi, jenis, catatan, atau penyetuju": "이름, 부서, 종류, 비고, 결재자 검색",
+  "Cari nama, divisi, atau jabatan": "이름, 부서, 직책 검색", "Tidak ada karyawan yang cocok dengan pencarian atau filter.": "검색 또는 필터에 맞는 직원이 없습니다.",
   /* tab */
   "Saldo karyawan": "직원 휴가 잔여", "Input cuti": "휴가 입력", "Ubah data cuti": "휴가 수정", "Riwayat cuti": "휴가 내역",
   "Laporan": "보고서", "Data karyawan": "직원 정보", "Hari libur": "공휴일",
@@ -525,6 +527,8 @@ var KO = {
 };
 /* teks dinamis (berisi angka atau nama) */
 var KO_RX = [
+  [/^(\d+) dari (\d+) karyawan$/, "직원 $2명 중 $1명"], [/^Subtotal (.+)$/, function (m, a) { return "소계 " + trCore(a); }],
+  [/^Belum ada data cuti di tahun (\d{4}) yang cocok dengan pencarian atau filter\.$/, "$1년에 검색 또는 필터에 맞는 휴가 내역이 없습니다."],
   [/^Aplikasi akan diisi (\d+) karyawan dan (\d+) data cuti contoh\. Data contoh bisa dihapus kapan saja\.$/, "직원 $1명과 예시 휴가 $2건이 입력됩니다. 예시 데이터는 언제든지 삭제할 수 있습니다."],
   [/^Libur nasional dan cuti bersama (\d{4}) dari kalender resmi "Hari Libur di Indonesia"\. Anda bisa memilih tanggal mana yang ditambahkan\.$/, "공식 캘린더 \"Hari Libur di Indonesia\"의 $1년 국경일 및 공동 휴가입니다. 추가할 날짜를 선택할 수 있습니다."],
   [/^Saldo cuti tahunan (\d{4})$/, "$1년 연차 잔여"], [/^Riwayat cuti (\d{4})$/, "$1년 휴가 내역"], [/^Riwayat cuti (\d{4}) \((\d+)\)$/, "$1년 휴가 내역 ($2)"],
@@ -554,6 +558,7 @@ var KO_RX = [
 ];
 /* potongan teks di dalam kalimat */
 var KO_SUB = [
+  [/\bunpaid (\d[\d,]*) hari\b/g, "무급 $1일"], [/\b(\d[\d,]*) hari menunggu\b/g, "대기 $1일"], [/\b(\d+) data\b/g, "$1건"], [/\b(\d+) menunggu\b/g, "대기 $1건"],
   [/· (Cuti tahunan|Izin|Sakit|Cuti alasan penting|Cuti melahirkan|Cuti di luar tanggungan|Cuti bersama) ·/g, function (m, t) { return "· " + KO[t] + " ·"; }],
   [/\bData contoh\b/g, "예시 데이터"],
   [/\b(\d[\d,]*) hari\b/g, "$1일"], [/\b(\d+) karyawan\b/g, "$1명"], [/ · oleh /g, " · "], [/\(diajukan sendiri\)/g, "(본인 신청)"],
@@ -605,7 +610,7 @@ function translateTree(root) {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();
 function setLang(l) {
-  LANG = l === "ko" ? "ko" : "id"; LOCALE = LANG === "ko" ? "ko-KR" : LOCALE;
+  LANG = l === "ko" ? "ko" : "id"; LOCALE = LANG === "ko" ? "ko-KR" : "id-ID";
   try { localStorage.setItem("bukuCutiLang", LANG); } catch (e) {}
   document.documentElement.lang = LANG;
 }
@@ -627,7 +632,7 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-26";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.10.13-27";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -1091,7 +1096,7 @@ function viewSaldo(){
   totalUsed=r1(totalUsed);
   state.leaves.forEach(function(l){if(l.status==="pending"&&String(l.start).slice(0,4)===String(y))pendCount++});
   var q=ui.q.toLowerCase(),shown=rows.filter(function(r){
-    return (!ui.dept||r.e.dept===ui.dept)&&(!q||r.e.name.toLowerCase().indexOf(q)>-1||String(r.e.empNo||"").toLowerCase().indexOf(q)>-1)&&(!ui.lowOnly||r.u.total>0);
+    return (!ui.dept||r.e.dept===ui.dept)&&(!q||[r.e.name,r.e.empNo,r.e.title,r.e.dept].join(" ").toLowerCase().indexOf(q)>-1)&&(!ui.lowOnly||r.u.total>0);
   });
   shown=sortBy(shown,"saldo",function(r,k){return k==="name"?r.e.name:k==="dept"?(r.e.dept||""):k==="quota"?r.b.quota:k==="used"?r.b.used+r.b.opening:k==="pending"?r.b.pending:k==="unpaid"?r.u.total:r.b.left},function(r){return r.e.name});
   return '<div class="page-head"><div><h1>Saldo cuti tahunan '+y+'</h1><p>Dihitung otomatis dari kuota dikurangi cuti yang disetujui dan yang masih menunggu persetujuan.</p></div>'+
@@ -1102,13 +1107,43 @@ function viewSaldo(){
       '<button class="tile" data-act="go-pending" style="--c:var(--amber)"><b>'+pendCount+'</b><span>Menunggu persetujuan</span></button>'+
       '<button class="tile" data-act="toggle-low" aria-pressed="'+ui.lowOnly+'" style="--c:var(--red)"><b>'+fNum(unpaidTotal)+'</b><span>Unpaid Leave (hari, potong gaji) · '+unpaidPeople+' karyawan'+(ui.lowOnly?' (difilter)':'')+'</span></button>'+
     '</div>'+
-    '<div class="filters"><input id="q" type="search" placeholder="Cari nama atau nomor karyawan" value="'+esc(ui.q)+'" aria-label="Cari karyawan">'+
-      '<select id="dept" aria-label="Filter divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(ui.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select></div>'+
+    '<div class="filters" style="align-items:center"><input id="q" type="search" placeholder="Cari nama, divisi, jabatan, atau nomor karyawan" value="'+esc(ui.q)+'" aria-label="Cari karyawan">'+
+      '<select id="dept" aria-label="Filter divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(ui.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'+
+      grpControls("saldo",!!q)+'<span class="sub" style="margin-left:auto">'+shown.length+' dari '+rows.length+' karyawan</span></div>'+
     '<div class="list scroll"><table><thead><tr><th class="no">No.</th>'+th("saldo","name","Nama")+th("saldo","dept","Divisi")+th("saldo","quota","Kuota","num")+th("saldo","used","Terpakai","num")+th("saldo","pending","Menunggu","num")+th("saldo","left","Sisa","num")+th("saldo","unpaid","Unpaid","num")+'</tr></thead><tbody>'+
-    (shown.length?shown.map(function(r,i){var b=r.b;return '<tr class="click" data-emp="'+esc(r.e.id)+'">'+noTd(i)+'<td><b>'+esc(r.e.name)+'</b><div class="s">'+esc(r.e.title||"")+(r.e.empNo?' · '+esc(r.e.empNo):'')+'</div></td><td>'+esc(r.e.dept||"–")+'</td>'+
-      '<td class="num">'+fNum(b.quota)+'</td><td class="num">'+fNum(b.used+b.opening)+'</td><td class="num">'+fNum(b.pending)+'</td><td class="num"><span class="sisa '+sisaClass(b.left)+'">'+fNum(b.left)+'</span></td><td class="num">'+(r.u.total>0?'<span class="sisa out" title="Hari yang terkena potongan gaji">'+fNum(r.u.total)+'</span>':'<span style="color:var(--ink-2)">0</span>')+'</td></tr>'}).join(""):
-      '<tr><td colspan="8"><div class="empty">Tidak ada karyawan yang cocok dengan filter.</div></td></tr>')+
+    (function(){
+      function row(r,i){var b=r.b;return '<tr class="click" data-emp="'+esc(r.e.id)+'">'+noTd(i)+'<td><b>'+esc(r.e.name)+'</b><div class="s">'+esc(r.e.title||"")+(r.e.empNo?' · '+esc(r.e.empNo):'')+'</div></td><td>'+esc(r.e.dept||"–")+'</td>'+
+        '<td class="num">'+fNum(b.quota)+'</td><td class="num">'+fNum(b.used+b.opening)+'</td><td class="num">'+fNum(b.pending)+'</td><td class="num"><span class="sisa '+sisaClass(b.left)+'">'+fNum(b.left)+'</span></td><td class="num">'+(r.u.total>0?'<span class="sisa out" title="Hari yang terkena potongan gaji">'+fNum(r.u.total)+'</span>':'<span style="color:var(--ink-2)">0</span>')+'</td></tr>'}
+      if(!shown.length)return '<tr><td colspan="8"><div class="empty">Tidak ada karyawan yang cocok dengan pencarian atau filter.</div></td></tr>';
+      if(gview("saldo")!=="divisi")return shown.map(row).join("");
+      return grpBody("saldo",shown,function(r){return r.e.dept},row,8,function(arr){
+        var left=0,unp=0,pend=0;arr.forEach(function(r){left+=r.b.left;unp+=r.u.total;pend+=r.b.pending});
+        return arr.length+' karyawan · sisa '+fNum(r1(left))+' hari'+(pend?' · '+fNum(r1(pend))+' hari menunggu':'')+(unp?' · unpaid '+fNum(r1(unp))+' hari':'');
+      },!!q).html;
+    })()+
     '</tbody></table></div>';
+}
+
+/* ================= Tampilan per divisi (dipakai Saldo, Riwayat, Laporan) ================= */
+var GRP_DEFAULT_OPEN={saldo:false,riwayat:true};
+function gview(key){if(!ui.gview)ui.gview={};return ui.gview[key]||"divisi"}
+function grpOpen(key,g){if(!ui.grp)ui.grp={};if(!ui.grp[key])ui.grp[key]={};var st=ui.grp[key][g];return st===undefined?!!GRP_DEFAULT_OPEN[key]:st}
+function grpBody(key,items,deptFn,rowFn,cols,metaFn,searching){
+  var groups={},order=[];
+  items.forEach(function(it){var g=deptFn(it)||"(Tanpa divisi)";if(!groups[g]){groups[g]=[];order.push(g)}groups[g].push(it)});
+  order.sort(function(a,b){return a==="(Tanpa divisi)"?1:b==="(Tanpa divisi)"?-1:a.localeCompare(b,"id")});
+  var html="",vis=[];
+  order.forEach(function(g){
+    var arr=groups[g],open=searching||grpOpen(key,g);
+    html+='<tr class="grp-row"><td colspan="'+cols+'"><button class="grp-btn" data-grpk="'+key+'" data-grpd="'+esc(g)+'" aria-expanded="'+open+'"><span class="grp-arrow" aria-hidden="true">'+(open?"▾":"▸")+'</span><b>'+esc(g)+'</b><span class="grp-meta">'+metaFn(arr)+'</span></button></td></tr>';
+    if(open){html+=arr.map(function(it,i){return rowFn(it,i)}).join("");vis=vis.concat(arr)}
+  });
+  return {html:html,vis:vis};
+}
+function grpControls(key,searching){
+  var g=gview(key)==="divisi";
+  return '<div class="seg" role="group" aria-label="Tampilan"><button data-gview="'+key+':divisi" aria-pressed="'+g+'">Per divisi</button><button data-gview="'+key+':semua" aria-pressed="'+(!g)+'">Semua</button></div>'+
+    (g&&!searching?'<button class="btn btn-sm" data-gall="'+key+':open">Buka semua</button><button class="btn btn-sm" data-gall="'+key+':close">Tutup semua</button>':'');
 }
 
 /* ================= Input cuti ================= */
@@ -1201,27 +1236,36 @@ async function saveLeave(){
 function viewRiwayat(){
   var y=String(ui.year),q=ui.q.toLowerCase();
   var rows=state.leaves.filter(function(l){var e=emp(l.empId);
-    return String(l.start).slice(0,4)===y&&(!ui.fStatus||l.status===ui.fStatus)&&(!ui.fType||(ui.fType==="quota"?TYPES[l.type].quota:l.type===ui.fType))&&(!ui.dept||(e&&e.dept===ui.dept))&&(!q||empName(l.empId).toLowerCase().indexOf(q)>-1)});
+    return String(l.start).slice(0,4)===y&&(!ui.fStatus||l.status===ui.fStatus)&&(!ui.fType||(ui.fType==="quota"?TYPES[l.type].quota:l.type===ui.fType))&&(!ui.dept||(e&&e.dept===ui.dept))&&(!q||[empName(l.empId),e?e.dept:"",TYPES[l.type].label,STATUS[l.status].label,l.note,l.approver,l.dirBy].join(" ").toLowerCase().indexOf(q)>-1)});
   rows=sortBy(rows,"riwayat",function(l,k){return k==="submitted"?l.submitted+" "+String(l.createdAt||0).padStart(15,"0"):k==="name"?empName(l.empId):k==="type"?TYPES[l.type].label:k==="days"?(+l.days||0):k==="status"?STATUS[l.status].label:k==="approver"?(l.approver||""):l.start},function(l){return l.start+" "+empName(l.empId)});
-  var isIt=me.role==="it",visIds=rows.map(function(l){return l.id});
+  var isIt=me.role==="it",visRows=(gview("riwayat")==="divisi"&&!q)?rows.filter(function(l){var e=emp(l.empId);return grpOpen("riwayat",(e&&e.dept)||"(Tanpa divisi)")}):rows,visIds=visRows.map(function(l){return l.id});
   pruneMarks("riwayat",state.leaves.map(function(l){return l.id}));
   return '<div class="page-head"><div><h1>Riwayat cuti '+y+'</h1><p>Semua data cuti yang sudah diinput. Klik nama untuk melihat saldo karyawan.</p></div><button class="btn btn-primary" data-act="new-leave">Input cuti</button></div>'+
     markBar("riwayat")+
-    '<div class="filters"><input id="q" type="search" placeholder="Cari nama karyawan" value="'+esc(ui.q)+'" aria-label="Cari">'+
+    '<div class="filters" style="align-items:center"><input id="q" type="search" placeholder="Cari nama, divisi, jenis, catatan, atau penyetuju" value="'+esc(ui.q)+'" aria-label="Cari">'+
       '<select id="fstatus" aria-label="Filter status"><option value="">Semua status</option>'+Object.keys(STATUS).map(function(k){return '<option value="'+k+'"'+(ui.fStatus===k?" selected":"")+'>'+STATUS[k].label+'</option>'}).join("")+'</select>'+
       '<select id="ftype" aria-label="Filter jenis cuti"><option value="">Semua jenis</option><option value="quota"'+(ui.fType==="quota"?" selected":"")+'>Memotong saldo cuti tahunan</option>'+Object.keys(TYPES).filter(function(k){return !TYPES[k].hidden}).map(function(k){return '<option value="'+k+'"'+(ui.fType===k?" selected":"")+'>'+TYPES[k].label+'</option>'}).join("")+'</select>'+
       '<select id="dept" aria-label="Filter divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(ui.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'+
-      ((ui.fStatus||ui.fType||ui.dept||ui.q)?'<button class="btn btn-sm" data-act="clear-filters">Hapus filter</button>':'')+'</div>'+
+      ((ui.fStatus||ui.fType||ui.dept||ui.q)?'<button class="btn btn-sm" data-act="clear-filters">Hapus filter</button>':'')+grpControls("riwayat",!!q)+'</div>'+
     '<p class="sub" id="rw-sum" style="margin:-4px 0 10px">'+rows.length+' data · '+fNum(rows.reduce(function(a,l){return a+(+l.days||0)},0))+' hari</p>'+
     '<div class="list scroll"><table><thead><tr>'+markTh("riwayat",visIds)+'<th class="no">No.</th>'+th("riwayat","submitted","Diajukan")+th("riwayat","name","Karyawan")+th("riwayat","type","Jenis")+th("riwayat","start","Tanggal cuti")+th("riwayat","days","Hari","num")+th("riwayat","status","Status")+th("riwayat","approver","Diputuskan oleh")+'<th>Catatan</th><th></th></tr></thead><tbody>'+
-    (rows.length?rows.map(function(l,i){var e=emp(l.empId);return '<tr'+markRow("riwayat",l.id)+'>'+markTd("riwayat",l.id)+noTd(i)+'<td style="white-space:nowrap">'+submittedHTML(l)+'</td>'+
+    (function(){
+      var rowFn=function(l,i){var e=emp(l.empId);return '<tr'+markRow("riwayat",l.id)+'>'+markTd("riwayat",l.id)+noTd(i)+'<td style="white-space:nowrap">'+submittedHTML(l)+'</td>'+
       '<td><button class="link" data-emp="'+esc(l.empId)+'">'+esc(empName(l.empId))+'</button><div class="s">'+esc(e?e.dept||"":"")+'</div></td>'+
       '<td>'+esc(TYPES[l.type].label)+'</td><td>'+fRange(l.start,l.end)+'</td><td class="num">'+fNum(l.days)+'</td>'+
       '<td>'+chipT(l)+'</td>'+
       '<td>'+decidedBy(l)+'</td>'+
       '<td class="note-cell"'+(l.note?' title="'+esc(l.note)+'"':'')+'>'+(l.note?'<span class="note-clamp">'+esc(l.note)+'</span>':'<span style="color:var(--ink-2)">–</span>')+'</td>'+
-      '<td class="act-cell"><div class="act-grid">'+(l.status==="pending"?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button> <button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button> ':'')+'<button class="btn btn-sm" data-edit-leave="'+esc(l.id)+'">Ubah</button>'+(isIt?' <button class="btn btn-sm btn-danger" data-del-leave="'+esc(l.id)+'">Hapus</button>':'')+'</div></td></tr>'}).join(""):
-      '<tr><td colspan="11"><div class="empty">Belum ada data cuti di tahun '+y+' yang cocok dengan filter.</div></td></tr>')+
+      '<td class="act-cell"><div class="act-grid">'+(l.status==="pending"?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button> <button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button> ':'')+'<button class="btn btn-sm" data-edit-leave="'+esc(l.id)+'">Ubah</button>'+(isIt?' <button class="btn btn-sm btn-danger" data-del-leave="'+esc(l.id)+'">Hapus</button>':'')+'</div></td></tr>'};
+      if(!rows.length)return null;
+      if(gview("riwayat")!=="divisi")return rows.map(rowFn).join("");
+      var gb=grpBody("riwayat",rows,function(l){var e=emp(l.empId);return e?e.dept:""},rowFn,isIt?11:10,function(arr){
+        var d=0,pn=0;arr.forEach(function(l){d+=+l.days||0;if(l.status==="pending"||l.status==="pending_dir")pn++});
+        return arr.length+' data · '+fNum(r1(d))+' hari'+(pn?' · '+pn+' menunggu':'');
+      },!!q);
+      return gb.html;
+    })()||(
+      '<tr><td colspan="11"><div class="empty">Belum ada data cuti di tahun '+y+' yang cocok dengan pencarian atau filter.</div></td></tr>')+
     '</tbody></table></div>';
 }
 
@@ -1370,35 +1414,40 @@ function buildReport(){
   var r=ui.rep,y=+ui.year,from,to,period;
   if(r.mode==="tahun"){from=y+"-01-01";to=y+"-12-31";period="Tahun "+y}
   else{from=y+"-"+pad(r.month)+"-01";to=iso(new Date(y,r.month,0));period=MONTHS_ID[r.month-1]+" "+y}
-  var emps=state.employees.filter(function(e){return e.active!==false&&(!r.dept||e.dept===r.dept)}).sort(function(a,b){return (a.dept||"").localeCompare(b.dept||"","id")||byName(a,b)});
+  var rq=String(r.q||"").trim().toLowerCase();
+  var emps=state.employees.filter(function(e){return e.active!==false&&(!r.dept||e.dept===r.dept)&&(!rq||[e.name,e.dept,e.title,e.empNo].join(" ").toLowerCase().indexOf(rq)>-1)}).sort(function(a,b){return (a.dept||"").localeCompare(b.dept||"","id")||byName(a,b)});
   var inP=function(l){return l.status==="approved"&&l.start>=from&&l.start<=to};
   var heads=["No.","Nama","Divisi","Cuti tahunan","Izin","Sakit","Lainnya","Di luar tanggungan","Total periode","Sisa cuti tahunan "+y,"Unpaid Leave "+y];
-  var tot=[0,0,0,0,0,0,0,0],rows=[];
+  var tot=[0,0,0,0,0,0,0,0],rows=[],sub=null,subDept=null,multi=!r.dept&&new Set(emps.map(function(e){return e.dept||""})).size>1;
+  function pushSub(){if(sub&&multi)rows.push(["","Subtotal "+(subDept||"(Tanpa divisi)"),""].concat(sub.map(function(v){return fNum(r1(v))})))}
   emps.forEach(function(e,i){
+    if((e.dept||"")!==subDept){pushSub();sub=[0,0,0,0,0,0,0,0];subDept=e.dept||""}
     var c={tahunan:0,izin:0,sakit:0,lain:0,lwop:0};
     state.leaves.forEach(function(l){if(l.empId!==e.id||!inP(l))return;var d=+l.days||0,t=l.type;
       if(t==="tahunan"||t==="bersama")c.tahunan+=d;else if(t==="izin")c.izin+=d;else if(t==="sakit")c.sakit+=d;else if(t==="tanpagaji")c.lwop+=d;else c.lain+=d});
     var total=c.tahunan+c.izin+c.sakit+c.lain+c.lwop,b=balanceOf(e,y),u=unpaidOf(e,y);
     var vals=[c.tahunan,c.izin,c.sakit,c.lain,c.lwop,total,b.left,u.total];
-    vals.forEach(function(v,k){tot[k]+=v});
+    vals.forEach(function(v,k){tot[k]+=v;sub[k]+=v});
     rows.push([String(i+1),e.name,e.dept||"–"].concat(vals.map(fNum)));
   });
+  pushSub();
   rows.push(["","Total",emps.length+" karyawan"].concat(tot.map(function(v){return fNum(r1(v))})));
-  var dl=state.leaves.filter(function(l){var e=emp(l.empId);return inP(l)&&e&&(!r.dept||e.dept===r.dept)}).sort(function(a,b){return a.start<b.start?-1:a.start>b.start?1:0});
+  var empIds={};emps.forEach(function(e){empIds[e.id]=1});
+  var dl=state.leaves.filter(function(l){var e=emp(l.empId);return inP(l)&&e&&(!r.dept||e.dept===r.dept)&&(!rq||empIds[l.empId])}).sort(function(a,b){return a.start<b.start?-1:a.start>b.start?1:0});
   var dHeads=["No.","Nama","Divisi","Jenis","Tanggal","Hari","Disetujui oleh","Keperluan"];
   var dRows=dl.map(function(l,i){var e=emp(l.empId);return [String(i+1),e.name,e.dept||"–",TYPES[l.type].label,fRange(l.start,l.end),fNum(l.days),(l.dirBy?l.dirBy+" (Director), ":"")+(l.approver||"–"),l.note||""]});
   var pending=state.leaves.filter(function(l){var e=emp(l.empId);return (l.status==="pending"||l.status==="pending_dir")&&l.start>=from&&l.start<=to&&e&&(!r.dept||e.dept===r.dept)}).length;
-  return {title:"Laporan Cuti Karyawan",period:period,dept:r.dept||"Semua divisi",heads:heads,rows:rows,dHeads:dHeads,dRows:dRows,numFrom:3,dNumFrom:5,lastIsTotal:true,pending:pending};
+  return {title:"Laporan Cuti Karyawan",period:period,dept:(r.dept||"Semua divisi")+(rq?' (pencarian: "'+r.q.trim()+'")':''),heads:heads,rows:rows,dHeads:dHeads,dRows:dRows,numFrom:3,dNumFrom:5,lastIsTotal:true,pending:pending};
 }
 function repTable(h,rows,numFrom,lastTotal){
   return '<div class="list scroll"><table><thead><tr>'+h.map(function(x,i){return '<th'+(i>=numFrom&&i!==h.length+9?' class="num"':'')+'>'+esc(x)+'</th>'}).join("")+'</tr></thead><tbody>'+
-    (rows.length?rows.map(function(r,k){return '<tr'+(lastTotal&&k===rows.length-1?' class="rep-total"':'')+'>'+r.map(function(x,i){return '<td'+(i>=numFrom?' class="num"':'')+'>'+esc(x)+'</td>'}).join("")+'</tr>'}).join(""):'<tr><td colspan="'+h.length+'"><div class="empty">Tidak ada data.</div></td></tr>')+'</tbody></table></div>';
+    (rows.length?rows.map(function(r,k){return '<tr'+((lastTotal&&k===rows.length-1)||/^Subtotal /.test(r[1]||"")?' class="rep-total"':'')+'>'+r.map(function(x,i){return '<td'+(i>=numFrom?' class="num"':'')+'>'+esc(x)+'</td>'}).join("")+'</tr>'}).join(""):'<tr><td colspan="'+h.length+'"><div class="empty">Tidak ada data.</div></td></tr>')+'</tbody></table></div>';
 }
 function viewLaporan(){
   var R=buildReport(),r=ui.rep,made=fDate(todayIso())+", "+fTime(Date.now())+" oleh "+(me.name||me.username);
   return '<div class="page-head no-print"><div><h1>Laporan cuti</h1><p>Rekap cuti per karyawan dan rincian cuti yang disetujui. Bisa dicetak, disimpan sebagai PDF, atau dikirim lewat email.</p></div>'+
       '<div class="actions"><button class="btn" data-act="rep-print">Cetak / Simpan PDF</button><button class="btn btn-primary" data-act="rep-email">Kirim ke email</button></div></div>'+
-    '<div class="filters no-print" style="align-items:center"><div class="seg" role="group" aria-label="Periode"><button data-rep-mode="bulan" aria-pressed="'+(r.mode!=="tahun")+'">Per bulan</button><button data-rep-mode="tahun" aria-pressed="'+(r.mode==="tahun")+'">Per tahun</button></div>'+
+    '<div class="filters no-print" style="align-items:center"><input id="rep-q" type="search" placeholder="Cari nama, divisi, atau jabatan" value="'+esc(r.q||"")+'" aria-label="Cari di laporan"><div class="seg" role="group" aria-label="Periode"><button data-rep-mode="bulan" aria-pressed="'+(r.mode!=="tahun")+'">Per bulan</button><button data-rep-mode="tahun" aria-pressed="'+(r.mode==="tahun")+'">Per tahun</button></div>'+
       (r.mode!=="tahun"?'<select id="rep-month" aria-label="Bulan">'+MONTHS_ID.map(function(m,i){return '<option value="'+(i+1)+'"'+(r.month===i+1?" selected":"")+'>'+m+'</option>'}).join("")+'</select>':'')+
       '<select id="rep-dept" aria-label="Divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(r.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'+
       '<span class="sub">Tahun mengikuti pilihan di kanan atas ('+ui.year+')</span></div>'+
@@ -1632,7 +1681,10 @@ document.addEventListener("click",function(ev){
   if(ui.menu&&!(ev.target.closest&&ev.target.closest(".settings"))){ui.menu=false;document.body.classList.remove("menu-open");var mm=document.querySelector(".settings .menu");if(mm)mm.remove();var sb=document.querySelector('[data-act="settings"]');if(sb)sb.setAttribute("aria-expanded","false")}
 },true);
 document.addEventListener("click",function(ev){
-  var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode]");if(!t)return;
+  var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode],[data-grpk],[data-gview],[data-gall]");if(!t)return;
+  if(t.dataset.grpk){var gk=t.dataset.grpk,gd=t.dataset.grpd;if(!ui.grp)ui.grp={};if(!ui.grp[gk])ui.grp[gk]={};ui.grp[gk][gd]=!(t.getAttribute("aria-expanded")==="true");render();return}
+  if(t.dataset.gview){var gv=t.dataset.gview.split(":");if(!ui.gview)ui.gview={};ui.gview[gv[0]]=gv[1];render();return}
+  if(t.dataset.gall){var ga=t.dataset.gall.split(":");if(!ui.grp)ui.grp={};ui.grp[ga[0]]={};depts().concat(["(Tanpa divisi)"]).forEach(function(d){ui.grp[ga[0]][d]=ga[1]==="open"});render();return}
   if(t.dataset.repMode){ui.rep.mode=t.dataset.repMode;render();return}
   if(t.dataset.grp){if(!ui.openDept)ui.openDept={};ui.openDept[t.dataset.grp]=!ui.openDept[t.dataset.grp];render();return}
   if(t.dataset.empView){ui.empView=t.dataset.empView;render();return}
@@ -1735,6 +1787,7 @@ function onField(ev){
   if(t.id==="p-text"){var p=parsePaste(t.value);document.getElementById("p-preview").textContent=p.rows.length?p.rows.length+" karyawan siap disimpan"+(p.skipped.length?", "+p.skipped.length+" dilewati karena namanya sudah ada.":"."):"";return}
   if(ev.type==="input"&&t.id==="q"){ui.q=t.value;render();return}
   if(ev.type==="input"&&t.id==="kq"){ui.kq=t.value;render();return}
+  if(ev.type==="input"&&t.id==="rep-q"){ui.rep.q=t.value;render();return}
   if(ev.type==="change"){
     if(t.id==="year"){ui.year=+t.value;render()}
     else if(t.id==="dept"){ui.dept=t.value;render()}
