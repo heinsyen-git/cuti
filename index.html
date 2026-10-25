@@ -1,20 +1,1505 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Buku Cuti HRD – Woori Consulting</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E6A58'/><text x='16' y='22' font-family='Arial' font-size='18' font-weight='700' fill='white' text-anchor='middle'>W</text></svg>">
+<script>
+/* ==========================================================================
+   Penghubung ke server Google Apps Script (tanpa iframe).
+   GANTI alamat di bawah bila link Web App (/exec) berubah.
+   ========================================================================== */
+var GAS_URL = "https://script.google.com/macros/s/AKfycbzQ7DN1p011kRUh2WhBZRtZMMy8Ho1jN6QkVNxN-usUzLX-UvTmmUjEBf7WtnSK414/exec";
+(function () {
+  function runner(ok, fail) {
+    return new Proxy({}, { get: function (_, name) {
+      if (name === "withSuccessHandler") return function (f) { return runner(f, fail); };
+      if (name === "withFailureHandler") return function (f) { return runner(ok, f); };
+      return function () {
+        var args = Array.prototype.slice.call(arguments);
+        /* text/plain agar tidak perlu izin CORS tambahan; cookie Google tidak ikut terkirim */
+        fetch(GAS_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: name, args: args }), redirect: "follow", credentials: "omit" })
+          .then(function (r) { return r.text(); })
+          .then(function (t) {
+            var d; try { d = JSON.parse(t); } catch (e) { throw new Error("Respons server tidak dikenali. Pastikan Kode.gs terbaru sudah diterbitkan dengan akses \"Siapa saja\"."); }
+            if (d.ok) { if (ok) ok(d.result); } else if (fail) fail(new Error(d.error));
+          })
+          .catch(function (e) { if (fail) fail(new Error(/Respons server/.test(e.message) ? e.message : "Koneksi ke server gagal. Periksa internet Anda, lalu coba lagi.")); });
+      };
+    }});
+  }
+  window.google = { script: { run: runner(null, null) } };
+})();
+</script>
+
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  html,body{margin:0;height:100%;background:#EEF2F0}
-  iframe{position:fixed;inset:0;width:100%;height:100%;border:0;display:block}
-  .fallback{position:fixed;inset:0;display:grid;place-items:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#4E5E5B;font-size:14px;z-index:-1}
-  .fallback a{color:#2E6A58;font-weight:600}
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --surface-2:#F6F8F7; --ink:#1B2A28; --ink-2:#4E5E5B; --line:#D5DDDA;
+  --pine:#2E6A58; --pine-ink:#FFFFFF; --pine-soft:#DCEBE5;
+  --amber:#9A6412; --amber-soft:#F7EAD2;
+  --blue:#34558F; --blue-soft:#DFE6F3;
+  --red:#A63A35; --red-soft:#F5DEDC;
+  --grey-soft:#E6EAE9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121918; --surface:#1A2321; --surface-2:#202B29; --ink:#E4ECE9; --ink-2:#A2B2AE; --line:#30403C;
+    --pine:#5FAE93; --pine-ink:#0E1A17; --pine-soft:#1F3A32;
+    --amber:#E2AE5C; --amber-soft:#3A2E1A; --blue:#8DA8DA; --blue-soft:#232E44;
+    --red:#E58A84; --red-soft:#3D2322; --grey-soft:#26302E;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121918; --surface:#1A2321; --surface-2:#202B29; --ink:#E4ECE9; --ink-2:#A2B2AE; --line:#30403C;
+  --pine:#5FAE93; --pine-ink:#0E1A17; --pine-soft:#1F3A32;
+  --amber:#E2AE5C; --amber-soft:#3A2E1A; --blue:#8DA8DA; --blue-soft:#232E44;
+  --red:#E58A84; --red-soft:#3D2322; --grey-soft:#26302E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.55;font-weight:400;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.2}
+.wrap{max-width:1320px;margin:0 auto;padding:0 20px}
+
+.bar{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.bar .wrap{display:flex;align-items:center;gap:16px;min-height:62px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em;line-height:1.25;display:flex;align-items:center;gap:10px}
+.brand small{display:block;font-size:12px;font-weight:500;color:var(--ink-2);letter-spacing:0}
+.brand-mark{width:30px;height:30px;border-radius:8px;background:var(--pine);color:var(--pine-ink);display:grid;place-items:center;font-size:15px}
+.bar-right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar-right label{font-size:13px;color:var(--ink-2)}
+.bar-right select{width:auto;padding:7px 10px}
+
+.btn{border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn-primary{background:var(--pine);border-color:var(--pine);color:var(--pine-ink)}
+.btn-primary:hover{background:var(--pine);filter:brightness(1.08)}
+.btn-danger{color:var(--red);border-color:var(--red)}
+.btn-danger:hover{background:var(--red-soft)}
+.btn-sm{padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.6;cursor:progress}
+.link{background:none;border:0;color:var(--pine);font-weight:600;cursor:pointer;padding:0;font-size:inherit;font-family:inherit;text-align:left;line-height:1.35}
+td .link{min-width:110px}
+.link:hover{text-decoration:underline}
+
+main{padding:24px 0 72px}
+.banner{border-radius:10px;padding:11px 16px;font-size:14px;margin-bottom:18px;background:var(--blue-soft)}
+.banner.warn{background:var(--amber-soft)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto;overflow-y:hidden;align-items:flex-end;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.clock{margin-left:auto;padding:0 4px 10px 16px;text-align:right;white-space:nowrap;line-height:1.3;flex-shrink:0}
+.clock b{display:block;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.clock span{font-size:12.5px;color:var(--ink-2)}
+@media (max-width:720px){.clock{display:none}}
+.tab{background:none;border:0;padding:10px 14px;cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink-2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--pine)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.page-head h1{font-size:24px;font-weight:700;letter-spacing:-.015em;line-height:1.25}
+.page-head p{margin:6px 0 0;color:var(--ink-2);max-width:68ch;font-size:14.5px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.tile{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:2px}
+button.tile{cursor:pointer}
+button.tile:hover{background:var(--surface-2)}
+.tile b{font-size:30px;font-weight:700;line-height:1.15;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--c,var(--ink))}
+.tile span{font-size:13px;color:var(--ink-2)}
+
+.filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.filters input{max-width:280px}
+.filters select{max-width:220px}
+
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--ink-2);font-weight:600;background:var(--surface-2);white-space:nowrap;letter-spacing:.01em}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+th.no,td.no{width:52px;text-align:center;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.th-sort{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.th-sort:hover{color:var(--ink)}
+.th-sort .arr{font-size:10px;opacity:.35}
+.th-sort.on{color:var(--ink)}
+.th-sort.on .arr{opacity:1;color:var(--pine)}
+th.num .th-sort{width:100%;justify-content:flex-end}
+tr.click{cursor:pointer}
+td.act-cell{position:sticky;right:0;background:var(--surface);white-space:nowrap;box-shadow:-8px 0 8px -8px rgba(0,0,0,.12)}
+tr:hover td.act-cell{background:var(--surface-2)}
+td.note-cell{min-width:150px;max-width:280px;font-size:13.5px}
+.list td .chip{white-space:normal;line-height:1.3}
+.act-grid{display:grid;grid-template-columns:repeat(2,auto);gap:6px;justify-content:start}
+.act-grid .btn{text-align:center}
+.note-clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
+tr.click:hover td{background:var(--surface-2)}
+td{line-height:1.45}
+td .s{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.sisa{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.sisa.low{color:var(--amber)} .sisa.out{color:var(--red)} .sisa.ok{color:var(--pine)}
+.empty{padding:40px 20px;text-align:center;color:var(--ink-2)}
+.empty .btn{margin-top:12px}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-ok{background:var(--pine-soft);color:var(--pine)}
+.st-wait{background:var(--amber-soft);color:var(--amber)}
+.st-no{background:var(--red-soft);color:var(--red)}
+.st-off{background:var(--grey-soft);color:var(--ink-2)}
+
+.layout-input{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.panel h2{font-size:16.5px;font-weight:700;margin-bottom:16px;letter-spacing:-.005em}
+.side{position:sticky;top:84px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:13px;font-weight:600;color:var(--ink)}
+.field .hint{font-size:12px;color:var(--ink-2)}
+input,select,textarea{font-size:14.5px;border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:70px}
+.check{display:flex;align-items:center;gap:8px;font-weight:500!important}
+.check input{width:auto}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.err{color:var(--red);font-size:13px;margin-top:10px;min-height:1em}
+.warn{background:var(--amber-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px}
+.warn.bad{background:var(--red-soft)}
+
+.bal-big{font-size:40px;font-weight:700;letter-spacing:-.025em;line-height:1.05;font-variant-numeric:tabular-nums}
+.bal-big small{font-size:14.5px;font-weight:500;color:var(--ink-2);letter-spacing:0}
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:14px;margin-top:14px}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.kv .tot{border-top:1px solid var(--line);padding-top:8px}
+.after{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--pine-soft);font-size:14px}
+.after.bad{background:var(--red-soft)}
+.meter{height:10px;border-radius:999px;background:var(--grey-soft);overflow:hidden;display:flex;margin-top:12px}
+.meter i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;background:var(--c)}
+.mini-list{list-style:none;margin:14px 0 0;padding:0;font-size:13px}
+.mini-list li{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+.sub{font-size:13px;color:var(--ink-2);margin:0 0 12px}
+
+dialog{border:0;border-radius:16px;padding:0;width:min(680px,calc(100% - 24px));max-height:calc(100% - 24px);background:var(--surface);color:var(--ink);box-shadow:0 24px 60px rgba(10,25,20,.28)}
+dialog::backdrop{background:rgba(15,25,22,.45)}
+.dlg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:1}
+.dlg-head h2{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.dlg-head .s{font-size:13px;color:var(--ink-2);margin-top:4px}
+.x{background:none;border:0;font-size:22px;cursor:pointer;color:var(--ink-2);line-height:1;padding:4px 8px;border-radius:8px}
+.x:hover{background:var(--surface-2)}
+.dlg-body{padding:20px 24px 24px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;font-size:14px;font-weight:600;z-index:50;max-width:calc(100% - 32px);opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.loading{padding:80px 20px;text-align:center;color:var(--ink-2)}
+.role{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--pine-soft);color:var(--pine);white-space:nowrap}
+.role.user{background:var(--blue-soft);color:var(--blue)}
+.who{font-size:13px;color:var(--ink-2)}
+.acc-results{border:1px solid var(--line);border-radius:10px;margin-top:6px;overflow:hidden;background:var(--surface)}
+.acc-results:empty{display:none}
+.acc-results button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 12px;cursor:pointer}
+.acc-results button:last-child{border-bottom:0}
+.acc-results button:hover{background:var(--surface-2)}
+.acc-linked{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--pine-soft)}
+.help{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-top:20px;font-size:14px}
+.help h3{font-size:14px;margin-bottom:8px}
+.help ol{margin:0;padding-left:20px}
+.help li{margin:4px 0}
+.danger-zone{border-color:var(--red);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.danger-zone p{margin:4px 0 0}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.opt input{width:auto;margin-top:3px}
+.opt b{display:block;font-size:14px}
+.opt span{font-size:13px;color:var(--ink-2)}
+.opt:has(input:checked){border-color:var(--red);background:var(--red-soft)}
+.opt.hol:has(input:checked){border-color:var(--pine);background:var(--pine-soft)}
+.user-hero{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:22px}
+@media (max-width:640px){.user-hero{grid-template-columns:1fr}}
+
+.hol-form{grid-template-columns:200px 1fr auto;align-items:end}
+@media (max-width:860px){
+  .hol-form{grid-template-columns:1fr}
+  .layout-input{grid-template-columns:1fr}
+  .side{position:static}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .grid2{grid-template-columns:1fr}
+  .brand small{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- login & tambahan versi Google Sheets ---- */
+.login{min-height:100vh;display:grid;place-items:center;padding:40px 20px}
+.login-box{width:100%;max-width:400px}
+.login-box .brand{margin-bottom:28px}
+.login-box h1{font-size:26px;font-weight:700;letter-spacing:-.015em}
+.login-box .lead{color:var(--ink-2);margin:6px 0 20px;font-size:14.5px}
+.login-box form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.login-box .foot{font-size:13px;color:var(--ink-2);margin-top:14px}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.icon-btn:hover{background:var(--surface-2)}
+a.icon-btn{text-decoration:none;color:inherit;display:inline-block}
+#cdlg{width:min(460px,calc(100% - 24px))}
+.cf-msg{font-size:14.5px;color:var(--ink-2)}
+.cf-msg p{margin:0 0 10px}
+.cf-list{margin:0 0 10px;padding-left:20px;max-height:240px;overflow:auto;color:var(--ink)}
+.cf-list li{margin:2px 0}
+.btn-danger-solid{background:var(--red);border-color:var(--red);color:var(--pine-ink)}
+.btn-danger-solid:hover{background:var(--red);filter:brightness(1.08)}
+.busy-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--pine);transform-origin:left;animation:busy 1.2s ease-in-out infinite;z-index:60}
+@keyframes busy{0%{transform:scaleX(.05)}50%{transform:scaleX(.7)}100%{transform:scaleX(1);opacity:0}}
+@media (prefers-reduced-motion:reduce){.busy-bar{animation:none}}
+/* ---- Animasi perpindahan menu ---- */
+.tab{transition:color .2s ease,background-color .2s ease;border-radius:8px 8px 0 0;position:relative}
+.tab:hover{color:var(--ink);background:var(--surface-2)}
+.tab[aria-selected="true"]{border-bottom-color:transparent}
+.tab[aria-selected="true"]::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:2px;border-radius:2px;background:var(--pine);transform-origin:center}
+.tab.tab-enter::after{animation:tabLine .32s cubic-bezier(.2,.7,.2,1)}
+@keyframes tabLine{from{transform:scaleX(.2);opacity:.2}to{transform:scaleX(1);opacity:1}}
+.view-enter{animation:viewIn .32s cubic-bezier(.2,.7,.2,1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.login-box{animation:viewIn .4s cubic-bezier(.2,.7,.2,1) both}
+.form-enter{animation:formIn .3s cubic-bezier(.2,.7,.2,1) both;transform-origin:top center}
+@keyframes formIn{from{opacity:0;transform:translateY(-6px) scale(.99)}to{opacity:1;transform:none}}
+.view-enter .tile{animation:viewIn .36s cubic-bezier(.2,.7,.2,1) both}
+.view-enter .tile:nth-child(2){animation-delay:.04s}.view-enter .tile:nth-child(3){animation-delay:.08s}.view-enter .tile:nth-child(4){animation-delay:.12s}
+dialog[open]{animation:dlgIn .22s cubic-bezier(.2,.7,.2,1)}
+dialog[open]::backdrop{animation:fadeIn .22s ease}
+@keyframes dlgIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.btn,.icon-btn,.tile{transition:background-color .15s ease,border-color .15s ease,transform .15s ease,box-shadow .15s ease}
+button.tile:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,25,20,.08)}
+/* ---- Laporan ---- */
+.rep-head{border-bottom:3px solid var(--pine);padding-bottom:8px;margin:0 0 14px}
+.rep-head .t{font-size:18px;font-weight:700}
+.rep-head .m{font-size:13px;color:var(--ink-2);margin-top:2px}
+.rep-sec{font-size:15px;font-weight:700;margin:18px 0 8px}
+tr.rep-total td{font-weight:700;background:var(--surface-2)}
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  html,body{background:#fff!important;color:#000}
+  .bar,.tabs,.no-print,.busy-bar,#alert-pop,.toast,.banner,.pv,.page-head .actions{display:none!important}
+  main .wrap{max-width:none;padding:0}
+  .list{border:0!important;box-shadow:none!important;overflow:visible!important}
+  table{font-size:9.5pt}
+  th,td{padding:4px 6px!important;border:1px solid #ccc!important}
+  th{background:#2E6A58!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr.rep-total td{background:#EEF2F0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr{break-inside:avoid}
+  .view-enter{animation:none!important}
+}
+/* ---- Data karyawan per divisi ---- */
+tr.grp-row td{background:var(--surface-2);padding:0;border-top:1px solid var(--line)}
+.grp-btn{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;padding:11px 14px;font:inherit;cursor:pointer;text-align:left;color:var(--ink)}
+.grp-btn:hover{background:var(--grey-soft)}
+.grp-btn b{font-size:14.5px}
+.grp-arrow{width:14px;color:var(--pine);font-size:13px}
+.grp-meta{font-size:12.5px;color:var(--ink-2)}
+/* ---- Pengingat pengajuan yang perlu ditindaklanjuti ---- */
+.tab-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--red);color:var(--pine-ink);font-size:11.5px;font-weight:700;line-height:1;vertical-align:1px;animation:badgePop .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes badgePop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.alert-pop{position:fixed;top:calc(78px + env(safe-area-inset-top,0px));right:16px;z-index:80;width:min(360px,calc(100% - 32px));background:var(--red);color:var(--pine-ink);border-radius:14px;box-shadow:0 12px 32px rgba(120,20,20,.35);padding:14px 16px 14px 16px;display:flex;gap:12px;align-items:flex-start;animation:alertIn .4s cubic-bezier(.2,.7,.2,1)}
+.alert-pop .ico{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:18px;font-weight:800}
+.alert-pop b{display:block;font-size:15px;margin-bottom:2px}
+.alert-pop p{margin:0 0 10px;font-size:13px;opacity:.95}
+.alert-pop .go{background:var(--pine-ink);color:var(--red);border:0;border-radius:8px;padding:7px 12px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.alert-pop .cls{margin-left:auto;background:none;border:0;color:inherit;font-size:20px;line-height:1;cursor:pointer;opacity:.85;padding:0 2px}
+@keyframes alertIn{from{opacity:0;transform:translateY(-12px) scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tab-badge,.alert-pop{animation:none}}
+/* ---- Kalender hari libur 1 tahun ---- */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:8px 14px;font:inherit;font-weight:600;font-size:13.5px;color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--pine);color:var(--pine-ink)}
+.cal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
+.cal-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.cal-year{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.cal-m{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px}
+.cal-m h3{font-size:14px;font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between}
+.cal-m h3 span{font-weight:600;font-size:12px;color:var(--red)}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-g .wd{font-size:11px;font-weight:700;color:var(--ink-2);padding:2px 0 4px}
+.cal-g .wd.sun{color:var(--red)}
+.cal-g .d{border:0;background:none;font:inherit;font-size:12.5px;line-height:1;padding:7px 0;border-radius:7px;color:var(--ink);cursor:default;font-variant-numeric:tabular-nums}
+.cal-g .d.sun{color:var(--red)}
+.cal-g .d.sat{color:var(--ink-2)}
+.cal-g .d.hol{background:var(--red);color:var(--pine-ink);font-weight:700;cursor:pointer}
+.cal-g .d.cb{background:var(--amber);color:var(--pine-ink);font-weight:700;cursor:pointer}
+.cal-g .d.today{box-shadow:inset 0 0 0 2px var(--pine);font-weight:700}
+.cal-g .d.pick{cursor:pointer}
+.cal-g .d.pick:hover{background:var(--surface-2)}
+.cal-list{margin:8px 0 0;padding:0;list-style:none;font-size:12px;color:var(--ink-2)}
+.cal-list li{display:flex;gap:6px;padding:1px 0}
+.cal-list b{color:var(--ink);min-width:18px;text-align:right;font-variant-numeric:tabular-nums}
+/* ---- Tracking pengajuan ---- */
+.chip-btn{background:none;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font:inherit;text-align:left}
+.chip-btn .trk{font-size:12px;color:var(--ink-2);text-decoration:underline dotted;white-space:nowrap}
+.chip-btn:hover .chip{filter:brightness(.96)}
+.track{list-style:none;margin:6px 0 0;padding:0}
+.track li{position:relative;padding:0 0 20px 40px;min-height:30px}
+.track li::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.track li:last-child{padding-bottom:0}
+.track li:last-child::before{display:none}
+.track li.done::before{background:var(--pine)}
+.track .dot{position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;border:2px solid var(--line);background:var(--surface);color:var(--ink-2);box-sizing:border-box}
+.track li.done .dot{background:var(--pine);border-color:var(--pine);color:var(--pine-ink)}
+.track li.current .dot{border-color:var(--amber);color:var(--amber);animation:trkPulse 1.6s ease-out infinite}
+.track li.rejected .dot{background:var(--red);border-color:var(--red);color:var(--pine-ink)}
+.track li.skipped{opacity:.45}
+.track .t{font-weight:700;font-size:14.5px;line-height:1.3;padding-top:3px}
+.track .w{font-size:13px;color:var(--ink-2);margin-top:2px}
+.track .n{font-size:13px;margin-top:6px;padding:8px 10px;border-radius:8px;background:var(--surface-2)}
+.trk-step{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+@keyframes trkPulse{0%{box-shadow:0 0 0 0 rgba(176,122,26,.4)}70%{box-shadow:0 0 0 9px rgba(176,122,26,0)}100%{box-shadow:0 0 0 0 rgba(176,122,26,0)}}
+@media (prefers-reduced-motion:reduce){.track li.current .dot{animation:none}}
+@media (prefers-reduced-motion:reduce){.login-box,.form-enter,.view-enter,.view-enter .tile,.tab.tab-enter::after,dialog[open],dialog[open]::backdrop{animation:none!important}button.tile:hover{transform:none}}
 </style>
 </head>
 <body>
-  <div class="fallback"><p>Memuat Buku Cuti HRD... Kalau tidak muncul, <a href="https://script.google.com/macros/s/AKfycbzQ7DN1p011kRUh2WhBZRtZMMy8Ho1jN6QkVNxN-usUzLX-UvTmmUjEBf7WtnSK414/exec" target="_top">buka di sini</a>.</p></div>
-  <iframe src="https://script.google.com/macros/s/AKfycbzQ7DN1p011kRUh2WhBZRtZMMy8Ho1jN6QkVNxN-usUzLX-UvTmmUjEBf7WtnSK414/exec" title="Buku Cuti HRD" allow="clipboard-write"></iframe>
+<div class="busy-bar" id="busy" hidden></div>
+<div id="app"><div class="loading">Memuat...</div></div>
+<dialog id="dlg" aria-labelledby="dlg-title"></dialog>
+<dialog id="cdlg" aria-labelledby="cdlg-title"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+"use strict";
+
+/* ================= Konstanta ================= */
+var TYPES={
+  tahunan:{label:"Cuti tahunan",quota:true},
+  izin:{label:"Izin",quota:false},
+  sakit:{label:"Sakit",quota:false},
+  penting:{label:"Cuti alasan penting",quota:false},
+  melahirkan:{label:"Cuti melahirkan",quota:false},
+  tanpagaji:{label:"Cuti di luar tanggungan",quota:false},
+  bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
+};
+var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
+var CLIENT_VERSION="2026.10.13-24";   /* harus sama dengan APP_VERSION di Kode.gs */
+var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
+function isStaff(r){return r==="user"||r==="manager"}
+/* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
+function chipL(l){var lb=l.status==="pending"&&l.dirBy?"Menunggu Admin HRD":STATUS[l.status].label;return '<span class="chip '+STATUS[l.status].cls+'">'+lb+'</span>'}
+/* Status yang bisa diklik untuk membuka tracking */
+function chipT(l){return '<button class="chip-btn" data-track="'+esc(l.id)+'" title="Lihat tracking pengajuan">'+chipL(l)+'<span class="trk">Lacak</span></button>'}
+/* Siapa yang memutuskan: Director (tahap 1) dan Admin HRD (tahap 2) */
+function decidedBy(l){
+  var out=[];
+  if(l.dirBy)out.push('<div>'+esc(l.dirBy)+'<div class="s">Director'+(l.dirAt?' · '+fShort(l.dirAt):'')+'</div></div>');
+  var dirRejected=l.status==="rejected"&&l.dirBy&&l.approver===l.dirBy;
+  if(l.approver&&!dirRejected)out.push('<div'+(out.length?' style="margin-top:6px"':'')+'>'+esc(l.approver)+(l.approvedAt?'<div class="s">'+(l.dirBy?'Admin HRD · ':'')+fShort(l.approvedAt)+'</div>':'')+'</div>');
+  return out.join("")||"–";
+}
+
+var state={employees:[],leaves:[],holidays:[],users:[]},me=null,sheetUrl="",TODAY=null;
+var ui={liburView:"kalender",fType:"",myForm:null,marks:{riwayat:{},karyawan:{},libur:{},pengguna:{}},tab:"saldo",year:new Date().getFullYear(),q:"",dept:"",fStatus:"",lowOnly:false,draft:null,editId:null,busy:0};
+var TOKEN_KEY="bukuCutiToken",token=null;
+try{token=sessionStorage.getItem(TOKEN_KEY)}catch(e){}
+var app=document.getElementById("app"),dlg=document.getElementById("dlg");
+var forcedPw=false;
+
+/* ================= Helper ================= */
+function pad(n){return String(n).padStart(2,"0")}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function parse(s){var p=String(s).split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function validIso(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||"")&&iso(parse(s))===s}
+function todayIso(){return TODAY||iso(new Date())}
+function fDate(s){return s?parse(s).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"}):"–"}
+function fShort(s){return s?parse(s).toLocaleDateString("id-ID",{day:"numeric",month:"short"}):"–"}
+function fRange(a,b){return a===b?fDate(a):fShort(a)+" – "+fDate(b)}
+function fTime(t){var d=new Date(t);return pad(d.getHours())+"."+pad(d.getMinutes())}
+/* Tanggal diajukan + jam (dari waktu input). Bila diinput HRD di hari lain, tampilkan juga waktu inputnya. */
+function hasTime(t){var d=new Date(t);return !!t&&(d.getHours()||d.getMinutes())}
+function submittedHTML(l){
+  if(!hasTime(l.createdAt))return fShort(l.submitted);
+  var c=iso(new Date(l.createdAt));
+  return fShort(l.submitted)+(c===l.submitted?', '+fTime(l.createdAt):'<div class="s">diinput '+fShort(c)+', '+fTime(l.createdAt)+'</div>');
+}
+function submittedText(l){return fShort(l.submitted)+(hasTime(l.createdAt)&&iso(new Date(l.createdAt))===l.submitted?", "+fTime(l.createdAt):"")}
+function fStamp(t){if(!t)return "–";var d=new Date(t);return d.toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})+", "+pad(d.getHours())+"."+pad(d.getMinutes())}
+function r1(x){return Math.round((+x||0)*10)/10}
+function fNum(x){return String(r1(x)).replace(".",",")}
+function neg(x){return r1(x)?"−"+fNum(x):"0"}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function holSet(){var s={};state.holidays.forEach(function(h){s[h.date]=1});return s}
+function workdays(a,b){
+  if(!validIso(a)||!validIso(b))return 0;
+  var s=parse(a),e=parse(b),n=0,H=holSet();if(e<s)return 0;
+  for(var d=new Date(s);d<=e;d.setDate(d.getDate()+1)){var w=d.getDay();if(w!==0&&w!==6&&!H[iso(d)])n++}
+  return n;
+}
+function emp(id){return state.employees.find(function(e){return e.id===id})||null}
+function empName(id){var e=emp(id);return e?e.name:"(karyawan dihapus)"}
+function depts(){var d={};state.employees.forEach(function(e){if(e.dept)d[e.dept]=1});return Object.keys(d).sort()}
+function byName(a,b){return a.name.localeCompare(b.name,"id")}
+function activeEmployees(){return state.employees.filter(function(e){return e.active!==false}).sort(byName)}
+function canWrite(){return me&&(me.role==="it"||me.role==="hrd")}
+function hasSample(){return state.employees.some(function(e){return e.sample})||state.leaves.some(function(l){return l.sample})||state.holidays.some(function(h){return h.sample})}
+function userOfEmp(id){return state.users.find(function(u){return u.empId===id})||null}
+var toastT;
+function toast(m,stay){var el=document.getElementById("toast");el.textContent=m;el.classList.add("show");clearTimeout(toastT);if(!stay)toastT=setTimeout(function(){el.classList.remove("show")},3400)}
+function setBusy(on){ui.busy+=on?1:-1;if(ui.busy<0)ui.busy=0;document.getElementById("busy").hidden=!ui.busy}
+
+function balanceOf(e,year,excludeId){
+  var q=+e.quota||0,op=+((e.openingUsed||{})[year]||0),used=0,pend=0;
+  state.leaves.forEach(function(l){
+    if(l.empId!==e.id||l.id===excludeId||!TYPES[l.type]||!TYPES[l.type].quota||String(l.start).slice(0,4)!==String(year))return;
+    if(l.status==="approved")used+=+l.days||0;else if(l.status==="pending"||l.status==="pending_dir")pend+=+l.days||0;
+  });
+  return {quota:q,opening:r1(op),used:r1(used),pending:r1(pend),left:r1(q-op-used-pend)};
+}
+/* Unpaid Leave: cuti tahunan disetujui di atas kuota + cuti di luar tanggungan yang disetujui (potong gaji) */
+function unpaidOf(e,year){
+  var b=balanceOf(e,year),excess=Math.max(0,r1(b.opening+b.used-b.quota)),lwop=0;
+  state.leaves.forEach(function(l){if(l.empId===e.id&&l.type==="tanpagaji"&&l.status==="approved"&&String(l.start).slice(0,4)===String(year))lwop+=+l.days||0});
+  return {excess:excess,lwop:r1(lwop),total:r1(excess+lwop)};
+}
+function sisaClass(left){return left<=0?"out":left<=2?"low":"ok"}
+
+/* Urutan tabel */
+ui.sort={saldo:{key:"name",dir:"asc"},riwayat:{key:"start",dir:"desc"},karyawan:{key:"",dir:"asc"},libur:{key:"date",dir:"asc"},pengguna:{key:"role",dir:"asc"}};
+function cmp(a,b){if(typeof a==="number"&&typeof b==="number")return a-b;return String(a==null?"":a).localeCompare(String(b==null?"":b),"id",{numeric:true,sensitivity:"base"})}
+function sortBy(rows,table,get,tie){var st=ui.sort[table];if(!st.key)return rows;var m=st.dir==="desc"?-1:1;return rows.slice().sort(function(a,b){return m*cmp(get(a,st.key),get(b,st.key))||cmp(tie(a),tie(b))})}
+function th(table,key,label,cls){
+  var st=ui.sort[table],on=st.key===key,arrow=on?(st.dir==="asc"?"▲":"▼"):"↕";
+  return '<th'+(cls?' class="'+cls+'"':'')+' aria-sort="'+(on?(st.dir==="asc"?"ascending":"descending"):"none")+'"><button class="th-sort'+(on?" on":"")+'" data-sort="'+table+':'+key+'" title="Urutkan">'+label+'<span class="arr" aria-hidden="true">'+arrow+'</span></button></th>';
+}
+function noTd(i){return '<td class="no">'+(i+1)+'</td>'}
+
+/* ================= Server (Google Apps Script) ================= */
+function call(fn){
+  var args=[].slice.call(arguments,1);
+  return new Promise(function(res,rej){
+    if(!(window.google&&google.script&&google.script.run)){rej(new Error("Buka aplikasi ini lewat link Web App dari Google Apps Script."));return}
+    var r=google.script.run.withSuccessHandler(res).withFailureHandler(function(e){
+      var m=String((e&&e.message)||e||"Terjadi kesalahan.");
+      if(m.indexOf("SESI_HABIS")>-1){forceLogout("Sesi Anda sudah berakhir. Silakan masuk lagi.");rej(new Error("Sesi berakhir."));return}
+      rej(new Error(m.replace(/^(Error|Exception):\s*/,"")));
+    });
+    if(typeof r[fn]!=="function"){rej(new Error("Fungsi server \""+fn+"\" belum tersedia. Administrator perlu memperbarui Kode.gs lalu menerbitkan Versi baru."));return}
+    r[fn].apply(r,args);
+  });
+}
+function apply(p){
+  state.employees=p.employees||[];state.leaves=p.leaves||[];state.holidays=p.holidays||[];state.users=p.users||[];state.managerIds=p.managerIds||[];
+  me=p.me;sheetUrl=p.sheetUrl||"";TODAY=p.today||TODAY;ui.serverVersion=p.version||"(lama)";
+}
+async function run(fn,args,okMsg){
+  setBusy(true);
+  try{var p=await call.apply(null,[fn,token].concat(args||[]));apply(p);render();if(okMsg)toast(okMsg);return p}
+  finally{setBusy(false)}
+}
+async function refresh(silent){
+  if(!token||!me)return;
+  try{setBusy(true);apply(await call("getData",token));render();if(!silent)toast("Data diperbarui")}
+  catch(e){if(!silent)toast(e.message)}finally{setBusy(false)}
+}
+function forceLogout(msg){
+  var apb=document.getElementById("alert-pop");if(apb)apb.remove();ui.alertSeen=0;
+  token=null;me=null;try{sessionStorage.removeItem(TOKEN_KEY)}catch(e){}
+  forcedPw=false;if(dlg.open)dlg.close();renderLogin(msg||"");
+}
+
+/* ================= Jendela konfirmasi (pengganti confirm bawaan browser) ================= */
+var cdlg=document.getElementById("cdlg");
+function askConfirm(o){
+  return new Promise(function(resolve){
+    var body=String(o.message||"").split(/\n\n/).filter(Boolean).map(function(par){
+      var lines=par.split("\n");
+      if(lines.every(function(l){return /^- /.test(l)||/^\.\.\./.test(l)}))return '<ul class="cf-list">'+lines.map(function(l){return '<li>'+esc(l.replace(/^- /,""))+'</li>'}).join("")+'</ul>';
+      return '<p>'+lines.map(esc).join("<br>")+'</p>';
+    }).join("");
+    cdlg.innerHTML='<div class="dlg-body" style="padding-top:22px"><h2 id="cdlg-title" style="font-size:18px;font-weight:700;margin-bottom:10px">'+esc(o.title||"Konfirmasi")+'</h2><div class="cf-msg">'+body+'</div>'+
+      (o.input?'<div class="field"><label for="cf-input">'+esc(o.input)+'</label><textarea id="cf-input" maxlength="500"></textarea></div><div class="err" id="cf-err" role="alert"></div>':'')+
+      '<div class="form-actions"><button class="btn" data-cf="0">'+esc(o.cancel||"Batal")+'</button><button class="btn '+(o.danger?"btn-danger-solid":"btn-primary")+'" data-cf="1">'+esc(o.ok||"Ya")+'</button></div></div>';
+    function done(v){cdlg.removeEventListener("click",onClick);cdlg.removeEventListener("cancel",onCancel);if(cdlg.open)cdlg.close();resolve(v)}
+    function onClick(e){var b=e.target.closest("[data-cf]");
+      if(b){
+        if(b.dataset.cf==="1"&&o.input){var v=document.getElementById("cf-input").value.trim();if(o.inputRequired&&!v){document.getElementById("cf-err").textContent="Wajib diisi.";return}done(v||" ");return}
+        done(b.dataset.cf==="1");return}
+      if(e.target===cdlg)done(false)}
+    function onCancel(e){e.preventDefault();done(false)}
+    cdlg.addEventListener("click",onClick);cdlg.addEventListener("cancel",onCancel);
+    cdlg.showModal();var focusEl=document.getElementById("cf-input")||cdlg.querySelector('[data-cf="1"]');if(focusEl)focusEl.focus();
+  });
+}
+
+/* ================= Login ================= */
+function renderLogin(msg){
+  app.innerHTML='<div class="login"><div class="login-box">'+
+    '<div class="brand"><span class="brand-mark" aria-hidden="true">W</span><span>Woori Consulting<small>Buku Cuti HRD</small></span></div>'+
+    '<h1>Masuk</h1><p class="lead">Gunakan username dan password yang diberikan tim HRD atau IT.</p>'+
+    '<form id="login-form" novalidate>'+
+      '<div class="field"><label for="l-user">Username</label><input id="l-user" autocomplete="username" autocapitalize="none" spellcheck="false"></div>'+
+      '<div class="field"><label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password"></div>'+
+      '<div class="err" id="l-err" role="alert">'+esc(msg||"")+'</div>'+
+      '<button class="btn btn-primary" type="submit" id="l-btn">Masuk</button>'+
+    '</form><p class="foot">Lupa password? Hubungi Admin HRD atau tim IT untuk mengatur ulang.</p><p class="foot" style="margin-top:4px;opacity:.7">Versi '+CLIENT_VERSION+'</p>'+
+  '</div></div>';
+  var u=document.getElementById("l-user");if(u)u.focus();
+}
+async function doLogin(){
+  var u=document.getElementById("l-user").value.trim(),p=document.getElementById("l-pass").value,err=document.getElementById("l-err"),btn=document.getElementById("l-btn");
+  if(!u||!p){err.textContent="Isi username dan password.";return}
+  btn.disabled=true;btn.textContent="Memeriksa...";err.textContent="";
+  try{
+    var res=await call("login",u,p);
+    token=res.token;try{sessionStorage.setItem(TOKEN_KEY,token)}catch(e){}
+    apply(res.data);ui.tab="saldo";ui.year=+todayIso().slice(0,4);render();
+    if(me.mustChange)openPassword(true);
+  }catch(e){err.textContent=e.message;btn.disabled=false;btn.textContent="Masuk"}
+}
+async function doLogout(){
+  if(!(await askConfirm({title:"Keluar dari aplikasi?",message:"Anda perlu memasukkan username dan password lagi untuk masuk kembali.",ok:"Keluar"})))return;
+  var t=token;forceLogout("");
+  if(t)try{await call("logout",t)}catch(e){}
+  toast("Anda sudah keluar");
+}
+function openPassword(forced){
+  forcedPw=!!forced;
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Ganti password</h2><div class="s">'+(forced?"Demi keamanan, ganti password awal Anda sebelum melanjutkan.":"Password baru minimal 8 karakter.")+'</div></div>'+(forced?'':'<button class="x" data-act="close" aria-label="Tutup">×</button>')+'</div>'+
+  '<form class="dlg-body" id="pw-form" novalidate>'+
+    '<div class="field"><label for="p-cur">Password saat ini</label><input id="p-cur" type="password" autocomplete="current-password"></div>'+
+    '<div class="field" style="margin-top:12px"><label for="p-new">Password baru</label><input id="p-new" type="password" autocomplete="new-password"></div>'+
+    '<div class="field" style="margin-top:12px"><label for="p-new2">Ulangi password baru</label><input id="p-new2" type="password" autocomplete="new-password"></div>'+
+    '<div class="err" id="p-err" role="alert"></div>'+
+    '<div class="form-actions">'+(forced?'<button class="btn" type="button" data-act="logout">Keluar</button>':'<button class="btn" type="button" data-act="close">Batal</button>')+'<button class="btn btn-primary" type="submit" id="p-btn">Simpan password</button></div>'+
+  '</form>';
+  if(!dlg.open)dlg.showModal();
+  document.getElementById("p-cur").focus();
+}
+async function savePassword(){
+  var c=document.getElementById("p-cur").value,n=document.getElementById("p-new").value,n2=document.getElementById("p-new2").value,err=document.getElementById("p-err"),btn=document.getElementById("p-btn");
+  if(n.length<8){err.textContent="Password baru minimal 8 karakter.";return}
+  if(n!==n2){err.textContent="Ulangi password baru dengan isi yang sama.";return}
+  btn.disabled=true;
+  try{await run("changePassword",[c,n]);forcedPw=false;dlg.close();toast("Password berhasil diganti")}
+  catch(e){err.textContent=e.message;btn.disabled=false}
+}
+
+/* ================= Tampilan umum ================= */
+function yearOptions(){
+  var years={};years[todayIso().slice(0,4)]=1;years[+todayIso().slice(0,4)+1]=1;
+  state.leaves.forEach(function(l){if(l.start)years[String(l.start).slice(0,4)]=1});
+  return Object.keys(years).sort().reverse();
+}
+function topbar(){
+  var ys=yearOptions(),staff=isStaff(me.role)||me.role==="director";
+  return '<header class="bar"><div class="wrap">'+
+    '<div class="brand"><span class="brand-mark" aria-hidden="true">W</span><span>Woori Consulting<small>'+(me.role==="director"?"Persetujuan Director":staff?"Saldo Cuti Saya":"Buku Cuti HRD")+'</small></span></div>'+
+    '<div class="bar-right">'+
+      '<span class="who">'+esc(me.name||me.username)+'</span><span class="role'+(staff?" user":"")+'">'+ROLE[me.role]+'</span>'+
+      '<label for="year">Tahun</label><select id="year">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select>'+
+      (me.role==="it"&&sheetUrl?'<a class="icon-btn" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
+      '<button class="icon-btn" data-act="refresh" title="Ambil data terbaru">Muat ulang</button>'+
+      (me.role==="it"?'<button class="icon-btn" data-act="password">Ganti password</button>':'')+
+      '<button class="icon-btn" data-act="logout">Keluar</button>'+
+    '</div></div></header>';
+}
+function banner(){
+  if(!canWrite()||!hasSample())return "";
+  return '<div class="banner" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>Aplikasi sedang berisi <b>data contoh</b> untuk dicoba. '+(me.role==="it"?'Hapus data contoh sebelum mulai memakai data karyawan sungguhan.</span><button class="btn btn-sm" data-act="clear-sample">Hapus data contoh</button>':'Minta Administrator / IT menghapusnya sebelum memakai data sungguhan.</span>')+'</div>';
+}
+function tabsHTML(){
+  var t=[{id:"saldo",l:"Saldo karyawan"},{id:"input",l:ui.editId?"Ubah data cuti":"Input cuti"},{id:"riwayat",l:"Riwayat cuti"},{id:"laporan",l:"Laporan"},{id:"karyawan",l:"Data karyawan"},{id:"libur",l:"Hari libur"}];
+  t.push({id:"pengguna",l:"Pengguna"});
+  var pn=pendingForMe().length;
+  return '<div class="tabs" role="tablist">'+t.map(function(x){return '<button class="tab" role="tab" data-tab="'+x.id+'" aria-selected="'+(ui.tab===x.id)+'">'+x.l+(x.id==="riwayat"&&pn?'<span class="tab-badge" title="'+pn+' pengajuan menunggu keputusan">'+pn+'</span>':'')+'</button>'}).join("")+clockHTML()+'</div>';
+}
+/* ---- Pengajuan yang menunggu keputusan akun yang login ---- */
+function pendingForMe(){
+  if(!me)return [];
+  if(me.role==="director")return state.leaves.filter(function(l){return l.status==="pending_dir"});
+  if(me.role==="it"||me.role==="hrd")return state.leaves.filter(function(l){return l.status==="pending"});
+  return [];
+}
+function updateAlert(){
+  var box=document.getElementById("alert-pop"),list=pendingForMe(),n=list.length;
+  if(!me||!n){if(box)box.remove();ui.alertSeen=n;return}
+  if(n<(ui.alertSeen||0))ui.alertSeen=n;
+  if(n<=(ui.alertSeen||0)){if(box&&n!==+box.dataset.n)box.remove();return}
+  if(box&&+box.dataset.n===n)return;
+  if(box)box.remove();
+  var names=list.slice(0,3).map(function(l){return empName(l.empId)}).join(", ")+(n>3?" dan "+(n-3)+" lainnya":"");
+  box=document.createElement("div");box.className="alert-pop";box.id="alert-pop";box.dataset.n=n;box.setAttribute("role","alert");
+  box.innerHTML='<div class="ico" aria-hidden="true">!</div><div><b>'+n+' pengajuan perlu ditindaklanjuti</b><p>'+esc(names)+(me.role==="director"?' menunggu persetujuan Anda sebagai Director.':' menunggu keputusan Admin HRD.')+'</p><button class="go" data-act="alert-go">Lihat sekarang</button></div><button class="cls" data-act="alert-close" aria-label="Tutup">×</button>';
+  document.body.appendChild(box);
+}
+/* ---- Jam dan tanggal berjalan (sesuai jam perangkat) ---- */
+function clockParts(){
+  var d=new Date();
+  var time=pad(d.getHours())+"."+pad(d.getMinutes())+"."+pad(d.getSeconds());
+  var date=d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  return {time:time,date:date};
+}
+function clockHTML(){var c=clockParts();return '<div class="clock" id="clock" aria-live="off"><b id="clock-time">'+esc(c.time)+'</b><span id="clock-date">'+esc(c.date)+'</span></div>'}
+setInterval(function(){var tEl=document.getElementById("clock-time");if(!tEl)return;var c=clockParts();tEl.textContent=c.time;var dEl=document.getElementById("clock-date");if(dEl&&dEl.textContent!==c.date)dEl.textContent=c.date},1000);
+function versionWarn(){
+  if(!ui.serverVersion||ui.serverVersion===CLIENT_VERSION)return "";
+  return '<div class="banner warn"><b>Versi aplikasi tidak sinkron.</b> Tampilan: '+CLIENT_VERSION+', server: '+esc(ui.serverVersion)+'. Administrator perlu mengganti Kode.gs dan Index.html dengan file terbaru, lalu menerbitkan Versi baru.</div>';
+}
+function render(){
+  if(!me){renderLogin();return}
+  var a=document.activeElement,aid=a&&a.id,sel=null;
+  try{if(a&&typeof a.selectionStart==="number")sel=[a.selectionStart,a.selectionEnd]}catch(e){}
+  var viewKey=me.role+":"+(isStaff(me.role)?"saya":me.role==="director"?"dir-"+(ui.dirView||"need"):ui.tab);
+  var changed=ui.lastView!==viewKey;ui.lastView=viewKey;
+  if(isStaff(me.role)){app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+'<div id="view">'+viewUser()+'</div></div></main>';if(ui.myForm)updateMyCalc();}
+  else if(me.role==="director"){app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+'<div id="view">'+viewDirector()+'</div></div></main>';}
+  else{
+    var v=ui.tab==="input"?viewInput():ui.tab==="riwayat"?viewRiwayat():ui.tab==="karyawan"?viewKaryawan():ui.tab==="libur"?viewLibur():ui.tab==="laporan"?viewLaporan():ui.tab==="pengguna"?viewPengguna():viewSaldo();
+    app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+banner()+tabsHTML()+'<div id="view">'+v+'</div></div></main>';
+    if(changed){var st=app.querySelector('.tab[aria-selected="true"]');if(st)st.classList.add("tab-enter")}
+    if(ui.tab==="input")updateCalc();
+  }
+  if(changed){var vw=document.getElementById("view");if(vw){vw.classList.add("view-enter");setTimeout(function(){vw.classList.remove("view-enter")},700)}
+    if(window.scrollY>140){try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){window.scrollTo(0,0)}}}
+  updateAlert();
+  if(aid){var el=document.getElementById(aid);if(el&&el!==document.body){el.focus();if(sel)try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
+}
+
+/* ================= Karyawan (User) ================= */
+function viewUser(){
+  var e=state.employees[0];
+  if(!e)return '<div class="list"><div class="empty"><b>Akun Anda belum terhubung ke data karyawan.</b><br>Minta tim HRD menghubungkan akun Anda. Setelah itu, saldo dan riwayat cuti Anda akan muncul di sini.</div></div>';
+  var y=String(ui.year),b=balanceOf(e,y),q=b.quota||1;
+  var list=state.leaves.filter(function(l){return String(l.start).slice(0,4)===y}).sort(function(a,b){return a.start<b.start?1:-1});
+  return '<div class="page-head"><div><h1>Halo, '+esc(String(e.name).split(" ")[0])+'</h1><p>'+esc([e.title,e.dept,e.empNo].filter(Boolean).join(" · "))+'</p></div>'+
+    (ui.myForm?'':'<button class="btn btn-primary" data-act="my-new">Ajukan cuti / izin</button>')+'</div>'+
+    (ui.myForm?myFormHTML():'')+
+    '<section class="user-hero" aria-label="Saldo cuti tahunan">'+
+      '<div><div class="bal-big"><span class="sisa '+sisaClass(b.left)+'" style="font-size:inherit">'+fNum(b.left)+'</span> <small>hari tersisa</small></div><div class="sub" style="margin:6px 0 0">Sisa cuti tahunan '+y+'</div></div>'+
+      '<div><div class="meter" style="margin-top:0"><i style="width:'+Math.min(100,(b.opening+b.used)/q*100)+'%;background:var(--pine)"></i><i style="width:'+Math.min(100,b.pending/q*100)+'%;background:var(--amber)"></i></div>'+
+      '<div class="legend"><span style="--c:var(--pine)">Terpakai '+fNum(b.opening+b.used)+' hari</span><span style="--c:var(--amber)">Menunggu persetujuan '+fNum(b.pending)+' hari</span><span style="--c:var(--grey-soft)">Kuota '+fNum(b.quota)+' hari</span></div></div>'+
+    '</section>'+
+    (function(){var up=unpaidOf(e,y);return up.total>0?'<div class="warn bad" style="margin:-8px 0 20px"><b>Unpaid Leave '+fNum(up.total)+' hari</b> pada '+y+'. Hari-hari ini tidak ditanggung cuti tahunan dan terkena potongan gaji.</div>':''})()+
+    '<h2 style="font-size:17px;margin:0 0 12px">Riwayat cuti '+y+'</h2>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Tanggal cuti</th><th>Jenis</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
+    (list.length?list.map(function(l,i){return '<tr>'+noTd(i)+'<td>'+fRange(l.start,l.end)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td>'+esc(TYPES[l.type].label)+'</td><td class="num">'+fNum(l.days)+'</td>'+
+      '<td>'+chipT(l)+'</td><td>'+decidedBy(l)+'</td><td>'+esc(l.note||"–")+'</td><td>'+(l.status==="pending"||l.status==="pending_dir"?'<button class="btn btn-sm" data-cancel-my="'+esc(l.id)+'">Batalkan</button>':'')+'</td></tr>'}).join(""):
+      '<tr><td colspan="8"><div class="empty">Belum ada data cuti di tahun '+y+'.</div></td></tr>')+
+    '</tbody></table></div>'+
+    '<p class="sub" style="margin-top:14px">'+(me.role==="manager"?"Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD.":"Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD.")+' Jika ada yang tidak sesuai, hubungi tim HRD.</p>';
+}
+
+/* ---- Formulir pengajuan oleh karyawan ---- */
+var SELF_TYPES=["tahunan","izin","sakit","penting","melahirkan","tanpagaji"];
+/* Jumlah hari kerja selalu dihitung dari tanggal; "setengah hari" hanya untuk cuti 1 hari */
+function calcDays(o){var auto=workdays(o.start,o.end);if(o.half&&o.start&&o.start===o.end&&auto>=1)return 0.5;if(o.half&&o.start!==o.end)o.half=false;return auto}
+function daysText(o){var n=calcDays(o);return n?fNum(n)+" hari":""}
+/* Keterangan di bawah pilihan Setengah hari */
+function halfHint(o){
+  if(!o.start||!o.end)return "Setengah hari hanya untuk cuti 1 hari: isi tanggal mulai dan selesai dengan tanggal yang sama.";
+  if(o.start!==o.end)return "Tidak bisa dipilih: tanggal yang dipilih lebih dari 1 hari. Setengah hari hanya untuk tanggal mulai dan selesai yang sama.";
+  if(!workdays(o.start,o.end))return "Tanggal ini hari Sabtu, Minggu, atau hari libur.";
+  return o.half?"Dihitung 0,5 hari.":"Centang bila hanya setengah hari (pagi atau siang).";
+}
+function newMyForm(){return {type:"tahunan",start:"",end:"",days:"",half:false,note:"",sub:"",contact:""}}
+function myFormHTML(){
+  var f=ui.myForm,me0=state.employees[0]||{name:me.name||me.username};
+  var anim=ui.myFormEnter;ui.myFormEnter=false;
+  return '<section class="panel'+(anim?' form-enter':'')+'" style="margin-bottom:22px" aria-labelledby="m-title"><h2 id="m-title">Ajukan cuti / izin</h2><div class="grid2">'+
+    '<div class="field full"><label for="m-name">Nama</label><input id="m-name" readonly tabindex="-1" style="background:var(--grey-soft);cursor:not-allowed" value="'+esc(me0.name+([me0.title,me0.dept].filter(Boolean).length?" – "+[me0.title,me0.dept].filter(Boolean).join(", "):""))+'"><span class="hint">Terkunci, sesuai akun yang login.</span></div>'+
+    '<div class="field"><label for="m-type">Jenis</label><select id="m-type" data-m="type">'+SELF_TYPES.map(function(k){return '<option value="'+k+'"'+(f.type===k?" selected":"")+'>'+TYPES[k].label+(TYPES[k].quota?" (memotong saldo)":"")+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><label for="m-days">Jumlah hari kerja</label><input id="m-days" readonly tabindex="-1" style="background:var(--grey-soft);cursor:not-allowed" value="'+esc(daysText(f))+'" placeholder="Pilih tanggal dulu">'+
+      '<label class="check" style="margin-top:4px;font-size:13px"><input type="checkbox" id="m-half" data-m="half"'+(f.half?" checked":"")+(f.start&&f.start===f.end?"":" disabled")+'> Setengah hari</label><span class="hint" id="m-half-hint">'+halfHint(f)+'</span><span class="hint">Jumlah hari terhitung otomatis dari tanggal (tanpa Sabtu, Minggu, dan hari libur).</span></div>'+
+    '<div class="field"><label for="m-start">Tanggal mulai</label><input type="date" id="m-start" data-m="start" value="'+esc(f.start)+'"></div>'+
+    '<div class="field"><label for="m-end">Tanggal selesai</label><input type="date" id="m-end" data-m="end" value="'+esc(f.end)+'"></div>'+
+    '<div class="field full"><label for="m-note">Keperluan (apa dan di mana)</label>'+
+      '<textarea id="m-note" data-m="note" maxlength="800" placeholder="Contoh: Menghadiri pernikahan adik di Bandung.">'+esc(f.note)+'</textarea>'+
+      '<span class="hint" id="m-note-count" style="text-align:right">'+String(f.note||"").trim().length+' karakter (minimal 15)</span></div>'+
+    '<div class="field"><label for="m-sub">Pengganti selama cuti</label><input id="m-sub" data-m="sub" maxlength="100" placeholder="Contoh: Andi – laporan pajak bulanan" value="'+esc(f.sub)+'"><span class="hint">Siapa yang menggantikan pekerjaan Anda.</span></div>'+
+    '<div class="field"><label for="m-contact">Kontak bila mendesak</label><input id="m-contact" data-m="contact" maxlength="60" inputmode="tel" placeholder="Contoh: WhatsApp 0812-3456-7890" value="'+esc(f.contact)+'"><span class="hint">Nomor WhatsApp atau telepon yang bisa dihubungi.</span></div>'+
+    '<div class="field full"><div class="calc" id="m-calc"></div></div>'+
+  '</div><div class="err" id="m-err" role="alert"></div>'+
+  '<div class="form-actions"><button class="btn" data-act="my-cancel-form">Batal</button><button class="btn btn-primary" data-act="my-submit" id="m-btn">Kirim pengajuan</button></div></section>';
+}
+function updateMyCalc(){
+  var f=ui.myForm,el=document.getElementById("m-calc");if(!f||!el)return;
+  var auto=workdays(f.start,f.end),de=document.getElementById("m-days");
+  f.days=String(calcDays(f)||"");if(de)de.value=daysText(f);
+  var hc=document.getElementById("m-half");if(hc){hc.disabled=!(f.start&&f.start===f.end);hc.checked=!!f.half}
+  var hh=document.getElementById("m-half-hint");if(hh){hh.textContent=halfHint(f);hh.style.color=f.start&&f.end&&f.start!==f.end?"var(--amber)":""}
+  var e=state.employees[0];if(!e){el.textContent="";return}
+  if(!validIso(f.start)||!validIso(f.end)){el.textContent="Pilih tanggal mulai dan selesai.";return}
+  if(f.end<f.start){el.textContent="Tanggal selesai tidak boleh sebelum tanggal mulai.";return}
+  var n=r1(f.days),b=balanceOf(e,+f.start.slice(0,4));
+  var after=r1(b.left-n),over=TYPES[f.type].quota?Math.min(n,Math.max(0,-after)):0;
+  el.textContent=f.type==="tanpagaji"?"Cuti di luar tanggungan dihitung sebagai Unpaid Leave dan terkena potongan gaji.":
+    TYPES[f.type].quota?("Sisa cuti tahunan "+fNum(b.left)+" hari. Setelah pengajuan ini: "+fNum(after)+" hari."+(over>0?" "+fNum(over)+" hari melebihi saldo dan akan dihitung Unpaid Leave (potong gaji).":"")):
+    (TYPES[f.type].label+" tidak memotong saldo cuti tahunan.");
+  el.style.background=over>0||f.type==="tanpagaji"?"var(--red-soft)":"";
+}
+async function submitMyLeave(){
+  var f=ui.myForm,err=document.getElementById("m-err"),btn=document.getElementById("m-btn");
+  if(!validIso(f.start)||!validIso(f.end)){err.textContent="Isi tanggal mulai dan tanggal selesai.";return}
+  if(f.end<f.start){err.textContent="Tanggal selesai tidak boleh sebelum tanggal mulai.";return}
+  if(!(r1(f.days)>0)){err.textContent="Jumlah hari kerja harus lebih dari 0.";return}
+  function need(id,msg){err.textContent=msg;var el=document.getElementById(id);if(el)el.focus()}
+  if(f.note.trim().length<15)return need("m-note","Keperluan terlalu singkat. Tulis apa dan di mana secara spesifik (minimal 15 karakter).");
+  if(f.sub.trim().length<3)return need("m-sub","Isi nama pengganti selama cuti.");
+  if((f.contact.match(/\d/g)||[]).length<8)return need("m-contact","Isi nomor kontak yang bisa dihubungi (minimal 8 angka).");
+  var e0=state.employees[0];
+  if(e0&&TYPES[f.type].quota){var left0=balanceOf(e0,+f.start.slice(0,4)).left,over0=Math.min(r1(f.days),Math.max(0,-r1(left0-r1(f.days))));
+    if(over0>0&&!(await askConfirm({title:"Melebihi saldo cuti",message:"Sisa cuti tahunan Anda "+fNum(left0)+" hari. Sebanyak "+fNum(over0)+" hari dari pengajuan ini akan dihitung Unpaid Leave dan terkena potongan gaji.\n\nTetap ajukan?",ok:"Tetap ajukan"})))return}
+  btn.disabled=true;btn.textContent="Mengirim...";
+  try{await run("submitLeave",[{type:f.type,start:f.start,end:f.end,days:calcDays(f),half:!!f.half,note:f.note,sub:f.sub,contact:f.contact}],"Pengajuan terkirim. Status: menunggu persetujuan HRD.");ui.myForm=null;render()}
+  catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Kirim pengajuan"}
+}
+
+/* ================= Tracking pengajuan (seperti lacak pengiriman) ================= */
+function stamp(ts,isoDate){
+  if(ts){var d=new Date(ts);if(d.getHours()||d.getMinutes())return fDate(iso(d))+", "+fTime(ts);return fDate(iso(d))}
+  return isoDate?fDate(isoDate):"";
+}
+function isManagerLeave(l){
+  return l.status==="pending_dir"||!!l.dirBy||me.role==="director"||(me.role==="manager"&&state.employees[0]&&state.employees[0].id===l.empId)||((state.managerIds||[]).indexOf(l.empId)>-1);
+}
+function trackSteps(l){
+  var mgr=isManagerLeave(l),steps=[],dirRejected=l.status==="rejected"&&l.dirBy&&l.approver===l.dirBy;
+  steps.push({t:"Pengajuan dibuat",state:"done",w:stamp(l.createdAt,l.submitted)+(l.createdBy?" · oleh "+l.createdBy:""),n:l.note?"Alasan: "+l.note:""});
+  if(mgr){
+    var d={t:"Persetujuan Director"};
+    if(l.dirBy){d.state=dirRejected?"rejected":"done";d.t=dirRejected?"Ditolak Director":"Disetujui Director";d.w=stamp(l.dirTs,l.dirAt)+" · "+l.dirBy}
+    else if(l.status==="pending_dir"){d.state="current";d.w="Sedang menunggu keputusan Director"}
+    else{d.state="skipped";d.w="Tidak melalui Director"}
+    steps.push(d);
+  }
+  var h={t:"Persetujuan Admin HRD"};
+  if(l.status==="approved"){h.state="done";h.t="Disetujui Admin HRD";h.w=stamp(l.decidedTs,l.approvedAt)+(l.approver?" · "+l.approver:"")}
+  else if(l.status==="rejected"&&!dirRejected){h.state="rejected";h.t="Ditolak Admin HRD";h.w=stamp(l.decidedTs,l.approvedAt)+(l.approver?" · "+l.approver:"")}
+  else if(l.status==="pending"){h.state="current";h.w="Sedang menunggu keputusan Admin HRD"}
+  else if(dirRejected){h.state="skipped";h.w="Tidak diproses karena ditolak Director"}
+  else{h.state="upcoming";h.w=mgr?"Menunggu persetujuan Director terlebih dulu":"Belum diproses"}
+  steps.push(h);
+  var f={t:"Selesai"};
+  if(l.status==="approved"){f.state="done";f.t="Selesai: Disetujui";f.w=TYPES[l.type]&&TYPES[l.type].quota?"Saldo cuti tahunan berkurang "+fNum(l.days)+" hari":"Tidak memotong saldo cuti tahunan"}
+  else if(l.status==="rejected"){f.state="rejected";f.t="Selesai: Ditolak";f.w="Saldo tidak berkurang"}
+  else{f.state="upcoming";f.w="Status akhir muncul setelah semua persetujuan selesai"}
+  steps.push(f);
+  return steps;
+}
+function openTrack(id){
+  var l=state.leaves.find(function(x){return x.id===id});if(!l)return;
+  var steps=trackSteps(l),total=steps.length,doneN=steps.filter(function(x){return x.state==="done"||x.state==="rejected"}).length;
+  var icon={done:"✓",current:"•",rejected:"✕",skipped:"–",upcoming:""};
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Tracking pengajuan</h2><div class="s">'+esc(empName(l.empId))+' · '+esc(TYPES[l.type].label)+' · '+fRange(l.start,l.end)+' ('+fNum(l.days)+' hari)</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'+chipL(l)+'<span class="trk-step">Tahap '+Math.min(doneN+(l.status==="approved"||l.status==="rejected"?0:1),total)+' dari '+total+'</span></div>'+
+  '<ol class="track">'+steps.map(function(x,i){return '<li class="'+x.state+'"><span class="dot" aria-hidden="true">'+(icon[x.state]||(i+1))+'</span><div class="t">'+esc(x.t)+'</div>'+(x.w?'<div class="w">'+esc(x.w)+'</div>':'')+(x.n?'<div class="n">'+esc(x.n)+'</div>':'')+'</li>'}).join("")+'</ol>'+
+  '<div class="form-actions"><button class="btn" data-act="close">Tutup</button></div></div>';
+  if(!dlg.open)dlg.showModal();
+}
+
+/* ================= Director: persetujuan tahap 1 untuk manager ================= */
+function viewDirector(){
+  var y=String(ui.year),all=state.leaves.filter(function(l){return String(l.start).slice(0,4)===y});
+  var sets={
+    need:all.filter(function(l){return l.status==="pending_dir"}),
+    fwd:all.filter(function(l){return l.status==="pending"&&l.dirBy}),
+    approved:all.filter(function(l){return l.status==="approved"}),
+    rejected:all.filter(function(l){return l.status==="rejected"}),
+    all:all};
+  var labels={need:"Perlu persetujuan Anda",fwd:"Diteruskan ke Admin HRD",approved:"Disetujui",rejected:"Ditolak",all:"Semua pengajuan manager"};
+  var cols={need:"var(--amber)",fwd:"var(--blue)",approved:"var(--pine)",rejected:"var(--red)"};
+  if(!ui.dirView)ui.dirView="need";
+  var rows=sets[ui.dirView].slice().sort(function(a,b){return a.start<b.start?1:-1});
+  return '<div class="page-head"><div><h1>Persetujuan Director</h1><p>Tahap 1 untuk pengajuan para manager. Pengajuan yang Anda setujui diteruskan ke Admin HRD untuk keputusan akhir.</p></div></div>'+
+    '<div class="tiles">'+["need","fwd","approved","rejected"].map(function(k){return '<button class="tile" data-dirview="'+k+'" aria-pressed="'+(ui.dirView===k)+'" style="--c:'+cols[k]+'"><b>'+sets[k].length+'</b><span>'+labels[k]+'</span></button>'}).join("")+'</div>'+
+    '<div class="list-head" style="display:flex;justify-content:space-between;align-items:baseline;margin:0 0 12px"><h2 style="font-size:17px">'+labels[ui.dirView]+' '+y+'</h2>'+(ui.dirView!=="all"?'<button class="link" data-dirview="all">Tampilkan semua ('+all.length+')</button>':'')+'</div>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Manager</th><th>Jenis</th><th>Tanggal cuti</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
+    (rows.length?rows.map(function(l,i){var e=emp(l.empId)||{name:"(tidak ditemukan)"},b=emp(l.empId)?balanceOf(e,y):null;
+      return '<tr>'+noTd(i)+'<td><b>'+esc(e.name)+'</b><div class="s">'+esc([e.title,e.dept].filter(Boolean).join(" · "))+(b?' · sisa '+fNum(b.left)+' hari':'')+'</div></td><td>'+esc(TYPES[l.type].label)+'</td><td>'+fRange(l.start,l.end)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td class="num">'+fNum(l.days)+'</td>'+
+      '<td>'+chipT(l)+'</td><td>'+decidedBy(l)+'</td>'+
+      '<td class="note-cell"'+(l.note?' title="'+esc(l.note)+'"':'')+'>'+(l.note?'<span class="note-clamp">'+esc(l.note)+'</span>':'–')+'</td>'+
+      '<td class="act-cell"><div class="act-grid">'+(l.status==="pending_dir"?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button><button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button>':'')+'</div></td></tr>'}).join(""):
+      '<tr><td colspan="9"><div class="empty">Tidak ada pengajuan di kategori ini.</div></td></tr>')+
+    '</tbody></table></div>';
+}
+
+/* ================= Saldo ================= */
+function viewSaldo(){
+  var list=activeEmployees(),y=ui.year;
+  if(!state.employees.length){
+    return '<div class="list"><div class="empty"><b>Belum ada data karyawan.</b><br>Mulai dengan menambahkan karyawan, satu per satu atau sekaligus dari Excel.<br>'+
+      '<button class="btn btn-primary" data-act="go-karyawan">Tambah data karyawan</button> <button class="btn" data-act="load-sample">Coba dengan data contoh</button></div></div>';
+  }
+  var rows=list.map(function(e){return {e:e,b:balanceOf(e,y),u:unpaidOf(e,y)}}),totalUsed=0,pendCount=0,unpaidTotal=0,unpaidPeople=0;
+  rows.forEach(function(r){if(r.u.total>0){unpaidTotal=r1(unpaidTotal+r.u.total);unpaidPeople++}});
+  /* Hari cuti terpakai: semua cuti disetujui yang memotong saldo di tahun ini (sama dengan rincian di Riwayat cuti) */
+  state.leaves.forEach(function(l){if(l.status==="approved"&&TYPES[l.type]&&TYPES[l.type].quota&&String(l.start).slice(0,4)===String(y))totalUsed+=+l.days||0});
+  totalUsed=r1(totalUsed);
+  state.leaves.forEach(function(l){if(l.status==="pending"&&String(l.start).slice(0,4)===String(y))pendCount++});
+  var q=ui.q.toLowerCase(),shown=rows.filter(function(r){
+    return (!ui.dept||r.e.dept===ui.dept)&&(!q||r.e.name.toLowerCase().indexOf(q)>-1||String(r.e.empNo||"").toLowerCase().indexOf(q)>-1)&&(!ui.lowOnly||r.u.total>0);
+  });
+  shown=sortBy(shown,"saldo",function(r,k){return k==="name"?r.e.name:k==="dept"?(r.e.dept||""):k==="quota"?r.b.quota:k==="used"?r.b.used+r.b.opening:k==="pending"?r.b.pending:k==="unpaid"?r.u.total:r.b.left},function(r){return r.e.name});
+  return '<div class="page-head"><div><h1>Saldo cuti tahunan '+y+'</h1><p>Dihitung otomatis dari kuota dikurangi cuti yang disetujui dan yang masih menunggu persetujuan.</p></div>'+
+    '<button class="btn btn-primary" data-act="new-leave">Input cuti</button></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><b>'+list.length+'</b><span>Karyawan aktif</span></div>'+
+      '<button class="tile" data-act="go-used" style="--c:var(--pine)" title="Lihat rincian cuti yang memotong saldo"><b>'+fNum(totalUsed)+'</b><span>Hari cuti terpakai</span></button>'+
+      '<button class="tile" data-act="go-pending" style="--c:var(--amber)"><b>'+pendCount+'</b><span>Menunggu persetujuan</span></button>'+
+      '<button class="tile" data-act="toggle-low" aria-pressed="'+ui.lowOnly+'" style="--c:var(--red)"><b>'+fNum(unpaidTotal)+'</b><span>Unpaid Leave (hari, potong gaji) · '+unpaidPeople+' karyawan'+(ui.lowOnly?' (difilter)':'')+'</span></button>'+
+    '</div>'+
+    '<div class="filters"><input id="q" type="search" placeholder="Cari nama atau nomor karyawan" value="'+esc(ui.q)+'" aria-label="Cari karyawan">'+
+      '<select id="dept" aria-label="Filter divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(ui.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select></div>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th>'+th("saldo","name","Nama")+th("saldo","dept","Divisi")+th("saldo","quota","Kuota","num")+th("saldo","used","Terpakai","num")+th("saldo","pending","Menunggu","num")+th("saldo","left","Sisa","num")+th("saldo","unpaid","Unpaid","num")+'</tr></thead><tbody>'+
+    (shown.length?shown.map(function(r,i){var b=r.b;return '<tr class="click" data-emp="'+esc(r.e.id)+'">'+noTd(i)+'<td><b>'+esc(r.e.name)+'</b><div class="s">'+esc(r.e.title||"")+(r.e.empNo?' · '+esc(r.e.empNo):'')+'</div></td><td>'+esc(r.e.dept||"–")+'</td>'+
+      '<td class="num">'+fNum(b.quota)+'</td><td class="num">'+fNum(b.used+b.opening)+'</td><td class="num">'+fNum(b.pending)+'</td><td class="num"><span class="sisa '+sisaClass(b.left)+'">'+fNum(b.left)+'</span></td><td class="num">'+(r.u.total>0?'<span class="sisa out" title="Hari yang terkena potongan gaji">'+fNum(r.u.total)+'</span>':'<span style="color:var(--ink-2)">0</span>')+'</td></tr>'}).join(""):
+      '<tr><td colspan="8"><div class="empty">Tidak ada karyawan yang cocok dengan filter.</div></td></tr>')+
+    '</tbody></table></div>';
+}
+
+/* ================= Input cuti ================= */
+function newDraft(empId){return {empId:empId||"",type:"tahunan",submitted:todayIso(),start:"",end:"",days:"",half:false,status:"approved",approver:"",approvedAt:todayIso(),note:""}}
+function viewInput(){
+  if(!ui.draft)ui.draft=newDraft();
+  var d=ui.draft,list=activeEmployees();
+  if(d.empId&&!list.some(function(e){return e.id===d.empId})){var ex=emp(d.empId);if(ex)list=list.concat([ex])}
+  if(!state.employees.length)return '<div class="list"><div class="empty"><b>Belum ada data karyawan.</b><br>Tambahkan karyawan dulu sebelum menginput cuti.<br><button class="btn btn-primary" data-act="go-karyawan">Tambah data karyawan</button></div></div>';
+  var editing=!!ui.editId;
+  return '<div class="page-head"><div><h1>'+(editing?"Ubah data cuti":"Input cuti karyawan")+'</h1><p>Isi dari formulir atau pesan pengajuan karyawan. Jumlah hari kerja dan sisa saldo terhitung otomatis.</p></div></div>'+
+  '<div class="layout-input"><section class="panel" aria-labelledby="f-title"><h2 id="f-title">Data pengajuan</h2><div class="grid2">'+
+    '<div class="field full"><label for="f-emp">Karyawan</label><select id="f-emp" data-f="empId"><option value="">Pilih karyawan</option>'+
+      list.map(function(e){return '<option value="'+esc(e.id)+'"'+(d.empId===e.id?" selected":"")+'>'+esc(e.name)+(e.dept?' – '+esc(e.dept):'')+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><label for="f-type">Jenis cuti</label><select id="f-type" data-f="type">'+Object.keys(TYPES).filter(function(k){return !TYPES[k].hidden||d.type===k}).map(function(k){return '<option value="'+k+'"'+(d.type===k?" selected":"")+'>'+TYPES[k].label+(TYPES[k].quota?' (memotong saldo)':'')+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><label for="f-sub">Tanggal pengajuan</label><input type="date" id="f-sub" data-f="submitted" value="'+esc(d.submitted)+'"></div>'+
+    '<div class="field"><label for="f-start">Tanggal mulai cuti</label><input type="date" id="f-start" data-f="start" value="'+esc(d.start)+'"></div>'+
+    '<div class="field"><label for="f-end">Tanggal selesai cuti</label><input type="date" id="f-end" data-f="end" value="'+esc(d.end)+'"></div>'+
+    '<div class="field"><label for="f-days">Jumlah hari kerja</label><input id="f-days" readonly tabindex="-1" style="background:var(--grey-soft);cursor:not-allowed" value="'+esc(daysText(d))+'" placeholder="Pilih tanggal dulu">'+
+      '<label class="check" style="margin-top:4px;font-size:13px"><input type="checkbox" id="f-half" data-f="half"'+(d.half?" checked":"")+(d.start&&d.start===d.end?"":" disabled")+'> Setengah hari</label><span class="hint" id="f-half-hint">'+halfHint(d)+'</span><span class="hint">Jumlah hari terhitung otomatis dari tanggal (tanpa Sabtu, Minggu, dan hari libur).</span></div>'+
+    '<div class="field"><label for="f-status">Status</label><select id="f-status" data-f="status">'+Object.keys(STATUS).map(function(k){return '<option value="'+k+'"'+(d.status===k?" selected":"")+'>'+STATUS[k].label+(k==="pending_dir"?" (khusus manager)":k==="pending"?" (Admin HRD)":"")+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><label for="f-appr">Disetujui / diputuskan oleh</label><input id="f-appr" readonly tabindex="-1" style="background:var(--grey-soft);cursor:not-allowed" value="'+esc(apprDisplay(d))+'"><span class="hint">Terkunci, otomatis sesuai akun yang login.</span></div>'+
+    '<div class="field"><label for="f-apprat">Tanggal keputusan</label><input type="date" id="f-apprat" data-f="approvedAt" value="'+esc(d.approvedAt)+'"></div>'+
+    '<div class="field full"><label for="f-note">Catatan (terlihat oleh karyawan)</label><textarea id="f-note" data-f="note" maxlength="1000" placeholder="Alasan cuti, pengganti selama cuti, atau alasan penolakan">'+esc(d.note)+'</textarea></div>'+
+  '</div><div id="f-warn"></div><div class="err" id="f-err" role="alert"></div>'+
+  '<div class="form-actions">'+(editing?'<button class="btn" data-act="cancel-edit">Batal</button>':'<button class="btn" data-act="reset-form">Kosongkan</button>')+
+    '<button class="btn btn-primary" data-act="save-leave" id="f-save">'+(editing?"Simpan perubahan":"Simpan data cuti")+'</button></div></section>'+
+  '<aside class="panel side" id="side" aria-live="polite"></aside></div>';
+}
+function apprDisplay(d){
+  if(d.status==="pending"||d.status==="pending_dir")return "Belum diputuskan";
+  if(ui.editId&&d.origStatus===d.status&&d.approver)return d.approver;
+  return me.name||me.username;
+}
+function updateCalc(){
+  var d=ui.draft;if(!d)return;
+  var ap=document.getElementById("f-appr");if(ap)ap.value=apprDisplay(d);
+  var daysEl=document.getElementById("f-days");
+  d.days=String(calcDays(d)||"");if(daysEl)daysEl.value=daysText(d);
+  var hcf=document.getElementById("f-half");if(hcf){hcf.disabled=!(d.start&&d.start===d.end);hcf.checked=!!d.half}
+  var hhf=document.getElementById("f-half-hint");if(hhf){hhf.textContent=halfHint(d);hhf.style.color=d.start&&d.end&&d.start!==d.end?"var(--amber)":""}
+  var side=document.getElementById("side"),warnEl=document.getElementById("f-warn");if(!side)return;
+  var e=d.empId?emp(d.empId):null;
+  if(!e){side.innerHTML='<h2>Saldo karyawan</h2><p class="sub">Pilih karyawan untuk melihat sisa saldonya.</p>';if(warnEl)warnEl.innerHTML="";return}
+  var year=validIso(d.start)?+d.start.slice(0,4):ui.year,b=balanceOf(e,year,ui.editId),n=r1(d.days),t=TYPES[d.type];
+  var counts=t&&t.quota&&d.status!=="rejected"&&n>0,after=r1(b.left-(counts?n:0));
+  var recent=state.leaves.filter(function(l){return l.empId===e.id&&l.id!==ui.editId}).sort(function(a,b){return a.start<b.start?1:-1}).slice(0,4);
+  side.innerHTML='<h2>'+esc(e.name)+'</h2><p class="sub">'+esc(e.title||"")+(e.dept?' · '+esc(e.dept):'')+'</p>'+
+    '<div class="bal-big">'+fNum(b.left)+' <small>hari tersisa ('+year+')</small></div>'+
+    '<dl class="kv"><dt>Kuota tahunan</dt><dd>'+fNum(b.quota)+'</dd>'+(b.opening?'<dt>Terpakai sebelum dicatat</dt><dd>'+neg(b.opening)+'</dd>':'')+
+    '<dt>Cuti disetujui</dt><dd>'+neg(b.used)+'</dd><dt>Menunggu persetujuan</dt><dd>'+neg(b.pending)+'</dd>'+
+    '<dt class="tot">Sisa saat ini</dt><dd class="tot">'+fNum(b.left)+'</dd></dl>'+
+    (counts?'<div class="after'+(after<0?" bad":"")+'">Setelah data ini disimpan: <b>'+fNum(after)+' hari</b>'+(after<0?' (melebihi kuota)':'')+'</div>':
+      (n>0&&t?'<div class="after">'+(d.status==="rejected"?"Status ditolak, saldo tidak berubah.":t.label+" tidak memotong saldo cuti tahunan.")+'</div>':''))+
+    (recent.length?'<ul class="mini-list">'+recent.map(function(l){return '<li><span>'+fRange(l.start,l.end)+'<br><span style="color:var(--ink-2);font-size:12px">'+esc(TYPES[l.type].label)+', '+fNum(l.days)+' hari</span></span>'+chipL(l)+'</li>'}).join("")+'</ul>':'');
+  var w="";
+  if(validIso(d.start)&&validIso(d.end)&&d.end>=d.start){
+    var clash=state.leaves.filter(function(l){return l.empId===e.id&&l.id!==ui.editId&&l.status!=="rejected"&&!(l.end<d.start||l.start>d.end)});
+    if(clash.length)w+='<div class="warn">Perhatian: '+esc(e.name)+' sudah punya data cuti di tanggal yang beririsan ('+clash.map(function(l){return fRange(l.start,l.end)}).join(", ")+').</div>';
+  }
+  if(counts&&after<0)w+='<div class="warn bad">Saldo tidak cukup: sisa '+fNum(b.left)+' hari, diajukan '+fNum(n)+' hari. Bila disetujui, '+fNum(Math.min(n,-after))+' hari dihitung <b>Unpaid Leave</b> (potong gaji).</div>';
+  if(warnEl)warnEl.innerHTML=w;
+}
+async function saveLeave(){
+  var d=ui.draft,err=document.getElementById("f-err"),btn=document.getElementById("f-save");
+  function fail(m){err.textContent=m}
+  if(!d.empId)return fail("Pilih karyawan.");
+  if(!validIso(d.start)||!validIso(d.end))return fail("Isi tanggal mulai dan tanggal selesai cuti.");
+  if(d.end<d.start)return fail("Tanggal selesai tidak boleh sebelum tanggal mulai.");
+  var n=r1(d.days);if(!(n>0))return fail("Jumlah hari kerja harus lebih dari 0.");
+  if(!validIso(d.submitted))return fail("Isi tanggal pengajuan.");
+  var e=emp(d.empId),t=TYPES[d.type],b=balanceOf(e,+d.start.slice(0,4),ui.editId);
+  if(t.quota&&d.status!=="rejected"&&b.left-n<0&&!(await askConfirm({title:"Saldo tidak cukup",message:"Sisa cuti tahunan "+e.name+" tinggal "+fNum(b.left)+" hari, sedangkan yang diinput "+fNum(n)+" hari. Kelebihan "+fNum(Math.min(n,r1(n-b.left)))+" hari akan dihitung Unpaid Leave (potong gaji).\n\nTetap simpan?",ok:"Tetap simpan"})))return;
+  var clash=state.leaves.some(function(l){return l.empId===e.id&&l.id!==ui.editId&&l.status!=="rejected"&&!(l.end<d.start||l.start>d.end)});
+  if(clash&&!(await askConfirm({title:"Tanggal bentrok",message:e.name+" sudah punya data cuti di tanggal yang beririsan.\n\nTetap simpan?",ok:"Tetap simpan"})))return;
+  btn.disabled=true;btn.textContent="Menyimpan...";
+  var wasEdit=!!ui.editId;
+  try{
+    setBusy(true);
+    var p=await call("saveLeave",token,{id:ui.editId||"",empId:d.empId,type:d.type,submitted:d.submitted,start:d.start,end:d.end,days:n,status:d.status,approver:d.approver,approvedAt:d.approvedAt,note:d.note});
+    apply(p);
+    var after=balanceOf(emp(d.empId)||e,+d.start.slice(0,4)).left;
+    ui.draft=newDraft();ui.editId=null;if(wasEdit)ui.tab="riwayat";
+    render();toast((wasEdit?"Perubahan disimpan. ":"Data cuti "+e.name+" tersimpan. ")+"Sisa saldo: "+fNum(after)+" hari");
+  }catch(x){btn.disabled=false;btn.textContent=wasEdit?"Simpan perubahan":"Simpan data cuti";fail(x.message)}
+  finally{setBusy(false)}
+}
+
+/* ================= Riwayat ================= */
+function viewRiwayat(){
+  var y=String(ui.year),q=ui.q.toLowerCase();
+  var rows=state.leaves.filter(function(l){var e=emp(l.empId);
+    return String(l.start).slice(0,4)===y&&(!ui.fStatus||l.status===ui.fStatus)&&(!ui.fType||(ui.fType==="quota"?TYPES[l.type].quota:l.type===ui.fType))&&(!ui.dept||(e&&e.dept===ui.dept))&&(!q||empName(l.empId).toLowerCase().indexOf(q)>-1)});
+  rows=sortBy(rows,"riwayat",function(l,k){return k==="submitted"?l.submitted+" "+String(l.createdAt||0).padStart(15,"0"):k==="name"?empName(l.empId):k==="type"?TYPES[l.type].label:k==="days"?(+l.days||0):k==="status"?STATUS[l.status].label:k==="approver"?(l.approver||""):l.start},function(l){return l.start+" "+empName(l.empId)});
+  var isIt=me.role==="it",visIds=rows.map(function(l){return l.id});
+  pruneMarks("riwayat",state.leaves.map(function(l){return l.id}));
+  return '<div class="page-head"><div><h1>Riwayat cuti '+y+'</h1><p>Semua data cuti yang sudah diinput. Klik nama untuk melihat saldo karyawan.</p></div><button class="btn btn-primary" data-act="new-leave">Input cuti</button></div>'+
+    markBar("riwayat")+
+    '<div class="filters"><input id="q" type="search" placeholder="Cari nama karyawan" value="'+esc(ui.q)+'" aria-label="Cari">'+
+      '<select id="fstatus" aria-label="Filter status"><option value="">Semua status</option>'+Object.keys(STATUS).map(function(k){return '<option value="'+k+'"'+(ui.fStatus===k?" selected":"")+'>'+STATUS[k].label+'</option>'}).join("")+'</select>'+
+      '<select id="ftype" aria-label="Filter jenis cuti"><option value="">Semua jenis</option><option value="quota"'+(ui.fType==="quota"?" selected":"")+'>Memotong saldo cuti tahunan</option>'+Object.keys(TYPES).filter(function(k){return !TYPES[k].hidden}).map(function(k){return '<option value="'+k+'"'+(ui.fType===k?" selected":"")+'>'+TYPES[k].label+'</option>'}).join("")+'</select>'+
+      '<select id="dept" aria-label="Filter divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(ui.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'+
+      ((ui.fStatus||ui.fType||ui.dept||ui.q)?'<button class="btn btn-sm" data-act="clear-filters">Hapus filter</button>':'')+'</div>'+
+    '<p class="sub" id="rw-sum" style="margin:-4px 0 10px">'+rows.length+' data · '+fNum(rows.reduce(function(a,l){return a+(+l.days||0)},0))+' hari</p>'+
+    '<div class="list scroll"><table><thead><tr>'+markTh("riwayat",visIds)+'<th class="no">No.</th>'+th("riwayat","submitted","Diajukan")+th("riwayat","name","Karyawan")+th("riwayat","type","Jenis")+th("riwayat","start","Tanggal cuti")+th("riwayat","days","Hari","num")+th("riwayat","status","Status")+th("riwayat","approver","Diputuskan oleh")+'<th>Catatan</th><th></th></tr></thead><tbody>'+
+    (rows.length?rows.map(function(l,i){var e=emp(l.empId);return '<tr'+markRow("riwayat",l.id)+'>'+markTd("riwayat",l.id)+noTd(i)+'<td style="white-space:nowrap">'+submittedHTML(l)+'</td>'+
+      '<td><button class="link" data-emp="'+esc(l.empId)+'">'+esc(empName(l.empId))+'</button><div class="s">'+esc(e?e.dept||"":"")+'</div></td>'+
+      '<td>'+esc(TYPES[l.type].label)+'</td><td>'+fRange(l.start,l.end)+'</td><td class="num">'+fNum(l.days)+'</td>'+
+      '<td>'+chipT(l)+'</td>'+
+      '<td>'+decidedBy(l)+'</td>'+
+      '<td class="note-cell"'+(l.note?' title="'+esc(l.note)+'"':'')+'>'+(l.note?'<span class="note-clamp">'+esc(l.note)+'</span>':'<span style="color:var(--ink-2)">–</span>')+'</td>'+
+      '<td class="act-cell"><div class="act-grid">'+(l.status==="pending"?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button> <button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button> ':'')+'<button class="btn btn-sm" data-edit-leave="'+esc(l.id)+'">Ubah</button>'+(isIt?' <button class="btn btn-sm btn-danger" data-del-leave="'+esc(l.id)+'">Hapus</button>':'')+'</div></td></tr>'}).join(""):
+      '<tr><td colspan="11"><div class="empty">Belum ada data cuti di tahun '+y+' yang cocok dengan filter.</div></td></tr>')+
+    '</tbody></table></div>';
+}
+
+/* ---- Tandai data untuk dihapus sekaligus (Administrator / IT) ---- */
+var MARK_LABEL={riwayat:"data cuti",karyawan:"karyawan",libur:"hari libur",pengguna:"akun"};
+function mk(t){return ui.marks[t]}
+function pruneMarks(t,validIds){var ok={},m=mk(t);validIds.forEach(function(id){ok[id]=1});Object.keys(m).forEach(function(id){if(!ok[id])delete m[id]})}
+function markBar(t){
+  var n=Object.keys(mk(t)).length;if(me.role!=="it"||!n)return "";
+  return '<div class="banner warn" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span><b>'+n+' '+MARK_LABEL[t]+' ditandai</b> untuk dihapus.</span><span class="actions"><button class="btn btn-sm" data-act="unmark" data-t="'+t+'">Batal tandai</button><button class="btn btn-sm btn-danger" data-act="del-marks" data-t="'+t+'">Hapus yang ditandai</button></span></div>';
+}
+function markTh(t,ids){
+  if(me.role!=="it")return "";
+  var all=ids.length&&ids.every(function(id){return mk(t)[id]});
+  return '<th style="width:40px"><input type="checkbox" data-markall="'+t+'" title="Tandai semua yang tampil" aria-label="Tandai semua"'+(all?' checked':'')+' style="width:auto"></th>';
+}
+function markTd(t,id,blockedReason){
+  if(me.role!=="it")return "";
+  return '<td><input type="checkbox" data-mark-t="'+t+'" data-mark="'+esc(id)+'" aria-label="Tandai"'+(mk(t)[id]?' checked':'')+(blockedReason?' disabled title="'+esc(blockedReason)+'"':'')+' style="width:auto"></td>';
+}
+function markRow(t,id){return mk(t)[id]?' style="background:var(--red-soft)"':''}
+function empBlocked(e){return state.leaves.some(function(l){return l.empId===e.id})?"Punya data cuti; nonaktifkan saja":""}
+function userBlocked(u){return u.role==="it"?"Akun Administrator / IT tidak bisa dihapus":u.username===me.username?"Akun Anda sendiri":""}
+async function delMarks(t){
+  var ids=Object.keys(mk(t));if(!ids.length||me.role!=="it")return;
+  var lines,fn,msg;
+  if(t==="riwayat"){lines=ids.map(function(id){var l=state.leaves.find(function(x){return x.id===id});return l?empName(l.empId)+" ("+fRange(l.start,l.end)+")":""});fn="deleteLeaves";msg="Saldo karyawan akan dihitung ulang."}
+  else if(t==="karyawan"){lines=ids.map(function(id){var e=emp(id);return e?e.name:""});fn="deleteEmployees";msg="Akun login yang terhubung akan dilepas dari data karyawannya."}
+  else if(t==="libur"){lines=ids.map(function(d){var h=state.holidays.find(function(x){return x.date===d});return h?fDate(h.date)+" – "+h.name:""});fn="deleteHolidaysBulk";msg="Data cuti yang sudah tersimpan tidak berubah."}
+  else{lines=ids.slice();fn="deleteUsers";msg="Pengguna tersebut tidak bisa login lagi. Data cutinya tetap tersimpan."}
+  lines=lines.filter(Boolean);
+  if(!(await askConfirm({title:"Hapus "+ids.length+" "+MARK_LABEL[t]+"?",message:"- "+lines.slice(0,15).join("\n- ")+(lines.length>15?"\n...dan "+(lines.length-15)+" lainnya":"")+"\n\n"+msg,ok:"Hapus",danger:true})))return;
+  try{await run(fn,[ids],ids.length+" "+MARK_LABEL[t]+" dihapus");ui.marks[t]={};render()}catch(x){toast(x.message)}
+}
+
+/* ================= Data karyawan ================= */
+function viewKaryawan(){
+  var list=state.employees.slice().sort(function(a,b){return ((b.active!==false)-(a.active!==false))||byName(a,b)});
+  list=sortBy(list,"karyawan",function(e,k){return k==="name"?e.name:k==="empNo"?(e.empNo||""):k==="dept"?(e.dept||""):k==="title"?(e.title||""):k==="quota"?(+e.quota||0):k==="opening"?(+((e.openingUsed||{})[ui.year]||0)):(e.active===false?1:0)},function(e){return e.name});
+  pruneMarks("karyawan",state.employees.map(function(e){return e.id}));
+  var q=(ui.kq||"").trim().toLowerCase();
+  if(q)list=list.filter(function(e){return [e.name,e.empNo,e.dept,e.title].join(" ").toLowerCase().indexOf(q)>-1||((userOfEmp(e.id)||{}).username||"").indexOf(q)>-1});
+  var grouped=ui.empView!=="semua",cols=(me.role==="it"?1:0)+10;
+  function row(e,i){var u=userOfEmp(e.id);return '<tr'+markRow("karyawan",e.id)+'>'+markTd("karyawan",e.id,empBlocked(e))+noTd(i)+'<td><b>'+esc(e.name)+'</b></td><td>'+esc(e.empNo||"–")+'</td><td>'+esc(e.dept||"–")+'</td><td>'+esc(e.title||"–")+'</td>'+
+      '<td class="num">'+fNum(e.quota)+'</td><td class="num">'+fNum((e.openingUsed||{})[ui.year]||0)+'</td>'+
+      '<td>'+(e.active===false?'<span class="chip st-off">Nonaktif</span>':'<span class="chip st-ok">Aktif</span>')+'</td>'+
+      '<td>'+(u?'<span class="chip st-ok">'+esc(u.username)+'</span>':'<span style="font-size:13px;color:var(--ink-2)">Belum ada</span>')+'</td>'+
+      '<td class="act-cell"><button class="btn btn-sm" data-edit-emp="'+esc(e.id)+'">Ubah</button></td></tr>'}
+  var body="",visible=[];
+  if(!list.length)body='<tr><td colspan="'+cols+'"><div class="empty">'+(q?'Tidak ada karyawan yang cocok dengan pencarian.':'Belum ada data karyawan.<br><button class="btn btn-primary" data-act="add-emp">Tambah karyawan</button>')+'</div></td></tr>';
+  else if(!grouped){body=list.map(row).join("");visible=list}
+  else{
+    var groups={},order=[];
+    list.forEach(function(e){var g=e.dept||"(Tanpa divisi)";if(!groups[g]){groups[g]=[];order.push(g)}groups[g].push(e)});
+    order.sort(function(a,b){return a==="(Tanpa divisi)"?1:b==="(Tanpa divisi)"?-1:a.localeCompare(b,"id")});
+    if(!ui.openDept)ui.openDept={};
+    order.forEach(function(g){
+      var arr=groups[g],open=q?true:!!ui.openDept[g],act=arr.filter(function(e){return e.active!==false}).length,acc=arr.filter(function(e){return userOfEmp(e.id)}).length;
+      body+='<tr class="grp-row"><td colspan="'+cols+'"><button class="grp-btn" data-grp="'+esc(g)+'" aria-expanded="'+open+'"><span class="grp-arrow" aria-hidden="true">'+(open?"▾":"▸")+'</span><b>'+esc(g)+'</b><span class="grp-meta">'+arr.length+' karyawan'+(act<arr.length?' · '+(arr.length-act)+' nonaktif':'')+' · '+acc+' punya akun login</span></button></td></tr>';
+      if(open){body+=arr.map(row).join("");visible=visible.concat(arr)}
+    });
+  }
+  var nDept={};state.employees.forEach(function(e){nDept[e.dept||"(Tanpa divisi)"]=1});
+  return '<div class="page-head"><div><h1>Data karyawan</h1><p>Kuota cuti per karyawan dan cuti yang sudah terpakai sebelum mulai dicatat di aplikasi ini.</p></div>'+
+    '<div class="actions">'+(state.employees.length?'':'<button class="btn" data-act="load-sample">Isi data contoh</button>')+'<button class="btn" data-act="paste-emp">Tempel dari Excel</button><button class="btn btn-primary" data-act="add-emp">Tambah karyawan</button></div></div>'+
+    '<div class="filters" style="align-items:center"><input id="kq" type="search" placeholder="Cari nama, divisi, jabatan, atau username" value="'+esc(ui.kq||"")+'" aria-label="Cari karyawan">'+
+      '<div class="seg" role="group" aria-label="Tampilan"><button data-emp-view="divisi" aria-pressed="'+grouped+'">Per divisi</button><button data-emp-view="semua" aria-pressed="'+(!grouped)+'">Semua</button></div>'+
+      (grouped&&!q?'<button class="btn btn-sm" data-act="grp-all-open">Buka semua</button><button class="btn btn-sm" data-act="grp-all-close">Tutup semua</button>':'')+
+      '<span class="sub" style="margin-left:auto">'+state.employees.length+' karyawan · '+Object.keys(nDept).length+' divisi</span></div>'+
+    markBar("karyawan")+
+    '<div class="list scroll"><table><thead><tr>'+markTh("karyawan",visible.filter(function(e){return !empBlocked(e)}).map(function(e){return e.id}))+'<th class="no">No.</th>'+th("karyawan","name","Nama")+th("karyawan","empNo","No. Kary.")+th("karyawan","dept","Divisi")+th("karyawan","title","Jabatan")+th("karyawan","quota","Kuota","num")+th("karyawan","opening","Terpakai awal "+ui.year,"num")+th("karyawan","status","Status")+'<th>Akun login</th>'+'<th></th></tr></thead><tbody>'+
+    body+'</tbody></table></div>'+
+    (me.role==="it"?'<div class="help danger-zone"><div><h3>Hapus data</h3><p class="sub">Kosongkan data cuti per tahun, semua data cuti, atau seluruh isi aplikasi. Tindakan ini tidak bisa dibatalkan.</p></div><button class="btn btn-danger" data-act="open-clear">Hapus data...</button></div>':
+      '<p class="sub" style="margin-top:16px">Penghapusan data massal hanya bisa dilakukan oleh Administrator / IT.</p>');
+}
+function openEmpForm(id){
+  var e=id?emp(id):null,isNew=!e,y=ui.year;
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">'+(isNew?"Tambah karyawan":"Ubah data "+esc(e.name))+'</h2><div class="s">Kuota berlaku per tahun kalender.</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div class="grid2">'+
+    '<div class="field"><label for="e-name">Nama lengkap</label><input id="e-name" maxlength="100" value="'+esc(e?e.name:"")+'"></div>'+
+    '<div class="field"><label for="e-no">No. karyawan (opsional)</label><input id="e-no" maxlength="30" value="'+esc(e?e.empNo||"":"")+'"></div>'+
+    '<div class="field"><label for="e-dept">Divisi</label><input id="e-dept" maxlength="100" list="dept-list" value="'+esc(e?e.dept||"":"")+'"><datalist id="dept-list">'+depts().map(function(d){return '<option value="'+esc(d)+'">'}).join("")+'</datalist></div>'+
+    '<div class="field"><label for="e-title">Jabatan</label><input id="e-title" maxlength="100" value="'+esc(e?e.title||"":"")+'"></div>'+
+    '<div class="field"><label for="e-quota">Kuota cuti tahunan (hari)</label><input id="e-quota" type="number" min="0" max="365" step="0.5" value="'+(e?e.quota:12)+'"></div>'+
+    '<div class="field"><label for="e-open">Sudah terpakai di '+y+' sebelum dicatat</label><input id="e-open" type="number" min="0" max="365" step="0.5" value="'+((e&&e.openingUsed&&e.openingUsed[y])||0)+'"><span class="hint">Isi bila karyawan sudah cuti di '+y+' sebelum aplikasi ini dipakai.</span></div>'+
+    (isNew?'':'<div class="field full"><label class="check"><input type="checkbox" id="e-active"'+(e.active===false?"":" checked")+'> Karyawan aktif (nonaktifkan untuk karyawan yang sudah keluar)</label></div>')+
+  '</div><div class="err" id="e-err" role="alert"></div>'+
+  '<div class="form-actions">'+(isNew||me.role!=="it"?'':'<button class="btn btn-danger" data-act="del-emp" style="margin-right:auto">Hapus</button>')+'<button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="save-emp" id="e-save">'+(isNew?"Simpan karyawan":"Simpan perubahan")+'</button></div></div>';
+  dlg.dataset.empId=id||"";
+  if(!dlg.open)dlg.showModal();
+  document.getElementById("e-name").focus();
+}
+async function saveEmp(){
+  var id=dlg.dataset.empId||"",g=function(x){return document.getElementById(x).value.trim()},err=document.getElementById("e-err"),btn=document.getElementById("e-save");
+  var name=g("e-name");if(!name){err.textContent="Nama wajib diisi.";return}
+  if(!id&&state.employees.some(function(x){return x.name.toLowerCase()===name.toLowerCase()})&&!(await askConfirm({title:"Nama sudah ada",message:"Sudah ada karyawan bernama "+name+".\n\nTetap tambahkan sebagai karyawan baru?",ok:"Tetap tambahkan"})))return;
+  btn.disabled=true;
+  try{
+    await run("saveEmployee",[{id:id,name:name,empNo:g("e-no"),dept:g("e-dept"),title:g("e-title"),quota:g("e-quota"),opening:g("e-open")||0,year:ui.year,active:id?document.getElementById("e-active").checked:true}],id?"Data "+name+" diperbarui":name+" ditambahkan");
+    dlg.close();
+  }catch(x){err.textContent=x.message;btn.disabled=false}
+}
+async function deleteEmp(){
+  var id=dlg.dataset.empId,e=emp(id),err=document.getElementById("e-err");if(!e)return;
+  var n=state.leaves.filter(function(l){return l.empId===id}).length;
+  if(n){err.textContent=e.name+" punya "+n+" data cuti. Nonaktifkan saja (hilangkan centang \"Karyawan aktif\") agar riwayatnya tetap tersimpan.";return}
+  if(!(await askConfirm({title:"Hapus karyawan?",message:e.name+" akan dihapus dari daftar karyawan.",ok:"Hapus",danger:true})))return;
+  try{await run("deleteEmployee",[id],e.name+" dihapus");dlg.close()}catch(x){err.textContent=x.message}
+}
+function openPaste(){
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Tempel data karyawan dari Excel</h2><div class="s">Cara cepat memasukkan banyak karyawan sekaligus.</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><p class="sub">Di Excel atau Google Sheets, siapkan kolom dengan urutan <b>Nama | Divisi | Jabatan | Kuota | No. karyawan</b> (dua kolom terakhir boleh kosong; kuota kosong dianggap 12). Blok barisnya, salin (Ctrl+C), lalu tempel (Ctrl+V) di bawah.</p>'+
+  '<div class="field"><label for="p-text">Data karyawan</label><textarea id="p-text" style="min-height:180px;font-family:ui-monospace,Consolas,monospace;font-size:13px"></textarea></div>'+
+  '<div id="p-preview" class="sub" style="margin-top:10px"></div><div class="err" id="p-err" role="alert"></div>'+
+  '<div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="do-paste" id="p-btn">Simpan semua</button></div></div>';
+  if(!dlg.open)dlg.showModal();
+  document.getElementById("p-text").focus();
+}
+function parsePaste(text){
+  var out=[],skipped=[];
+  String(text||"").split(/\r?\n/).forEach(function(line,i){
+    if(!line.trim())return;
+    var c=(line.indexOf("\t")>-1?line.split("\t"):line.split(/[;,]/)).map(function(x){return x.trim()});
+    if(i===0&&/^nama$/i.test(c[0]))return;
+    var name=c[0];if(!name)return;
+    var quota=c[3]?r1(String(c[3]).replace(",",".")):12;if(!(quota>=0&&quota<=365))quota=12;
+    var dup=state.employees.some(function(x){return x.name.toLowerCase()===name.toLowerCase()})||out.some(function(x){return x.name.toLowerCase()===name.toLowerCase()});
+    if(dup){skipped.push(name);return}
+    out.push({name:name,dept:c[1]||"",title:c[2]||"",quota:quota,empNo:c[4]||""});
+  });
+  return {rows:out,skipped:skipped};
+}
+async function doPaste(){
+  var p=parsePaste(document.getElementById("p-text").value),err=document.getElementById("p-err"),btn=document.getElementById("p-btn");
+  if(!p.rows.length){err.textContent=p.skipped.length?"Semua nama sudah ada di daftar karyawan.":"Belum ada data yang bisa dibaca. Tempel baris dari Excel terlebih dulu.";return}
+  btn.disabled=true;btn.textContent="Menyimpan...";
+  try{await run("addEmployees",[p.rows],p.rows.length+" karyawan ditambahkan"+(p.skipped.length?", "+p.skipped.length+" nama dilewati karena sudah ada":""));dlg.close()}
+  catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Simpan semua"}
+}
+
+/* ================= Hari libur ================= */
+/* ================= Laporan cuti (cetak / kirim email) ================= */
+var MONTHS_ID=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+function buildReport(){
+  if(!ui.rep)ui.rep={mode:"bulan",month:+todayIso().slice(5,7),dept:""};
+  var r=ui.rep,y=+ui.year,from,to,period;
+  if(r.mode==="tahun"){from=y+"-01-01";to=y+"-12-31";period="Tahun "+y}
+  else{from=y+"-"+pad(r.month)+"-01";to=iso(new Date(y,r.month,0));period=MONTHS_ID[r.month-1]+" "+y}
+  var emps=state.employees.filter(function(e){return e.active!==false&&(!r.dept||e.dept===r.dept)}).sort(function(a,b){return (a.dept||"").localeCompare(b.dept||"","id")||byName(a,b)});
+  var inP=function(l){return l.status==="approved"&&l.start>=from&&l.start<=to};
+  var heads=["No.","Nama","Divisi","Cuti tahunan","Izin","Sakit","Lainnya","Di luar tanggungan","Total periode","Sisa cuti tahunan "+y,"Unpaid Leave "+y];
+  var tot=[0,0,0,0,0,0,0,0],rows=[];
+  emps.forEach(function(e,i){
+    var c={tahunan:0,izin:0,sakit:0,lain:0,lwop:0};
+    state.leaves.forEach(function(l){if(l.empId!==e.id||!inP(l))return;var d=+l.days||0,t=l.type;
+      if(t==="tahunan"||t==="bersama")c.tahunan+=d;else if(t==="izin")c.izin+=d;else if(t==="sakit")c.sakit+=d;else if(t==="tanpagaji")c.lwop+=d;else c.lain+=d});
+    var total=c.tahunan+c.izin+c.sakit+c.lain+c.lwop,b=balanceOf(e,y),u=unpaidOf(e,y);
+    var vals=[c.tahunan,c.izin,c.sakit,c.lain,c.lwop,total,b.left,u.total];
+    vals.forEach(function(v,k){tot[k]+=v});
+    rows.push([String(i+1),e.name,e.dept||"–"].concat(vals.map(fNum)));
+  });
+  rows.push(["","Total",emps.length+" karyawan"].concat(tot.map(function(v){return fNum(r1(v))})));
+  var dl=state.leaves.filter(function(l){var e=emp(l.empId);return inP(l)&&e&&(!r.dept||e.dept===r.dept)}).sort(function(a,b){return a.start<b.start?-1:a.start>b.start?1:0});
+  var dHeads=["No.","Nama","Divisi","Jenis","Tanggal","Hari","Disetujui oleh","Keperluan"];
+  var dRows=dl.map(function(l,i){var e=emp(l.empId);return [String(i+1),e.name,e.dept||"–",TYPES[l.type].label,fRange(l.start,l.end),fNum(l.days),(l.dirBy?l.dirBy+" (Director), ":"")+(l.approver||"–"),l.note||""]});
+  var pending=state.leaves.filter(function(l){var e=emp(l.empId);return (l.status==="pending"||l.status==="pending_dir")&&l.start>=from&&l.start<=to&&e&&(!r.dept||e.dept===r.dept)}).length;
+  return {title:"Laporan Cuti Karyawan",period:period,dept:r.dept||"Semua divisi",heads:heads,rows:rows,dHeads:dHeads,dRows:dRows,numFrom:3,dNumFrom:5,lastIsTotal:true,pending:pending};
+}
+function repTable(h,rows,numFrom,lastTotal){
+  return '<div class="list scroll"><table><thead><tr>'+h.map(function(x,i){return '<th'+(i>=numFrom&&i!==h.length+9?' class="num"':'')+'>'+esc(x)+'</th>'}).join("")+'</tr></thead><tbody>'+
+    (rows.length?rows.map(function(r,k){return '<tr'+(lastTotal&&k===rows.length-1?' class="rep-total"':'')+'>'+r.map(function(x,i){return '<td'+(i>=numFrom?' class="num"':'')+'>'+esc(x)+'</td>'}).join("")+'</tr>'}).join(""):'<tr><td colspan="'+h.length+'"><div class="empty">Tidak ada data.</div></td></tr>')+'</tbody></table></div>';
+}
+function viewLaporan(){
+  var R=buildReport(),r=ui.rep,made=fDate(todayIso())+", "+fTime(Date.now())+" oleh "+(me.name||me.username);
+  return '<div class="page-head no-print"><div><h1>Laporan cuti</h1><p>Rekap cuti per karyawan dan rincian cuti yang disetujui. Bisa dicetak, disimpan sebagai PDF, atau dikirim lewat email.</p></div>'+
+      '<div class="actions"><button class="btn" data-act="rep-print">Cetak / Simpan PDF</button><button class="btn btn-primary" data-act="rep-email">Kirim ke email</button></div></div>'+
+    '<div class="filters no-print" style="align-items:center"><div class="seg" role="group" aria-label="Periode"><button data-rep-mode="bulan" aria-pressed="'+(r.mode!=="tahun")+'">Per bulan</button><button data-rep-mode="tahun" aria-pressed="'+(r.mode==="tahun")+'">Per tahun</button></div>'+
+      (r.mode!=="tahun"?'<select id="rep-month" aria-label="Bulan">'+MONTHS_ID.map(function(m,i){return '<option value="'+(i+1)+'"'+(r.month===i+1?" selected":"")+'>'+m+'</option>'}).join("")+'</select>':'')+
+      '<select id="rep-dept" aria-label="Divisi"><option value="">Semua divisi</option>'+depts().map(function(d){return '<option'+(r.dept===d?" selected":"")+'>'+esc(d)+'</option>'}).join("")+'</select>'+
+      '<span class="sub">Tahun mengikuti pilihan di kanan atas ('+ui.year+')</span></div>'+
+    '<div class="rep-head"><div class="t">Laporan Cuti Karyawan – Woori Consulting</div><div class="m">Periode: '+esc(R.period)+' · Divisi: '+esc(R.dept)+' · Dibuat: '+esc(made)+'</div></div>'+
+    (R.pending?'<div class="banner warn no-print">'+R.pending+' pengajuan pada periode ini masih menunggu persetujuan dan belum masuk laporan.</div>':'')+
+    '<div class="rep-sec">Rekap per karyawan</div>'+repTable(R.heads,R.rows,3,true)+
+    '<div class="rep-sec">Rincian cuti yang disetujui ('+R.dRows.length+')</div>'+repTable(R.dHeads,R.dRows,5,false)+
+    '<p class="sub" style="margin-top:10px">Cuti dihitung pada periode tanggal mulainya. Sisa cuti dan Unpaid Leave dihitung untuk satu tahun penuh.</p>';
+}
+async function sendReportEmail(){
+  var mine=(state.users||[]).find(function(x){return x.username===me.username});
+  var R=buildReport();
+  var res=await askConfirm({title:"Kirim laporan ke email",message:"Laporan "+R.period+" ("+R.dept+") dikirim dengan lampiran PDF dan CSV.\n\nPisahkan dengan koma bila lebih dari satu alamat (maksimal 5).",input:"Alamat email tujuan",inputRequired:true,ok:"Kirim"});
+  if(!res)return;
+  setBusy(true);
+  try{await call("sendReport",token,R,String(res).trim());toast("Laporan terkirim ke "+String(res).trim())}
+  catch(x){toast(x.message)}finally{setBusy(false)}
+}
+
+function viewLibur(){
+  var y=String(ui.year),list=state.holidays.filter(function(h){return h.date.slice(0,4)===y}).sort(function(a,b){return a.date<b.date?-1:1});
+  list=sortBy(list,"libur",function(h,k){return k==="name"?h.name:h.date},function(h){return h.date});
+  pruneMarks("libur",state.holidays.map(function(h){return h.date}));
+  return '<div class="page-head"><div><h1>Hari libur '+y+'</h1><p>Tanggal di sini tidak dihitung sebagai hari kerja saat menginput cuti baru. Isi sesuai libur nasional dan cuti bersama yang berlaku. Data cuti yang sudah tersimpan tidak berubah otomatis.</p></div></div>'+
+    '<div class="panel" style="margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><div><b>Ambil otomatis dari kalender Google</b><p class="sub" style="margin:4px 0 0">Libur nasional dan cuti bersama '+y+' dari kalender resmi "Hari Libur di Indonesia". Anda bisa memilih tanggal mana yang ditambahkan.</p></div><button class="btn btn-primary" data-act="fetch-hol" id="fh-btn">Ambil hari libur '+y+'</button></div>'+
+    '<div class="panel" style="margin-bottom:18px"><div class="grid2 hol-form">'+
+      '<div class="field"><label for="h-date">Tanggal</label><input type="date" id="h-date"></div>'+
+      '<div class="field"><label for="h-name">Keterangan</label><input id="h-name" maxlength="150" placeholder="Contoh: Hari Raya Natal"></div>'+
+      '<button class="btn" data-act="add-hol" id="h-btn">Tambah manual</button></div><div class="err" id="h-err" role="alert"></div></div>'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 12px"><h2 style="font-size:17px">'+(ui.liburView==="daftar"?"Daftar hari libur":"Kalender "+y)+'</h2><div class="seg" role="group" aria-label="Tampilan"><button data-libur-view="kalender" aria-pressed="'+(ui.liburView!=="daftar")+'">Kalender</button><button data-libur-view="daftar" aria-pressed="'+(ui.liburView==="daftar")+'">Daftar</button></div></div>'+
+    (ui.liburView==="daftar"?'':calendarYear(y))+
+    (ui.liburView==="daftar"?markBar("libur")+'<div class="list scroll"><table><thead><tr>'+markTh("libur",list.map(function(h){return h.date}))+'<th class="no">No.</th>'+th("libur","date","Tanggal")+'<th>Hari</th>'+th("libur","name","Keterangan")+'<th></th></tr></thead><tbody>'+
+    (list.length?list.map(function(h,i){return '<tr'+markRow("libur",h.date)+'>'+markTd("libur",h.date)+noTd(i)+'<td>'+fDate(h.date)+'</td><td>'+parse(h.date).toLocaleDateString("id-ID",{weekday:"long"})+'</td><td>'+esc(h.name)+'</td><td>'+(me.role==="it"?'<button class="btn btn-sm btn-danger" data-del-hol="'+h.date+'">Hapus</button>':'')+'</td></tr>'}).join(""):
+      '<tr><td colspan="6"><div class="empty">Belum ada hari libur untuk tahun '+y+'.</div></td></tr>')+
+    '</tbody></table></div>':'');
+}
+/* Kalender 12 bulan: tanggal merah = libur nasional, oranye = cuti bersama */
+function calendarYear(y){
+  var H={};state.holidays.forEach(function(h){if(h.date.slice(0,4)===String(y))H[h.date]=h});
+  var months=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  var wds=["Min","Sen","Sel","Rab","Kam","Jum","Sab"],today=todayIso(),edit=canWrite();
+  var total=0,weekday=0;Object.keys(H).forEach(function(k){total++;var w=parse(k).getDay();if(w&&w!==6)weekday++});
+  var html='<div class="cal-head"><div class="cal-legend"><span><i style="background:var(--red)"></i>Libur nasional</span><span><i style="background:var(--amber)"></i>Cuti bersama</span><span><i style="background:none;border:1px solid var(--red)"></i>Minggu (teks merah)</span><span><i style="box-shadow:inset 0 0 0 2px var(--pine)"></i>Hari ini</span></div>'+
+    '<div class="sub">'+total+' hari libur di '+y+' · '+weekday+' jatuh di hari kerja</div></div><div class="cal-year">';
+  for(var m=0;m<12;m++){
+    var first=new Date(+y,m,1),days=new Date(+y,m+1,0).getDate(),start=first.getDay(),cells="",items=[],cnt=0;
+    for(var b=0;b<start;b++)cells+='<span></span>';
+    for(var d=1;d<=days;d++){
+      var iso_=y+"-"+pad(m+1)+"-"+pad(d),w=(start+d-1)%7,h=H[iso_],cls="d";
+      if(w===0)cls+=" sun";else if(w===6)cls+=" sat";
+      if(h){cls+=/cuti bersama/i.test(h.name)?" cb":" hol";items.push('<li><b>'+d+'</b><span>'+esc(h.name)+'</span></li>');cnt++}
+      else if(edit)cls+=" pick";
+      if(iso_===today)cls+=" today";
+      cells+='<button class="'+cls+'" data-cal-date="'+iso_+'"'+(h?' title="'+esc(fDate(iso_)+" – "+h.name)+'"':(edit?' title="Klik untuk menambah hari libur di tanggal ini"':''))+'>'+d+'</button>';
+    }
+    html+='<div class="cal-m"><h3>'+months[m]+(cnt?'<span>'+cnt+' libur</span>':'')+'</h3><div class="cal-g">'+wds.map(function(x,i){return '<div class="wd'+(i===0?" sun":"")+'">'+x+'</div>'}).join("")+cells+'</div>'+(items.length?'<ul class="cal-list">'+items.join("")+'</ul>':'')+'</div>';
+  }
+  return html+'</div>';
+}
+async function addHoliday(){
+  var d=document.getElementById("h-date").value,n=document.getElementById("h-name").value.trim(),err=document.getElementById("h-err");
+  if(!validIso(d)){err.textContent="Pilih tanggal.";return}
+  if(!n){err.textContent="Isi keterangan hari libur.";return}
+  try{await run("saveHoliday",[{date:d,name:n}],"Hari libur ditambahkan")}catch(x){err.textContent=x.message}
+}
+
+/* ---- Ambil hari libur dari kalender Google ---- */
+var holCandidates=[];
+async function fetchHol(){
+  var btn=document.getElementById("fh-btn");btn.disabled=true;btn.textContent="Mengambil...";
+  try{setBusy(true);holCandidates=await call("fetchHolidays",token,ui.year);openHolPicker()}
+  catch(e){toast(e.message)}
+  finally{setBusy(false);btn.disabled=false;btn.textContent="Ambil hari libur "+ui.year}
+}
+function openHolPicker(){
+  var list=holCandidates,y=ui.year;
+  var label={"libur nasional":"Libur nasional","cuti bersama":"Cuti bersama","peringatan":"Hari peringatan (bukan libur)"};
+  var rows=list.length?list.map(function(h,i){
+    return '<label class="opt hol" style="margin-bottom:6px;'+(h.exists?'opacity:.55;cursor:default':'')+'"><input type="checkbox" data-hol-i="'+i+'"'+(h.exists?' disabled checked':(h.suggested?' checked':''))+'>'+
+      '<div><b>'+fDate(h.date)+' – '+esc(h.name)+'</b><span>'+label[h.kind]+(h.weekend?' · jatuh di akhir pekan':'')+(h.exists?' · sudah ada di daftar':'')+'</span></div></label>';
+  }).join(""):'<p class="sub">Kalender Google belum memuat hari libur untuk tahun '+y+'. Biasanya tersedia setelah pemerintah menetapkan SKB libur nasional.</p>';
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Hari libur '+y+' dari kalender Google</h2><div class="s">Centang tanggal yang ingin ditambahkan. Hari peringatan sengaja tidak dicentang karena bukan hari libur.</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body">'+rows+
+  '<div class="warn">Periksa kembali dengan SKB libur nasional dan cuti bersama yang berlaku. Bila kebijakan kantor menganggap cuti bersama memotong cuti tahunan, jangan centang cuti bersama di sini; catat sebagai Cuti tahunan pada tanggal tersebut untuk setiap karyawan.</div>'+
+  '<div class="err" id="hp-err" role="alert"></div>'+
+  '<div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="save-hol-picked" id="hp-btn">Tambahkan yang dicentang</button></div></div>';
+  if(!dlg.open)dlg.showModal();
+  dlg.scrollTop=0;
+}
+async function saveHolPicked(){
+  var picked=[].slice.call(document.querySelectorAll("[data-hol-i]")).filter(function(c){return c.checked&&!c.disabled}).map(function(c){var h=holCandidates[+c.dataset.holI];return {date:h.date,name:h.name}});
+  var err=document.getElementById("hp-err"),btn=document.getElementById("hp-btn");
+  if(!picked.length){err.textContent="Belum ada tanggal baru yang dicentang.";return}
+  btn.disabled=true;btn.textContent="Menyimpan...";
+  try{await run("addHolidays",[picked],picked.length+" hari libur ditambahkan");dlg.close()}
+  catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Tambahkan yang dicentang"}
+}
+
+/* ================= Pengguna ================= */
+function viewPengguna(){
+  pruneMarks("pengguna",state.users.map(function(u){return u.username}));
+  var list=sortBy(state.users,"pengguna",function(u,k){return k==="username"?u.username:k==="name"?u.name:k==="role"?({it:0,hrd:1,director:2,manager:3,user:4}[u.role]):k==="emp"?(u.empId?empName(u.empId):""):k==="status"?(u.active?0:1):(u.lastLogin||0)},function(u){return u.name||u.username});
+  return '<div class="page-head"><div><h1>Pengguna</h1><p>Akun untuk masuk ke aplikasi. '+(me.role==="it"?'Administrator / IT bisa membuat semua jenis akun.':'Anda bisa membuat akun karyawan dan mengatur ulang password-nya. Akun admin dikelola oleh Administrator / IT.')+'</p></div>'+
+    '<button class="btn btn-primary" data-act="add-user">Tambah akun</button></div>'+
+    markBar("pengguna")+
+    '<div class="list scroll"><table><thead><tr>'+markTh("pengguna",list.filter(function(u){return !userBlocked(u)}).map(function(u){return u.username}))+'<th class="no">No.</th>'+th("pengguna","username","Username")+th("pengguna","name","Nama")+th("pengguna","role","Peran")+th("pengguna","emp","Terhubung ke karyawan")+th("pengguna","status","Status")+th("pengguna","last","Terakhir masuk")+'<th></th></tr></thead><tbody>'+
+    (list.length?list.map(function(u,i){var editable=me.role==="it"||u.role==="user";return '<tr'+markRow("pengguna",u.username)+'>'+markTd("pengguna",u.username,userBlocked(u))+noTd(i)+'<td><b>'+esc(u.username)+'</b>'+(u.username===me.username?' <span class="s" style="color:var(--ink-2);font-size:12px">(Anda)</span>':'')+'</td><td>'+esc(u.name)+(u.email?'<div class="s">'+esc(u.email)+'</div>':'<div class="s" style="color:var(--amber)">Belum ada email</div>')+'</td><td>'+ROLE[u.role]+'</td>'+
+      '<td>'+(u.empId?esc(empName(u.empId)):'–')+'</td><td>'+(u.active?'<span class="chip st-ok">Aktif</span>':'<span class="chip st-off">Nonaktif</span>')+(u.mustChange?'<div class="s">Belum ganti password awal</div>':'')+'</td>'+
+      '<td>'+fStamp(u.lastLogin)+'</td><td>'+(editable?'<button class="btn btn-sm" data-edit-user="'+esc(u.username)+'">Ubah</button>':'')+'</td></tr>'}).join(""):
+      '<tr><td colspan="9"><div class="empty">Belum ada akun.</div></td></tr>')+
+    '</tbody></table></div>'+
+    '<div class="help"><h3>Tingkat akses</h3><ol>'+
+      '<li><b>Administrator / IT:</b> semua fitur, termasuk mengelola dan menghapus akun Admin HRD maupun Karyawan, serta hapus data massal. Akun Administrator / IT tidak bisa dihapus, hanya bisa dinonaktifkan.</li>'+
+      '<li><b>Director:</b> tahap 1 persetujuan untuk pengajuan para manager. Hanya melihat data manager.</li>'+
+      '<li><b>Manager:</b> seperti Karyawan, tetapi pengajuannya disetujui berjenjang: Director, lalu Admin HRD.</li>'+
+      '<li><b>Admin HRD:</b> input dan ubah data cuti, karyawan, dan hari libur, serta membuat dan mengatur ulang password akun karyawan. Tidak bisa membuat akun admin maupun menghapus akun.</li>'+
+      '<li><b>Karyawan:</b> hanya melihat saldo dan riwayat cutinya sendiri. Akun karyawan langsung bisa dipakai; data karyawannya dibuat atau dicocokkan otomatis dari nama akun.</li>'+
+    '</ol></div>';
+}
+function openUserForm(username){
+  var u=username?state.users.find(function(x){return x.username===username}):null,isNew=!u;
+  var roles=me.role==="it"?["it","hrd","director","manager","user"]:["user","manager"];
+  var linked={};state.users.forEach(function(x){if(x.empId&&(!u||x.username!==u.username))linked[x.empId]=x.username});
+  var emps=state.employees.slice().sort(byName);
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">'+(isNew?"Tambah akun":"Ubah akun "+esc(u.username))+'</h2><div class="s">'+(isNew?"Akun langsung bisa dipakai. Berikan username dan password ini kepada pengguna.":"Isi password hanya bila ingin mengatur ulang. Password baru langsung berlaku.")+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div class="grid2">'+
+    (isNew?'<div class="field"><label for="u-username">Username</label><input id="u-username" autocapitalize="none" spellcheck="false" placeholder="contoh: dewi.lestari"></div>':'')+
+    '<div class="field"><label for="u-name">Nama tampilan</label><input id="u-name" maxlength="100" value="'+esc(u?u.name:"")+'"></div>'+
+    '<div class="field"><label for="u-email">Email (untuk notifikasi)</label><input id="u-email" type="email" maxlength="120" autocomplete="off" placeholder="nama@perusahaan.com" value="'+esc(u?u.email||"":"")+'"><span class="hint">Pemberitahuan pengajuan dan keputusan cuti dikirim ke email ini.</span></div>'+
+    '<div class="field"><label for="u-role">Peran</label><select id="u-role">'+roles.map(function(r){return '<option value="'+r+'"'+((u?u.role:"user")===r?" selected":"")+'>'+ROLE[r]+'</option>'}).join("")+'</select></div>'+
+    (isNew?'':'<div class="field" id="u-emp-wrap"><label for="u-emp">Data karyawan</label><select id="u-emp">'+
+      '<option value=""'+(!u.empId?" selected":"")+'>Dibuat otomatis saat login</option>'+
+      (emps.length?'<optgroup label="Hubungkan ke data yang sudah ada">'+emps.map(function(e){return '<option value="'+esc(e.id)+'"'+(u&&u.empId===e.id?" selected":"")+(linked[e.id]?" disabled":"")+'>'+esc(e.name)+(linked[e.id]?' (sudah punya akun)':'')+'</option>'}).join("")+'</optgroup>':'')+
+    '</select><span class="hint" id="u-emp-hint"></span></div>')+
+    (isNew?'<div class="field full" id="u-new-wrap"><div class="grid2">':'<div class="field full" id="u-new-wrap" hidden><div class="grid2">')+
+      '<div class="field"><label for="u-dept">Divisi</label><input id="u-dept" maxlength="100" list="u-dept-list"><datalist id="u-dept-list">'+depts().map(function(d){return '<option value="'+esc(d)+'">'}).join("")+'</datalist></div>'+
+      '<div class="field"><label for="u-title">Jabatan</label><input id="u-title" maxlength="100"></div>'+
+      '<div class="field"><label for="u-quota">Kuota cuti tahunan (hari)</label><input id="u-quota" type="number" min="0" max="365" step="0.5" value="12"></div>'+
+      '<div class="field"><label for="u-empno">No. karyawan (opsional)</label><input id="u-empno" maxlength="30"></div>'+
+    '</div></div>'+
+    '<div class="field"><label for="u-pass">'+(isNew?"Password awal":"Atur ulang password (opsional)")+'</label><input id="u-pass" type="text" autocomplete="off" placeholder="Minimal 8 karakter"></div>'+
+    (isNew?'':'<div class="field full"><label class="check"><input type="checkbox" id="u-active"'+(u.active?" checked":"")+'> Akun aktif</label></div>')+
+  '</div><div class="err" id="u-err" role="alert"></div>'+
+  '<div class="form-actions">'+(!isNew&&me.role==="it"&&u.role!=="it"&&u.username!==me.username?'<button class="btn btn-danger" data-act="del-user" style="margin-right:auto">Hapus akun</button>':'')+'<button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="save-user" id="u-btn">'+(isNew?"Simpan akun":"Simpan perubahan")+'</button></div></div>';
+  dlg.dataset.username=username||"";
+  if(!dlg.open)dlg.showModal();
+  toggleEmpField();
+}
+async function deleteUser(){
+  var un=dlg.dataset.username,err=document.getElementById("u-err");if(!un)return;
+  if(!(await askConfirm({title:"Hapus akun "+un+"?",message:"Pengguna ini tidak bisa login lagi. Data cuti karyawannya tetap tersimpan.",ok:"Hapus akun",danger:true})))return;
+  try{await run("deleteUser",[un],"Akun "+un+" dihapus");dlg.close()}catch(x){err.textContent=x.message}
+}
+function toggleEmpField(){
+  var r=document.getElementById("u-role");if(!r)return;
+  var isUser=isStaff(r.value),isNew=!dlg.dataset.username;
+  var w=document.getElementById("u-emp-wrap"),nw=document.getElementById("u-new-wrap"),sel=document.getElementById("u-emp"),hint=document.getElementById("u-emp-hint");
+  if(w)w.style.display=isUser?"":"none";
+  if(nw){nw.hidden=!(isUser&&isNew);nw.style.display=isUser&&isNew?"":"none"}
+  if(hint&&sel)hint.textContent=sel.value?"Akun memakai data karyawan ini.":"Data karyawan dibuat otomatis dari nama akun saat pertama kali login.";
+}
+/* Bila nama tampilan sama dengan karyawan yang belum punya akun, pilih otomatis */
+function autoMatchEmp(){
+  var sel=document.getElementById("u-emp"),nm=document.getElementById("u-name");if(!sel||!nm||sel.value!=="__new__")return;
+  var v=nm.value.trim().toLowerCase();if(!v)return;
+  var opt=[].slice.call(sel.options).find(function(o){return !o.disabled&&o.value&&o.value!=="__new__"&&o.textContent.trim().toLowerCase()===v});
+  if(opt){sel.value=opt.value;toggleEmpField();toast("Nama cocok dengan data karyawan yang sudah ada, otomatis dihubungkan")}
+}
+async function saveUser(){
+  var orig=dlg.dataset.username||"",g=function(x){var el=document.getElementById(x);return el?el.value.trim():""},err=document.getElementById("u-err"),btn=document.getElementById("u-btn");
+  var o={original:orig,username:g("u-username"),name:g("u-name"),email:g("u-email"),role:g("u-role"),empId:g("u-emp"),password:g("u-pass"),active:orig?document.getElementById("u-active").checked:true,
+    dept:g("u-dept"),title:g("u-title"),quota:g("u-quota"),empNo:g("u-empno")};
+  if(!orig&&!o.username){err.textContent="Isi username.";return}
+  if(o.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email)){err.textContent="Format email tidak valid.";return}
+  if(o.role==="user"&&!orig&&!o.name){err.textContent="Isi Nama tampilan; nama ini dipakai sebagai nama karyawan.";return}
+  if((!orig||o.password)&&o.password.length<8){err.textContent="Password minimal 8 karakter.";return}
+  btn.disabled=true;
+  try{await run("saveUser",[o],orig?"Akun "+orig+" diperbarui":"Akun "+o.username+" dibuat");dlg.close()}
+  catch(x){err.textContent=x.message;btn.disabled=false}
+}
+
+/* ================= Detail karyawan ================= */
+function openEmpDetail(id){
+  var e=emp(id);if(!e)return;
+  var y=ui.year,b=balanceOf(e,y),q=b.quota||1,u=userOfEmp(id);
+  var list=state.leaves.filter(function(l){return l.empId===id&&String(l.start).slice(0,4)===String(y)}).sort(function(a,b){return a.start<b.start?1:-1});
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">'+esc(e.name)+'</h2><div class="s">'+esc([e.title,e.dept,e.empNo].filter(Boolean).join(" · "))+(u?' · akun: '+esc(u.username):'')+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body">'+
+    '<div class="bal-big">'+fNum(b.left)+' <small>dari '+fNum(b.quota)+' hari tersisa di '+y+'</small></div>'+
+    '<div class="meter"><i style="width:'+Math.min(100,(b.opening+b.used)/q*100)+'%;background:var(--pine)"></i><i style="width:'+Math.min(100,b.pending/q*100)+'%;background:var(--amber)"></i></div>'+
+    '<div class="legend"><span style="--c:var(--pine)">Terpakai '+fNum(b.opening+b.used)+' hari'+(b.opening?' (termasuk '+fNum(b.opening)+' sebelum dicatat)':'')+'</span><span style="--c:var(--amber)">Menunggu '+fNum(b.pending)+' hari</span></div>'+
+    (function(){var up=unpaidOf(e,y);return up.total>0?'<div class="warn bad" style="margin-top:14px"><b>Unpaid Leave '+fNum(up.total)+' hari</b> terkena potongan gaji'+(up.excess?' ('+fNum(up.excess)+' hari melebihi kuota cuti tahunan'+(up.lwop?', ':')'):' (')+(up.lwop?fNum(up.lwop)+' hari cuti di luar tanggungan)':'')+'.</div>':''})()+
+    '<h3 style="font-size:14px;margin:22px 0 8px">Riwayat cuti '+y+' ('+list.length+')</h3>'+
+    (list.length?'<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Tanggal cuti</th><th>Jenis</th><th class="num">Hari</th><th>Status</th></tr></thead><tbody>'+
+      list.map(function(l,i){return '<tr>'+noTd(i)+'<td>'+fRange(l.start,l.end)+(l.note?'<div class="s">'+esc(l.note)+'</div>':'')+'</td><td>'+esc(TYPES[l.type].label)+'</td><td class="num">'+fNum(l.days)+'</td><td>'+chipT(l)+'<div class="s">Diinput '+fStamp(l.updatedAt||l.createdAt)+(l.updatedBy||l.createdBy?' oleh '+esc(l.updatedBy||l.createdBy):'')+'</div></td></tr>'}).join("")+'</tbody></table></div>':
+      '<p class="sub">Belum ada data cuti di tahun ini.</p>')+
+    '<div class="form-actions"><button class="btn btn-primary" data-act="leave-for" data-id="'+esc(id)+'">Input cuti untuk '+esc(e.name.split(" ")[0])+'</button></div>'+
+  '</div>';
+  if(!dlg.open)dlg.showModal();
+  dlg.scrollTop=0;
+}
+
+/* ================= Hapus data (Administrator / IT) ================= */
+function openClear(){
+  if(me.role!=="it"){toast("Hapus data hanya bisa dilakukan oleh Administrator / IT");return}
+  var y=String(ui.year),nYear=state.leaves.filter(function(l){return String(l.start).slice(0,4)===y}).length;
+  function opt(v,title,desc,checked){return '<label class="opt"><input type="radio" name="clr" value="'+v+'"'+(checked?" checked":"")+'><div><b>'+title+'</b><span>'+desc+'</span></div></label>'}
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Hapus data</h2><div class="s">Data yang dihapus tidak bisa dikembalikan dari aplikasi. Riwayat versi tetap tersedia di Google Sheets (File → Histori versi).</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body">'+
+    opt("year","Data cuti tahun "+y+" saja",nYear+" data cuti di tahun "+y+". Data karyawan, hari libur, dan data cuti tahun lain tetap ada.",true)+
+    opt("leaves","Semua data cuti",state.leaves.length+" data cuti dari semua tahun. Data karyawan dan hari libur tetap ada, saldo kembali penuh.",false)+
+    opt("all","Semua data aplikasi",state.employees.length+" karyawan, "+state.leaves.length+" data cuti, dan "+state.holidays.length+" hari libur. Akun login tetap ada.",false)+
+    '<div class="field" style="margin-top:14px"><label for="clr-confirm">Ketik HAPUS untuk konfirmasi</label><input id="clr-confirm" autocomplete="off" placeholder="HAPUS"></div>'+
+    '<div class="err" id="clr-err" role="alert"></div>'+
+    '<div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-danger" data-act="do-clear" id="clr-btn">Hapus permanen</button></div>'+
+  '</div>';
+  if(!dlg.open)dlg.showModal();
+}
+async function doClear(){
+  var sel=document.querySelector('input[name="clr"]:checked'),mode=sel?sel.value:"year",err=document.getElementById("clr-err"),btn=document.getElementById("clr-btn"),cf=document.getElementById("clr-confirm").value;
+  if(cf.trim().toUpperCase()!=="HAPUS"){err.textContent="Ketik HAPUS di kolom konfirmasi untuk melanjutkan.";return}
+  btn.disabled=true;btn.textContent="Menghapus...";
+  try{await run("clearData",[mode,ui.year,cf],mode==="year"?"Data cuti "+ui.year+" dihapus":mode==="leaves"?"Semua data cuti dihapus":"Semua data aplikasi dihapus");ui.draft=null;ui.editId=null;dlg.close();render()}
+  catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Hapus permanen"}
+}
+
+/* ================= Event ================= */
+document.addEventListener("click",function(ev){
+  var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode]");if(!t)return;
+  if(t.dataset.repMode){ui.rep.mode=t.dataset.repMode;render();return}
+  if(t.dataset.grp){if(!ui.openDept)ui.openDept={};ui.openDept[t.dataset.grp]=!ui.openDept[t.dataset.grp];render();return}
+  if(t.dataset.empView){ui.empView=t.dataset.empView;render();return}
+  if(t.dataset.liburView){ui.liburView=t.dataset.liburView;render();return}
+  if(t.dataset.calDate){var cd=t.dataset.calDate,ch=state.holidays.find(function(x){return x.date===cd});
+    if(ch){toast(fDate(cd)+": "+ch.name);return}
+    if(!canWrite())return;
+    var hd=document.getElementById("h-date"),hn=document.getElementById("h-name");
+    if(hd){hd.value=cd;hd.scrollIntoView({behavior:"smooth",block:"center"});if(hn)setTimeout(function(){hn.focus()},350);toast(fDate(cd)+" dipilih. Isi keterangan, lalu klik Tambah manual.")}
+    return}
+  if(t.dataset.track){openTrack(t.dataset.track);return}
+  if(t.dataset.dirview){ui.dirView=t.dataset.dirview;render();return}
+  if(t.dataset.cancelMy){var ml=state.leaves.find(function(x){return x.id===t.dataset.cancelMy});if(!ml)return;
+    askConfirm({title:"Batalkan pengajuan?",message:TYPES[ml.type].label+", "+fRange(ml.start,ml.end),ok:"Batalkan pengajuan",cancel:"Kembali",danger:true}).then(function(ok){if(ok)run("cancelMyLeave",[ml.id],"Pengajuan dibatalkan").catch(function(x){toast(x.message)})});return}
+  if(t.dataset.decide){var dl2=state.leaves.find(function(x){return x.id===t.dataset.id});if(!dl2)return;
+    var appr=t.dataset.decide==="approved",info=empName(dl2.empId)+" – "+TYPES[dl2.type].label+", "+fRange(dl2.start,dl2.end)+" ("+fNum(dl2.days)+" hari)"+(dl2.note?"\n\nKeterangan: "+dl2.note:"");
+    askConfirm(appr?{title:"Setujui pengajuan?",message:info,ok:"Setujui"}:{title:"Tolak pengajuan?",message:info,input:"Alasan penolakan (terlihat oleh karyawan)",inputRequired:true,ok:"Tolak",danger:true})
+      .then(function(res){if(!res)return;run("decideLeave",[dl2.id,t.dataset.decide,appr?"":String(res).trim()],appr?"Pengajuan disetujui":"Pengajuan ditolak").catch(function(x){toast(x.message)})});return}
+  if(t.dataset.sort){var sp=t.dataset.sort.split(":"),cur=ui.sort[sp[0]];if(cur.key===sp[1])cur.dir=cur.dir==="asc"?"desc":"asc";else{cur.key=sp[1];cur.dir="asc"}render();return}
+  if(t.dataset.tab){ui.tab=t.dataset.tab;if(ui.tab!=="input"&&ui.editId){ui.editId=null;ui.draft=null}render();return}
+  if(t.dataset.emp){openEmpDetail(t.dataset.emp);return}
+  if(t.dataset.editEmp){openEmpForm(t.dataset.editEmp);return}
+  if(t.dataset.editUser){openUserForm(t.dataset.editUser);return}
+  if(t.dataset.editLeave){var l=state.leaves.find(function(x){return x.id===t.dataset.editLeave});if(!l)return;
+    ui.editId=l.id;ui.draft={empId:l.empId,type:l.type,submitted:l.submitted,start:l.start,end:l.end,days:String(l.days),half:+l.days===0.5&&l.start===l.end,status:l.status,origStatus:l.status,approver:l.approver||"",approvedAt:l.approvedAt||todayIso(),note:l.note||""};
+    ui.tab="input";render();return}
+  if(t.dataset.delLeave){var dl=state.leaves.find(function(x){return x.id===t.dataset.delLeave});if(!dl)return;
+    askConfirm({title:"Hapus data cuti?",message:empName(dl.empId)+" ("+fRange(dl.start,dl.end)+")\n\nSaldo karyawan akan dihitung ulang.",ok:"Hapus",danger:true}).then(function(ok){if(ok)run("deleteLeave",[dl.id],"Data cuti dihapus").catch(function(x){toast(x.message)})});return}
+  if(t.dataset.delHol){var h=state.holidays.find(function(x){return x.date===t.dataset.delHol});if(!h)return;
+    askConfirm({title:"Hapus hari libur?",message:h.name+" ("+fDate(h.date)+")",ok:"Hapus",danger:true}).then(function(ok){if(ok)run("deleteHoliday",[h.date],"Hari libur dihapus").catch(function(x){toast(x.message)})});return}
+  switch(t.dataset.act){
+    case "close":if(!forcedPw)dlg.close();break;
+    case "logout":doLogout();break;
+    case "rep-print":window.print();break;
+    case "rep-email":sendReportEmail();break;
+    case "grp-all-open":ui.openDept={};state.employees.forEach(function(e){ui.openDept[e.dept||"(Tanpa divisi)"]=true});render();break;
+    case "grp-all-close":ui.openDept={};render();break;
+    case "alert-close":ui.alertSeen=pendingForMe().length;var ab=document.getElementById("alert-pop");if(ab)ab.remove();break;
+    case "alert-go":ui.alertSeen=pendingForMe().length;var ab2=document.getElementById("alert-pop");if(ab2)ab2.remove();
+      if(me.role==="director"){ui.dirView="need"}else{var pl=pendingForMe();ui.tab="riwayat";ui.fStatus="pending";ui.fType="";ui.q="";ui.dept="";
+        if(pl.length&&!pl.some(function(l){return String(l.start).slice(0,4)===String(ui.year)}))ui.year=+String(pl[0].start).slice(0,4)}
+      render();break;
+    case "my-new":ui.myForm=newMyForm();ui.myFormEnter=true;render();var mt=document.getElementById("m-type");if(mt)mt.focus();break;
+    case "my-cancel-form":ui.myForm=null;render();break;
+    case "my-submit":submitMyLeave();break;
+    case "password":if(me&&me.role==="it")openPassword(false);break;
+    case "refresh":refresh(false);break;
+    case "new-leave":ui.editId=null;ui.draft=newDraft();ui.tab="input";render();break;
+    case "leave-for":dlg.close();ui.editId=null;ui.draft=newDraft(t.dataset.id);ui.tab="input";render();break;
+    case "go-karyawan":ui.tab="karyawan";render();break;
+    case "go-pending":ui.tab="riwayat";ui.fStatus="pending";ui.fType="";render();break;
+    case "go-used":ui.tab="riwayat";ui.fStatus="approved";ui.fType="quota";ui.q="";ui.dept="";render();break;
+    case "clear-filters":ui.fStatus="";ui.fType="";ui.dept="";ui.q="";render();break;
+    case "toggle-low":ui.lowOnly=!ui.lowOnly;render();break;
+    case "reset-form":ui.draft=newDraft();render();break;
+    case "unmark":ui.marks[t.dataset.t]={};render();break;
+    case "del-marks":delMarks(t.dataset.t);break;
+    case "cancel-edit":ui.editId=null;ui.draft=null;ui.tab="riwayat";render();break;
+    case "save-leave":saveLeave();break;
+    case "add-emp":openEmpForm(null);break;
+    case "save-emp":saveEmp();break;
+    case "del-emp":deleteEmp();break;
+    case "paste-emp":openPaste();break;
+    case "do-paste":doPaste();break;
+    case "add-hol":addHoliday();break;
+    case "fetch-hol":fetchHol();break;
+    case "save-hol-picked":saveHolPicked();break;
+    case "add-user":openUserForm(null);break;
+    case "save-user":saveUser();break;
+    case "del-user":deleteUser();break;
+    case "open-clear":openClear();break;
+    case "do-clear":doClear();break;
+    case "load-sample":askConfirm({title:"Isi data contoh?",message:"Aplikasi akan diisi 13 karyawan dan 28 data cuti contoh. Data contoh bisa dihapus kapan saja.",ok:"Isi data contoh"}).then(function(ok){if(ok)run("loadSample",[],"Data contoh siap dicoba").then(function(){ui.year=2026;ui.tab="saldo";render()}).catch(function(x){toast(x.message)})});break;
+    case "clear-sample":askConfirm({title:"Hapus data contoh?",message:"Semua data contoh dihapus. Data yang Anda input sendiri tidak ikut terhapus.",ok:"Hapus",danger:true}).then(function(ok){if(ok)run("clearSample",[],"Data contoh dihapus").catch(function(x){toast(x.message)})});break;
+  }
+});
+document.addEventListener("submit",function(e){
+  e.preventDefault();
+  if(e.target.id==="login-form")doLogin();
+  else if(e.target.id==="pw-form")savePassword();
+});
+dlg.addEventListener("cancel",function(e){if(forcedPw)e.preventDefault()});
+dlg.addEventListener("click",function(e){if(e.target===dlg&&!forcedPw)dlg.close()});
+function onField(ev){
+  var t=ev.target;
+  if(t.dataset&&t.dataset.f&&ui.draft){
+    var f=t.dataset.f;ui.draft[f]=t.type==="checkbox"?t.checked:t.value;
+    if(f==="start"&&validIso(t.value)&&(!validIso(ui.draft.end)||ui.draft.end<t.value)){ui.draft.end=t.value;var en=document.getElementById("f-end");if(en)en.value=t.value}
+    updateCalc();return;
+  }
+  if(t.id==="u-role"||t.id==="u-emp"){toggleEmpField();return}
+  if(t.dataset&&t.dataset.m&&ui.myForm){var mf=t.dataset.m;ui.myForm[mf]=t.type==="checkbox"?t.checked:t.value;
+    if(mf==="start"&&validIso(t.value)&&(!validIso(ui.myForm.end)||ui.myForm.end<t.value)){ui.myForm.end=t.value;var me2=document.getElementById("m-end");if(me2)me2.value=t.value}
+    if(mf==="note"){var cc=document.getElementById("m-note-count"),ln=t.value.trim().length;if(cc){cc.textContent=ln+" karakter"+(ln<15?" (minimal 15)":"");cc.style.color=ln<15?"var(--red)":""}}
+    updateMyCalc();return}
+  if(ev.type==="change"&&t.dataset&&t.dataset.mark&&t.dataset.markT){var mm=mk(t.dataset.markT);if(t.checked)mm[t.dataset.mark]=1;else delete mm[t.dataset.mark];render();return}
+  if(ev.type==="change"&&t.dataset&&t.dataset.markall){var tt=t.dataset.markall,m2=mk(tt);[].slice.call(document.querySelectorAll('[data-mark-t="'+tt+'"]')).forEach(function(c){if(c.disabled)return;if(t.checked)m2[c.dataset.mark]=1;else delete m2[c.dataset.mark]});render();return}
+  if(t.id==="p-text"){var p=parsePaste(t.value);document.getElementById("p-preview").textContent=p.rows.length?p.rows.length+" karyawan siap disimpan"+(p.skipped.length?", "+p.skipped.length+" dilewati karena namanya sudah ada.":"."):"";return}
+  if(ev.type==="input"&&t.id==="q"){ui.q=t.value;render();return}
+  if(ev.type==="input"&&t.id==="kq"){ui.kq=t.value;render();return}
+  if(ev.type==="change"){
+    if(t.id==="year"){ui.year=+t.value;render()}
+    else if(t.id==="dept"){ui.dept=t.value;render()}
+    else if(t.id==="fstatus"){ui.fStatus=t.value;render()}
+    else if(t.id==="ftype"){ui.fType=t.value;render()}
+    else if(t.id==="rep-month"){ui.rep.month=+t.value;render()}
+    else if(t.id==="rep-dept"){ui.rep.dept=t.value;render()}
+  }
+}
+document.addEventListener("input",onField);
+document.addEventListener("change",onField);
+/* Ambil data terbaru otomatis tiap 2 menit saat tidak sedang mengisi formulir */
+setInterval(function(){if(me&&!dlg.open&&!ui.myForm&&ui.tab!=="input"&&document.visibilityState==="visible"&&!ui.busy)refresh(true)},120000);
+
+/* ================= Mulai ================= */
+(async function start(){
+  if(!token){renderLogin();return}
+  app.innerHTML='<div class="loading">Memuat data...</div>';
+  try{setBusy(true);apply(await call("getData",token));ui.year=+todayIso().slice(0,4);render();if(me.mustChange)openPassword(true)}
+  catch(e){forceLogout(e.message==="Sesi berakhir."?"Sesi Anda sudah berakhir. Silakan masuk lagi.":"")}
+  finally{setBusy(false)}
+})();
+})();
+</script>
 </body>
 </html>
