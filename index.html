@@ -1,38 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Buku Cuti HRD – Woori Consulting</title>
-<meta name="robots" content="noindex">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E6A58'/><text x='16' y='22' font-family='Arial' font-size='18' font-weight='700' fill='white' text-anchor='middle'>W</text></svg>">
-<script>
-/* ==========================================================================
-   Penghubung ke server Google Apps Script (tanpa iframe).
-   GANTI alamat di bawah bila link Web App (/exec) berubah.
-   ========================================================================== */
-var GAS_URL = "https://script.google.com/macros/s/AKfycbzQ7DN1p011kRUh2WhBZRtZMMy8Ho1jN6QkVNxN-usUzLX-UvTmmUjEBf7WtnSK414/exec";
-(function () {
-  function runner(ok, fail) {
-    return new Proxy({}, { get: function (_, name) {
-      if (name === "withSuccessHandler") return function (f) { return runner(f, fail); };
-      if (name === "withFailureHandler") return function (f) { return runner(ok, f); };
-      return function () {
-        var args = Array.prototype.slice.call(arguments);
-        /* text/plain agar tidak perlu izin CORS tambahan; cookie Google tidak ikut terkirim */
-        fetch(GAS_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: name, args: args }), redirect: "follow", credentials: "omit" })
-          .then(function (r) { return r.text(); })
-          .then(function (t) {
-            var d; try { d = JSON.parse(t); } catch (e) { throw new Error("Respons server tidak dikenali. Pastikan Kode.gs terbaru sudah diterbitkan dengan akses \"Siapa saja\"."); }
-            if (d.ok) { if (ok) ok(d.result); } else if (fail) fail(new Error(d.error));
-          })
-          .catch(function (e) { if (fail) fail(new Error(/Respons server/.test(e.message) ? e.message : "Koneksi ke server gagal. Periksa internet Anda, lalu coba lagi.")); });
-      };
-    }});
-  }
-  window.google = { script: { run: runner(null, null) } };
-})();
-</script>
-
+<base target="_top">
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -246,6 +215,18 @@ dialog::backdrop{background:rgba(15,25,22,.45)}
 .login-box form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px}
 .login-box .foot{font-size:13px;color:var(--ink-2);margin-top:14px}
 .icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.settings{position:relative}
+body.menu-open .alert-pop{visibility:hidden}
+.settings .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:95;min-width:220px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(10,25,20,.14);padding:6px;animation:dlgIn .18s cubic-bezier(.2,.7,.2,1)}
+.settings .mi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:9px 10px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:none}
+.settings .mi:hover{background:var(--surface-2)}
+.settings .mi[aria-checked="true"]{color:var(--pine)}
+.settings .mi[aria-checked="true"]::after{content:"✓";margin-left:auto;font-weight:800}
+.settings .mi-sep{height:1px;background:var(--line);margin:6px 4px}
+.settings .mi-label{font-size:11.5px;font-weight:700;color:var(--ink-2);padding:4px 10px 2px;text-transform:uppercase;letter-spacing:.05em}
+.lang-switch{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.lang-switch button{background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.lang-switch button[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--pine-ink)}
 .icon-btn:hover{background:var(--surface-2)}
 a.icon-btn{text-decoration:none;color:inherit;display:inline-block}
 #cdlg{width:min(460px,calc(100% - 24px))}
@@ -371,6 +352,238 @@ tr.grp-row td{background:var(--surface-2);padding:0;border-top:1px solid var(--l
 <dialog id="cdlg" aria-labelledby="cdlg-title"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
+/* ================= Bahasa tampilan: Indonesia / Korea ================= */
+var LANG = (function () { try { return localStorage.getItem("bukuCutiLang") || "id"; } catch (e) { return "id"; } })();
+var LOCALE = LANG === "ko" ? "ko-KR" : LOCALE;
+var KO = {
+  /* umum & topbar */
+  "Buku Cuti HRD": "HRD 휴가 관리", "Saldo Cuti Saya": "내 휴가 잔여", "Persetujuan Director": "이사 승인",
+  "Tahun": "연도", "Muat ulang": "새로고침", "Keluar": "로그아웃", "Pengaturan": "설정", "Ganti password": "비밀번호 변경",
+  "Bahasa": "언어", "Ekspor Excel": "Excel 내보내기", "Akun & data": "계정 및 데이터", "Pengguna": "사용자",
+  "Administrator / IT": "관리자 / IT", "Admin HRD": "인사 관리자", "Director": "이사", "Manager": "매니저", "Karyawan": "직원",
+  "Ambil data terbaru": "최신 데이터 불러오기", "Memuat data...": "데이터를 불러오는 중...", "Data diperbarui": "데이터를 새로 고쳤습니다",
+  "Aplikasi sedang berisi": "현재 앱에", "data contoh": "예시 데이터", "Hapus data contoh": "예시 데이터 삭제", "Isi data contoh": "예시 데이터 입력",
+  "Coba dengan data contoh": "예시 데이터로 체험", "Data contoh siap dicoba": "예시 데이터가 준비되었습니다",
+  /* login */
+  "Masuk": "로그인", "Gunakan username dan password yang diberikan tim HRD atau IT.": "인사팀 또는 IT팀에서 받은 아이디와 비밀번호를 입력하세요.",
+  "Username": "아이디", "Password": "비밀번호", "Memeriksa...": "확인 중...", "Isi username dan password.": "아이디와 비밀번호를 입력하세요.",
+  "Username atau password salah.": "아이디 또는 비밀번호가 올바르지 않습니다.",
+  "Lupa password? Hubungi Admin HRD atau tim IT untuk mengatur ulang.": "비밀번호를 잊으셨나요? 인사 관리자 또는 IT팀에 재설정을 요청하세요.",
+  "Sesi Anda sudah berakhir. Silakan masuk lagi.": "세션이 만료되었습니다. 다시 로그인하세요.", "Sesi berakhir.": "세션이 만료되었습니다.",
+  "Anda sudah keluar": "로그아웃되었습니다", "Keluar dari aplikasi?": "로그아웃하시겠습니까?",
+  "Anda perlu memasukkan username dan password lagi untuk masuk kembali.": "다시 접속하려면 아이디와 비밀번호를 입력해야 합니다.",
+  "Isi data contoh?": "예시 데이터를 입력하시겠습니까?",
+  "untuk dicoba. Hapus data contoh sebelum mulai memakai data karyawan sungguhan.": "이(가) 들어 있습니다. 실제 직원 데이터를 사용하기 전에 예시 데이터를 삭제하세요.",
+  "Catatan (terlihat oleh karyawan)": "비고 (직원에게 표시)", "Alasan cuti, pengganti selama cuti, atau alasan penolakan": "휴가 사유, 대체 근무자 또는 반려 사유",
+  "Pilih tanggal dulu": "먼저 날짜를 선택하세요", "Tanggal keputusan": "결정일", "Tanggal mulai cuti": "휴가 시작일", "Tanggal selesai cuti": "휴가 종료일",
+  "Terkunci, otomatis sesuai akun yang login.": "로그인한 계정으로 자동 고정됩니다.",
+  "Tanggal di sini tidak dihitung sebagai hari kerja saat menginput cuti baru. Isi sesuai libur nasional dan cuti bersama yang berlaku. Data cuti yang sudah tersimpan tidak berubah otomatis.": "여기 등록된 날짜는 휴가 입력 시 근무일에서 제외됩니다. 국경일과 공동 휴가를 입력하세요. 이미 저장된 휴가는 자동으로 바뀌지 않습니다.",
+  "Akun untuk masuk ke aplikasi. Administrator / IT bisa membuat semua jenis akun.": "앱 로그인 계정입니다. 관리자 / IT는 모든 종류의 계정을 만들 수 있습니다.",
+  "Anda bisa membuat akun karyawan dan mengatur ulang password-nya. Akun admin dikelola oleh Administrator / IT.": "직원 계정을 만들고 비밀번호를 재설정할 수 있습니다. 관리자 계정은 관리자 / IT가 관리합니다.",
+  "Administrator / IT:": "관리자 / IT:", "Admin HRD:": "인사 관리자:", "Director:": "이사:", "Manager:": "매니저:", "Karyawan:": "직원:",
+  "semua fitur, termasuk mengelola dan menghapus akun Admin HRD maupun Karyawan, serta hapus data massal. Akun Administrator / IT tidak bisa dihapus, hanya bisa dinonaktifkan.": "모든 기능. 인사 관리자와 직원 계정 관리·삭제, 일괄 삭제 포함. 관리자 / IT 계정은 삭제할 수 없고 비활성화만 가능합니다.",
+  "input dan ubah data cuti, karyawan, dan hari libur, serta membuat dan mengatur ulang password akun karyawan. Tidak bisa membuat akun admin maupun menghapus akun.": "휴가, 직원, 공휴일 입력·수정 및 직원 계정 생성과 비밀번호 재설정. 관리자 계정 생성과 계정 삭제는 불가합니다.",
+  "tahap 1 persetujuan untuk pengajuan para manager. Hanya melihat data manager.": "매니저 신청의 1단계 승인. 매니저 데이터만 볼 수 있습니다.",
+  "seperti Karyawan, tetapi pengajuannya disetujui berjenjang: Director, lalu Admin HRD.": "직원과 같지만 신청은 이사 승인 후 인사 관리자가 승인합니다.",
+  "hanya melihat saldo dan riwayat cutinya sendiri. Akun karyawan langsung bisa dipakai; data karyawannya dibuat atau dicocokkan otomatis dari nama akun.": "본인의 잔여 휴가와 내역만 볼 수 있습니다. 직원 계정은 바로 사용할 수 있으며 직원 정보는 계정 이름으로 자동 생성·연결됩니다.",
+  "Data contoh": "예시 데이터", "Hapus data contoh?": "예시 데이터를 삭제하시겠습니까?",
+  "Akun langsung bisa dipakai. Berikan username dan password ini kepada pengguna.": "계정은 바로 사용할 수 있습니다. 이 아이디와 비밀번호를 사용자에게 전달하세요.",
+  "Kuota cuti tahunan (hari)": "연차 할당 (일)", "No. karyawan (opsional)": "사번 (선택)", "Simpan akun": "계정 저장",
+  "Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD. Jika ada yang tidak sesuai, hubungi tim HRD.": "신청은 이사 승인 후 인사 관리자가 최종 승인합니다. 문제가 있으면 인사팀에 문의하세요.",
+  "Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD. Jika ada yang tidak sesuai, hubungi tim HRD.": "새 신청은 인사팀이 결정할 때까지 승인 대기 상태입니다. 문제가 있으면 인사팀에 문의하세요.",
+  /* tab */
+  "Saldo karyawan": "직원 휴가 잔여", "Input cuti": "휴가 입력", "Ubah data cuti": "휴가 수정", "Riwayat cuti": "휴가 내역",
+  "Laporan": "보고서", "Data karyawan": "직원 정보", "Hari libur": "공휴일",
+  /* saldo */
+  "Dihitung otomatis dari kuota dikurangi cuti yang disetujui dan yang masih menunggu persetujuan.": "할당량에서 승인된 휴가와 승인 대기 중인 휴가를 빼서 자동 계산됩니다.",
+  "Karyawan aktif": "재직 직원", "Hari cuti terpakai": "사용한 휴가 일수", "Menunggu persetujuan": "승인 대기",
+  "Cari nama atau nomor karyawan": "이름 또는 사번 검색", "Semua divisi": "전체 부서", "No.": "번호", "Nama": "이름", "Divisi": "부서",
+  "Kuota": "할당", "Terpakai": "사용", "Menunggu": "대기", "Sisa": "잔여", "Unpaid": "무급", "(Tanpa divisi)": "(부서 없음)",
+  "Lihat rincian cuti yang memotong saldo": "잔여에서 차감된 휴가 상세 보기",
+  /* status & jenis */
+  "Disetujui": "승인", "Ditolak": "반려", "Menunggu Director": "이사 승인 대기", "Menunggu Admin HRD": "인사 승인 대기",
+  "Aktif": "활성", "Nonaktif": "비활성", "Belum ada": "없음",
+  "Cuti tahunan": "연차", "Izin": "사유 휴가", "Sakit": "병가", "Cuti alasan penting": "경조 휴가", "Cuti melahirkan": "출산 휴가",
+  "Cuti di luar tanggungan": "무급 휴가", "Cuti bersama": "공동 휴가", "Cuti tahunan (memotong saldo)": "연차 (잔여 차감)",
+  "Izin (tidak memotong saldo)": "사유 휴가 (차감 없음)", "Sakit (tidak memotong saldo)": "병가 (차감 없음)",
+  "Menunggu Director (khusus manager)": "이사 승인 대기 (매니저 전용)", "Menunggu persetujuan (Admin HRD)": "승인 대기 (인사)",
+  /* aksi */
+  "Setujui": "승인", "Tolak": "반려", "Ubah": "수정", "Hapus": "삭제", "Lacak": "추적", "Batalkan": "취소", "Batal": "취소", "Tutup": "닫기",
+  "Simpan": "저장", "Kembali": "돌아가기", "Lihat sekarang": "지금 보기", "Lihat tracking pengajuan": "신청 추적 보기",
+  "Hapus filter": "필터 해제", "Simpan perubahan": "변경 저장", "Kirim": "보내기", "Mengirim...": "전송 중...", "Menyimpan...": "저장 중...",
+  "Tandai untuk hapus": "삭제 표시", "Batal tandai": "표시 취소", "Hapus yang ditandai": "표시한 항목 삭제",
+  /* riwayat */
+  "Semua data cuti yang sudah diinput. Klik nama untuk melihat saldo karyawan.": "입력된 모든 휴가 내역입니다. 이름을 클릭하면 직원의 잔여 휴가를 볼 수 있습니다.",
+  "Cari nama karyawan": "직원 이름 검색", "Semua status": "전체 상태", "Semua jenis": "전체 종류", "Memotong saldo cuti tahunan": "연차 차감",
+  "Diajukan": "신청일", "Karyawan ": "직원", "Jenis": "종류", "Tanggal cuti": "휴가 기간", "Hari": "일수", "Status": "상태",
+  "Diputuskan oleh": "결재자", "Catatan": "비고", "Belum ada data cuti di tahun ini.": "올해 휴가 내역이 없습니다.",
+  "Setujui pengajuan?": "신청을 승인하시겠습니까?", "Tolak pengajuan?": "신청을 반려하시겠습니까?",
+  "Alasan penolakan (terlihat oleh karyawan)": "반려 사유 (직원에게 표시됨)", "Wajib diisi.": "필수 입력입니다.",
+  "Pengajuan disetujui": "승인되었습니다", "Pengajuan ditolak": "반려되었습니다",
+  /* laporan */
+  "Laporan cuti": "휴가 보고서", "Rekap cuti per karyawan dan rincian cuti yang disetujui. Bisa dicetak, disimpan sebagai PDF, atau dikirim lewat email.": "직원별 휴가 요약과 승인된 휴가 상세입니다. 인쇄, PDF 저장, 이메일 발송이 가능합니다.",
+  "Cetak / Simpan PDF": "인쇄 / PDF 저장", "Kirim ke email": "이메일 발송", "Per bulan": "월별", "Per tahun": "연도별",
+  "Laporan Cuti Karyawan – Woori Consulting": "직원 휴가 보고서 – Woori Consulting", "Rekap per karyawan": "직원별 요약",
+  "Lainnya": "기타", "Di luar tanggungan": "무급", "Total periode": "기간 합계", "Total": "합계", "Disetujui oleh": "승인자", "Keperluan": "사유",
+  "Cuti dihitung pada periode tanggal mulainya. Sisa cuti dan Unpaid Leave dihitung untuk satu tahun penuh.": "휴가는 시작일 기준 기간에 집계됩니다. 잔여 휴가와 무급휴가는 1년 전체 기준입니다.",
+  "Kirim laporan ke email": "보고서 이메일 발송", "Alamat email tujuan": "받는 사람 이메일", "Tidak ada data.": "데이터가 없습니다.",
+  /* data karyawan */
+  "Kuota cuti per karyawan dan cuti yang sudah terpakai sebelum mulai dicatat di aplikasi ini.": "직원별 휴가 할당량과 앱 사용 전에 이미 사용한 휴가입니다.",
+  "Tempel dari Excel": "Excel에서 붙여넣기", "Tambah karyawan": "직원 추가", "Cari nama, divisi, jabatan, atau username": "이름, 부서, 직책, 아이디 검색",
+  "Per divisi": "부서별", "Semua": "전체", "Buka semua": "모두 펼치기", "Tutup semua": "모두 접기", "No. Kary.": "사번", "Jabatan": "직책",
+  "Akun login": "로그인 계정", "Hapus data": "데이터 삭제", "Hapus data...": "데이터 삭제...",
+  "Kosongkan data cuti per tahun, semua data cuti, atau seluruh isi aplikasi. Tindakan ini tidak bisa dibatalkan.": "연도별 휴가, 전체 휴가 또는 앱 전체 데이터를 비웁니다. 되돌릴 수 없습니다.",
+  "Penghapusan data massal hanya bisa dilakukan oleh Administrator / IT.": "일괄 삭제는 관리자 / IT만 할 수 있습니다.",
+  "Belum ada data karyawan.": "직원 정보가 없습니다.", "Tidak ada karyawan yang cocok dengan pencarian.": "검색 결과가 없습니다.",
+  "Nama lengkap": "이름", "Kuota tahunan": "연간 할당", "Nomor karyawan": "사번",
+  /* hari libur */
+  "Ambil otomatis dari kalender Google": "Google 캘린더에서 자동 가져오기", "Tanggal": "날짜", "Keterangan": "설명",
+  "Contoh: Hari Raya Natal": "예: 성탄절", "Tambah manual": "직접 추가", "Daftar hari libur": "공휴일 목록", "Kalender": "달력", "Daftar": "목록",
+  "Libur nasional": "국경일", "Minggu (teks merah)": "일요일 (빨간 글씨)", "Hari ini": "오늘",
+  "Klik untuk menambah hari libur di tanggal ini": "클릭하여 이 날짜에 공휴일 추가", "Hapus hari libur?": "공휴일을 삭제하시겠습니까?",
+  "Min": "일", "Sen": "월", "Sel": "화", "Rab": "수", "Kam": "목", "Jum": "금", "Sab": "토",
+  "Januari": "1월", "Februari": "2월", "Maret": "3월", "April": "4월", "Mei": "5월", "Juni": "6월", "Juli": "7월", "Agustus": "8월",
+  "September": "9월", "Oktober": "10월", "November": "11월", "Desember": "12월",
+  /* pengguna */
+  "Tambah akun": "계정 추가", "Peran": "역할", "Terhubung ke karyawan": "연결된 직원", "Terakhir masuk": "마지막 로그인",
+  "(Anda)": "(나)", "Belum ada email": "이메일 없음", "Belum ganti password awal": "초기 비밀번호 미변경", "Tingkat akses": "접근 권한",
+  "Nama tampilan": "표시 이름", "Email (untuk notifikasi)": "이메일 (알림용)", "Pemberitahuan pengajuan dan keputusan cuti dikirim ke email ini.": "휴가 신청 및 결정 알림이 이 이메일로 발송됩니다.",
+  "Akun aktif": "계정 활성", "Minimal 8 karakter": "8자 이상", "Format email tidak valid.": "이메일 형식이 올바르지 않습니다.",
+  /* karyawan / manager */
+  "Ajukan cuti / izin": "휴가 신청", "hari tersisa": "일 남음", "Terkunci, sesuai akun yang login.": "로그인한 계정으로 고정됩니다.",
+  "Jumlah hari kerja": "근무일 수", "Setengah hari": "반차", "Tanggal mulai": "시작일", "Tanggal selesai": "종료일",
+  "Jumlah hari terhitung otomatis dari tanggal (tanpa Sabtu, Minggu, dan hari libur).": "날짜에 따라 자동 계산됩니다 (토·일요일 및 공휴일 제외).",
+  "Keperluan (apa dan di mana)": "사유 (내용 및 장소)", "Contoh: Menghadiri pernikahan adik di Bandung.": "예: 반둥에서 동생 결혼식 참석",
+  "Pengganti selama cuti": "휴가 중 대체 근무자", "Contoh: Andi – laporan pajak bulanan": "예: Andi – 월간 세무 보고",
+  "Siapa yang menggantikan pekerjaan Anda.": "업무를 대신할 사람을 입력하세요.", "Kontak bila mendesak": "긴급 연락처",
+  "Contoh: WhatsApp 0812-3456-7890": "예: WhatsApp 0812-3456-7890", "Nomor WhatsApp atau telepon yang bisa dihubungi.": "연락 가능한 WhatsApp 또는 전화번호",
+  "Kirim pengajuan": "신청하기", "Pilih tanggal mulai dan selesai.": "시작일과 종료일을 선택하세요.",
+  "Isi nama pengganti selama cuti.": "대체 근무자 이름을 입력하세요.", "Isi nomor kontak yang bisa dihubungi (minimal 8 angka).": "연락처를 입력하세요 (숫자 8자리 이상).",
+  "Keperluan terlalu singkat. Tulis apa dan di mana secara spesifik (minimal 15 karakter).": "사유가 너무 짧습니다. 내용과 장소를 구체적으로 적어 주세요 (15자 이상).",
+  "Pengajuan terkirim. Status: menunggu persetujuan HRD.": "신청이 접수되었습니다. 상태: 인사 승인 대기.",
+  "Pengajuan terkirim. Status: menunggu persetujuan Director.": "신청이 접수되었습니다. 상태: 이사 승인 대기.",
+  "Batalkan pengajuan?": "신청을 취소하시겠습니까?", "Batalkan pengajuan": "신청 취소", "Pengajuan dibatalkan": "신청이 취소되었습니다",
+  "Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD.": "신청은 이사 승인 후 인사 관리자가 최종 승인합니다.",
+  "Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD.": "새 신청은 인사팀이 결정할 때까지 승인 대기 상태입니다.",
+  "Centang bila hanya setengah hari (pagi atau siang).": "반나절(오전 또는 오후)만 쉬면 체크하세요.", "Dihitung 0,5 hari.": "0.5일로 계산됩니다.",
+  "Tanggal ini hari Sabtu, Minggu, atau hari libur.": "이 날짜는 토요일, 일요일 또는 공휴일입니다.",
+  "Setengah hari hanya untuk cuti 1 hari: isi tanggal mulai dan selesai dengan tanggal yang sama.": "반차는 1일 휴가에만 가능합니다. 시작일과 종료일을 같은 날로 입력하세요.",
+  "Tidak bisa dipilih: tanggal yang dipilih lebih dari 1 hari. Setengah hari hanya untuk tanggal mulai dan selesai yang sama.": "선택 불가: 기간이 1일을 넘습니다. 반차는 시작일과 종료일이 같을 때만 가능합니다.",
+  /* director */
+  "Perlu persetujuan Anda": "승인 필요", "Diteruskan ke Admin HRD": "인사팀 전달", "Semua pengajuan manager": "매니저 전체 신청",
+  "Tidak ada pengajuan di kategori ini.": "해당 항목에 신청이 없습니다.",
+  "Tahap 1 untuk pengajuan para manager. Pengajuan yang Anda setujui diteruskan ke Admin HRD untuk keputusan akhir.": "매니저 신청의 1단계 승인입니다. 승인한 신청은 인사 관리자에게 전달되어 최종 결정됩니다.",
+  /* tracking */
+  "Tracking pengajuan": "신청 추적", "Pengajuan dibuat": "신청 완료", "Disetujui Director": "이사 승인", "Ditolak Director": "이사 반려",
+  "Persetujuan Admin HRD": "인사 승인", "Disetujui Admin HRD": "인사 승인 완료", "Ditolak Admin HRD": "인사 반려",
+  "Selesai": "완료", "Selesai: Disetujui": "완료: 승인", "Selesai: Ditolak": "완료: 반려",
+  "Sedang menunggu keputusan Director": "이사 결정 대기 중", "Sedang menunggu keputusan Admin HRD": "인사 결정 대기 중",
+  "Menunggu persetujuan Director terlebih dulu": "이사 승인 후 진행됩니다", "Belum diproses": "미처리", "Tidak melalui Director": "이사 승인 생략",
+  "Tidak diproses karena ditolak Director": "이사 반려로 처리되지 않음", "Status akhir muncul setelah semua persetujuan selesai": "모든 승인이 끝나면 최종 상태가 표시됩니다",
+  "Saldo tidak berkurang": "잔여 휴가 차감 없음", "Tidak memotong saldo cuti tahunan": "연차 차감 없음",
+  /* input HRD */
+  "Input cuti karyawan": "직원 휴가 입력", "Data pengajuan": "신청 정보", "Pilih karyawan": "직원 선택", "Jenis cuti": "휴가 종류",
+  "Tanggal pengajuan": "신청일", "Disetujui / diputuskan oleh": "결재자", "Belum diputuskan": "미결정", "Simpan data cuti": "휴가 저장",
+  "Kosongkan": "초기화", "Pilih karyawan untuk melihat sisa saldonya.": "직원을 선택하면 잔여 휴가가 표시됩니다.", "Sisa saat ini": "현재 잔여",
+  "Setelah data ini disimpan:": "저장 후:", "Cuti disetujui": "승인된 휴가", "Terpakai sebelum dicatat": "앱 사용 전 사용분",
+  "Isi dari formulir atau pesan pengajuan karyawan. Jumlah hari kerja dan sisa saldo terhitung otomatis.": "직원 신청서나 메시지 내용을 입력하세요. 근무일 수와 잔여 휴가는 자동 계산됩니다.",
+  /* password */
+  "Password saat ini": "현재 비밀번호", "Password baru": "새 비밀번호", "Ulangi password baru": "새 비밀번호 확인", "Simpan password": "비밀번호 저장",
+  "Password baru minimal 8 karakter.": "새 비밀번호는 8자 이상이어야 합니다.", "Password berhasil diganti": "비밀번호가 변경되었습니다",
+  "Password tidak sama.": "비밀번호가 일치하지 않습니다.",
+  /* pengingat */
+  "Riwayat cuti ": "휴가 내역", "Belum ada akun.": "계정이 없습니다."
+};
+/* teks dinamis (berisi angka atau nama) */
+var KO_RX = [
+  [/^Aplikasi akan diisi (\d+) karyawan dan (\d+) data cuti contoh\. Data contoh bisa dihapus kapan saja\.$/, "직원 $1명과 예시 휴가 $2건이 입력됩니다. 예시 데이터는 언제든지 삭제할 수 있습니다."],
+  [/^Libur nasional dan cuti bersama (\d{4}) dari kalender resmi "Hari Libur di Indonesia"\. Anda bisa memilih tanggal mana yang ditambahkan\.$/, "공식 캘린더 \"Hari Libur di Indonesia\"의 $1년 국경일 및 공동 휴가입니다. 추가할 날짜를 선택할 수 있습니다."],
+  [/^Saldo cuti tahunan (\d{4})$/, "$1년 연차 잔여"], [/^Riwayat cuti (\d{4})$/, "$1년 휴가 내역"], [/^Riwayat cuti (\d{4}) \((\d+)\)$/, "$1년 휴가 내역 ($2)"],
+  [/^Hari libur (\d{4})$/, "$1년 공휴일"], [/^Kalender (\d{4})$/, "$1년 달력"], [/^Ambil hari libur (\d{4})$/, "$1년 공휴일 가져오기"],
+  [/^Data karyawan$/, "직원 정보"], [/^Halo, (.+)$/, "안녕하세요, $1님"], [/^Sisa cuti tahunan (\d{4})$/, "$1년 연차 잔여"],
+  [/^Terpakai awal (\d{4})$/, "$1년 이전 사용분"], [/^Unpaid Leave (\d{4})$/, "$1년 무급휴가"],
+  [/^Unpaid Leave \(hari, potong gaji\) · (\d+) karyawan$/, "무급휴가 (일, 급여 공제) · $1명"],
+  [/^(\d+) data · ([\d,]+) hari$/, "$1건 · $2일"], [/^(\d+) karyawan · (\d+) divisi$/, "직원 $1명 · 부서 $2개"],
+  [/^(\d+) karyawan( · (\d+) nonaktif)? · (\d+) punya akun login$/, function (m, a, b, c, d) { return "직원 " + a + "명" + (c ? " · 비활성 " + c + "명" : "") + " · 로그인 계정 " + d + "개"; }],
+  [/^(\d+) hari libur di (\d{4}) · (\d+) jatuh di hari kerja$/, "$2년 공휴일 $1일 · 평일 $3일"], [/^(\d+) libur$/, "휴일 $1일"],
+  [/^(\d+) pengajuan perlu ditindaklanjuti$/, "처리할 신청 $1건"],
+  [/^(.+) menunggu persetujuan Anda sebagai Director\.$/, "$1 — 이사님의 승인을 기다리고 있습니다."],
+  [/^(.+) menunggu keputusan Admin HRD\.$/, "$1 — 인사 결정을 기다리고 있습니다."],
+  [/^(\d+) pengajuan menunggu keputusan$/, "결정 대기 $1건"],
+  [/^Tahap (\d+) dari (\d+)$/, "$2단계 중 $1단계"], [/^Tampilkan semua \((\d+)\)$/, "전체 보기 ($1)"],
+  [/^Rincian cuti yang disetujui \((\d+)\)$/, "승인된 휴가 상세 ($1)"], [/^Tahun mengikuti pilihan di kanan atas \((\d{4})\)$/, "연도는 오른쪽 위 선택을 따릅니다 ($1)"],
+  [/^Periode: (.+) · Divisi: (.+) · Dibuat: (.+)$/, function (m, a, b, c) { return "기간: " + koSub(a) + " · 부서: " + trCore(b) + " · 작성: " + koSub(c); }],
+  [/^Diajukan (.+)$/, "신청 $1"], [/^Saldo cuti tahunan berkurang ([\d,]+) hari$/, "연차 $1일 차감"],
+  [/^(\d+) karakter( \(minimal 15\))?$/, function (m, a, b) { return a + "자" + (b ? " (최소 15자)" : ""); }],
+  [/^Laporan terkirim ke (.+)$/, "$1(으)로 보고서를 보냈습니다"], [/^Input cuti untuk (.+)$/, "$1 휴가 입력"],
+  [/^dari ([\d,]+) hari tersisa di (\d{4})$/, "$2년 할당 $1일 중 잔여"], [/^hari tersisa \((\d{4})\)$/, "일 남음 ($1)"],
+  [/^Sisa cuti tahunan ([\d,]+) hari\. Setelah pengajuan ini: ([\d,-]+) hari\.(.*)$/, function (m, a, b, c) { return "연차 잔여 " + a + "일. 신청 후: " + b + "일." + koSub(c); }],
+  [/^(.+) tidak memotong saldo cuti tahunan\.$/, function (m, a) { return trCore(a) + "은(는) 연차에서 차감되지 않습니다."; }],
+  [/^Terpakai ([\d,]+) hari$/, "사용 $1일"], [/^Menunggu persetujuan ([\d,]+) hari$/, "승인 대기 $1일"], [/^Kuota ([\d,]+) hari$/, "할당 $1일"],
+  [/^Tahun (\d{4})$/, "$1년"], [/^(\d{1,2})\.(\d{2})\.(\d{2})$/, "$1:$2:$3"],
+  [/^Versi aplikasi tidak sinkron\.$/, "앱 버전이 일치하지 않습니다."], [/^Versi (.+)$/, "버전 $1"]
+];
+/* potongan teks di dalam kalimat */
+var KO_SUB = [
+  [/· (Cuti tahunan|Izin|Sakit|Cuti alasan penting|Cuti melahirkan|Cuti di luar tanggungan|Cuti bersama) ·/g, function (m, t) { return "· " + KO[t] + " ·"; }],
+  [/\bData contoh\b/g, "예시 데이터"],
+  [/\b(\d[\d,]*) hari\b/g, "$1일"], [/\b(\d+) karyawan\b/g, "$1명"], [/ · oleh /g, " · "], [/\(diajukan sendiri\)/g, "(본인 신청)"],
+  [/\bAlasan: /g, "사유: "], [/\bPengganti: /g, "대체자: "], [/\bKontak: /g, "연락처: "], [/\bsisa (\d[\d,]*)일/g, "잔여 $1일"],
+  [/\bTahun (\d{4})\b/g, "$1년"], [/\bSemua divisi\b/g, "전체 부서"], [/\b(\d+) lainnya\b/g, "외 $1명"], [/ dan (외 \d+명)/g, " $1"],
+  [/\b(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember) (\d{4})\b/g, function (m, mo, y) { return y + "년 " + KO[mo]; }]
+];
+function koSub(t) { var o = t; KO_SUB.forEach(function (p) { o = o.replace(p[0], p[1]); }); return o; }
+function trCore(c) {
+  if (Object.prototype.hasOwnProperty.call(KO, c)) return KO[c];
+  for (var i = 0; i < KO_RX.length; i++) {
+    var m = c.match(KO_RX[i][0]);
+    if (m) return typeof KO_RX[i][1] === "function" ? KO_RX[i][1].apply(null, m) : c.replace(KO_RX[i][0], KO_RX[i][1]);
+  }
+  var y = c.match(/^(.*\S) (\d{4})$/); if (y && KO[y[1]]) return KO[y[1]] + " " + y[2];
+  var col = c.match(/^(.*\S):$/); if (col && KO[col[1]]) return KO[col[1]] + ":";
+  return koSub(c);
+}
+function trText(t) {
+  var core = t.trim(); if (!core || !/[A-Za-z]/.test(core)) return t;
+  var r = trCore(core); if (r === core) return t;
+  return t.slice(0, t.indexOf(core)) + r + t.slice(t.indexOf(core) + core.length);
+}
+var __trBusy = false;
+function translateTree(root) {
+  if (LANG !== "ko" || !root) return;
+  __trBusy = true;
+  try {
+    if (root.nodeType === 3) { var v = trText(root.nodeValue); if (v !== root.nodeValue) root.nodeValue = v; return; }
+    if (root.nodeType !== 1 || /^(SCRIPT|STYLE|TEXTAREA)$/.test(root.nodeName) || (root.closest && root.closest("[data-notr]"))) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { var p = n.parentNode; return p && !/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName) && !(p.closest && p.closest("[data-notr]")) ? 1 : 2; } });
+    var n, list = []; while ((n = w.nextNode())) list.push(n);
+    list.forEach(function (x) { var v = trText(x.nodeValue); if (v !== x.nodeValue) x.nodeValue = v; });
+    var els = [root].concat(Array.prototype.slice.call(root.querySelectorAll("[placeholder],[title],[aria-label]")));
+    els.forEach(function (el) { ["placeholder", "title", "aria-label"].forEach(function (a) { if (el.hasAttribute && el.hasAttribute(a)) { var v = trText(el.getAttribute(a)); if (v !== el.getAttribute(a)) el.setAttribute(a, v); } }); });
+  } finally { __trBusy = false; }
+}
+(function () {
+  function start() {
+    translateTree(document.body);
+    new MutationObserver(function (ms) {
+      if (__trBusy || LANG !== "ko") return;
+      ms.forEach(function (m) {
+        if (m.type === "characterData") translateTree(m.target);
+        else m.addedNodes.forEach(function (x) { translateTree(x); });
+      });
+    }).observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+})();
+function setLang(l) {
+  LANG = l === "ko" ? "ko" : "id"; LOCALE = LANG === "ko" ? "ko-KR" : LOCALE;
+  try { localStorage.setItem("bukuCutiLang", LANG); } catch (e) {}
+  document.documentElement.lang = LANG;
+}
+document.documentElement.lang = LANG;
+
+</script>
+<script>
 (function(){
 "use strict";
 
@@ -385,7 +598,7 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-24";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.10.13-25";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -414,8 +627,8 @@ function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate
 function parse(s){var p=String(s).split("-");return new Date(+p[0],+p[1]-1,+p[2])}
 function validIso(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||"")&&iso(parse(s))===s}
 function todayIso(){return TODAY||iso(new Date())}
-function fDate(s){return s?parse(s).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"}):"–"}
-function fShort(s){return s?parse(s).toLocaleDateString("id-ID",{day:"numeric",month:"short"}):"–"}
+function fDate(s){return s?parse(s).toLocaleDateString(LOCALE,{day:"numeric",month:"long",year:"numeric"}):"–"}
+function fShort(s){return s?parse(s).toLocaleDateString(LOCALE,{day:"numeric",month:"short"}):"–"}
 function fRange(a,b){return a===b?fDate(a):fShort(a)+" – "+fDate(b)}
 function fTime(t){var d=new Date(t);return pad(d.getHours())+"."+pad(d.getMinutes())}
 /* Tanggal diajukan + jam (dari waktu input). Bila diinput HRD di hari lain, tampilkan juga waktu inputnya. */
@@ -426,7 +639,7 @@ function submittedHTML(l){
   return fShort(l.submitted)+(c===l.submitted?', '+fTime(l.createdAt):'<div class="s">diinput '+fShort(c)+', '+fTime(l.createdAt)+'</div>');
 }
 function submittedText(l){return fShort(l.submitted)+(hasTime(l.createdAt)&&iso(new Date(l.createdAt))===l.submitted?", "+fTime(l.createdAt):"")}
-function fStamp(t){if(!t)return "–";var d=new Date(t);return d.toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})+", "+pad(d.getHours())+"."+pad(d.getMinutes())}
+function fStamp(t){if(!t)return "–";var d=new Date(t);return d.toLocaleDateString(LOCALE,{day:"numeric",month:"short",year:"numeric"})+", "+pad(d.getHours())+"."+pad(d.getMinutes())}
 function r1(x){return Math.round((+x||0)*10)/10}
 function fNum(x){return String(r1(x)).replace(".",",")}
 function neg(x){return r1(x)?"−"+fNum(x):"0"}
@@ -545,6 +758,7 @@ function renderLogin(msg){
       '<div class="err" id="l-err" role="alert">'+esc(msg||"")+'</div>'+
       '<button class="btn btn-primary" type="submit" id="l-btn">Masuk</button>'+
     '</form><p class="foot">Lupa password? Hubungi Admin HRD atau tim IT untuk mengatur ulang.</p><p class="foot" style="margin-top:4px;opacity:.7">Versi '+CLIENT_VERSION+'</p>'+
+    '<div class="lang-switch" role="group" aria-label="Bahasa"><button type="button" data-lang="id" aria-pressed="'+(LANG==="id")+'">Bahasa Indonesia</button><button type="button" data-lang="ko" aria-pressed="'+(LANG==="ko")+'">한국어</button></div>'+
   '</div></div>';
   var u=document.getElementById("l-user");if(u)u.focus();
 }
@@ -600,9 +814,17 @@ function topbar(){
     '<div class="bar-right">'+
       '<span class="who">'+esc(me.name||me.username)+'</span><span class="role'+(staff?" user":"")+'">'+ROLE[me.role]+'</span>'+
       '<label for="year">Tahun</label><select id="year">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select>'+
-      (me.role==="it"&&sheetUrl?'<a class="icon-btn" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
       '<button class="icon-btn" data-act="refresh" title="Ambil data terbaru">Muat ulang</button>'+
-      (me.role==="it"?'<button class="icon-btn" data-act="password">Ganti password</button>':'')+
+      '<div class="settings"><button class="icon-btn" data-act="settings" aria-haspopup="menu" aria-expanded="'+(!!ui.menu)+'">⚙ <span>Pengaturan</span></button>'+
+      (ui.menu?'<div class="menu" role="menu">'+
+        (canWrite()?'<button class="mi" role="menuitem" data-act="go-users">Pengguna</button>':'')+
+        (me.role==="it"&&sheetUrl?'<a class="mi" role="menuitem" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
+        (me.role==="it"?'<button class="mi" role="menuitem" data-act="password">Ganti password</button>':'')+
+        (canWrite()||me.role==="it"?'<div class="mi-sep"></div>':'')+
+        '<div class="mi-label">Bahasa</div>'+
+        '<button class="mi" role="menuitemradio" data-lang="id" aria-checked="'+(LANG==="id")+'">Bahasa Indonesia</button>'+
+        '<button class="mi" role="menuitemradio" data-lang="ko" aria-checked="'+(LANG==="ko")+'">한국어</button>'+
+      '</div>':'')+'</div>'+
       '<button class="icon-btn" data-act="logout">Keluar</button>'+
     '</div></div></header>';
 }
@@ -612,7 +834,6 @@ function banner(){
 }
 function tabsHTML(){
   var t=[{id:"saldo",l:"Saldo karyawan"},{id:"input",l:ui.editId?"Ubah data cuti":"Input cuti"},{id:"riwayat",l:"Riwayat cuti"},{id:"laporan",l:"Laporan"},{id:"karyawan",l:"Data karyawan"},{id:"libur",l:"Hari libur"}];
-  t.push({id:"pengguna",l:"Pengguna"});
   var pn=pendingForMe().length;
   return '<div class="tabs" role="tablist">'+t.map(function(x){return '<button class="tab" role="tab" data-tab="'+x.id+'" aria-selected="'+(ui.tab===x.id)+'">'+x.l+(x.id==="riwayat"&&pn?'<span class="tab-badge" title="'+pn+' pengajuan menunggu keputusan">'+pn+'</span>':'')+'</button>'}).join("")+clockHTML()+'</div>';
 }
@@ -639,7 +860,7 @@ function updateAlert(){
 function clockParts(){
   var d=new Date();
   var time=pad(d.getHours())+"."+pad(d.getMinutes())+"."+pad(d.getSeconds());
-  var date=d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  var date=d.toLocaleDateString(LOCALE,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
   return {time:time,date:date};
 }
 function clockHTML(){var c=clockParts();return '<div class="clock" id="clock" aria-live="off"><b id="clock-time">'+esc(c.time)+'</b><span id="clock-date">'+esc(c.date)+'</span></div>'}
@@ -665,6 +886,7 @@ function render(){
   if(changed){var vw=document.getElementById("view");if(vw){vw.classList.add("view-enter");setTimeout(function(){vw.classList.remove("view-enter")},700)}
     if(window.scrollY>140){try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){window.scrollTo(0,0)}}}
   updateAlert();
+  document.body.classList.toggle("menu-open",!!ui.menu);
   if(aid){var el=document.getElementById(aid);if(el&&el!==document.body){el.focus();if(sel)try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
 }
 
@@ -1180,7 +1402,7 @@ function viewLibur(){
     '<div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 12px"><h2 style="font-size:17px">'+(ui.liburView==="daftar"?"Daftar hari libur":"Kalender "+y)+'</h2><div class="seg" role="group" aria-label="Tampilan"><button data-libur-view="kalender" aria-pressed="'+(ui.liburView!=="daftar")+'">Kalender</button><button data-libur-view="daftar" aria-pressed="'+(ui.liburView==="daftar")+'">Daftar</button></div></div>'+
     (ui.liburView==="daftar"?'':calendarYear(y))+
     (ui.liburView==="daftar"?markBar("libur")+'<div class="list scroll"><table><thead><tr>'+markTh("libur",list.map(function(h){return h.date}))+'<th class="no">No.</th>'+th("libur","date","Tanggal")+'<th>Hari</th>'+th("libur","name","Keterangan")+'<th></th></tr></thead><tbody>'+
-    (list.length?list.map(function(h,i){return '<tr'+markRow("libur",h.date)+'>'+markTd("libur",h.date)+noTd(i)+'<td>'+fDate(h.date)+'</td><td>'+parse(h.date).toLocaleDateString("id-ID",{weekday:"long"})+'</td><td>'+esc(h.name)+'</td><td>'+(me.role==="it"?'<button class="btn btn-sm btn-danger" data-del-hol="'+h.date+'">Hapus</button>':'')+'</td></tr>'}).join(""):
+    (list.length?list.map(function(h,i){return '<tr'+markRow("libur",h.date)+'>'+markTd("libur",h.date)+noTd(i)+'<td>'+fDate(h.date)+'</td><td>'+parse(h.date).toLocaleDateString(LOCALE,{weekday:"long"})+'</td><td>'+esc(h.name)+'</td><td>'+(me.role==="it"?'<button class="btn btn-sm btn-danger" data-del-hol="'+h.date+'">Hapus</button>':'')+'</td></tr>'}).join(""):
       '<tr><td colspan="6"><div class="empty">Belum ada hari libur untuk tahun '+y+'.</div></td></tr>')+
     '</tbody></table></div>':'');
 }
@@ -1376,6 +1598,11 @@ async function doClear(){
 
 /* ================= Event ================= */
 document.addEventListener("click",function(ev){
+  var lb=ev.target.closest&&ev.target.closest("[data-lang]");
+  if(lb){ev.preventDefault();ui.menu=false;setLang(lb.dataset.lang);if(me)render();else renderLogin();return}
+  if(ui.menu&&!(ev.target.closest&&ev.target.closest(".settings"))){ui.menu=false;document.body.classList.remove("menu-open");var mm=document.querySelector(".settings .menu");if(mm)mm.remove();var sb=document.querySelector('[data-act="settings"]');if(sb)sb.setAttribute("aria-expanded","false")}
+},true);
+document.addEventListener("click",function(ev){
   var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode]");if(!t)return;
   if(t.dataset.repMode){ui.rep.mode=t.dataset.repMode;render();return}
   if(t.dataset.grp){if(!ui.openDept)ui.openDept={};ui.openDept[t.dataset.grp]=!ui.openDept[t.dataset.grp];render();return}
@@ -1422,7 +1649,9 @@ document.addEventListener("click",function(ev){
     case "my-new":ui.myForm=newMyForm();ui.myFormEnter=true;render();var mt=document.getElementById("m-type");if(mt)mt.focus();break;
     case "my-cancel-form":ui.myForm=null;render();break;
     case "my-submit":submitMyLeave();break;
-    case "password":if(me&&me.role==="it")openPassword(false);break;
+    case "password":ui.menu=false;if(me&&me.role==="it"){render();openPassword(false)}break;
+    case "settings":ui.menu=!ui.menu;render();break;
+    case "go-users":ui.menu=false;ui.tab="pengguna";render();break;
     case "refresh":refresh(false);break;
     case "new-leave":ui.editId=null;ui.draft=newDraft();ui.tab="input";render();break;
     case "leave-for":dlg.close();ui.editId=null;ui.draft=newDraft(t.dataset.id);ui.tab="input";render();break;
