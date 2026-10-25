@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Woori Cuti – Sistem Cuti Karyawan</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232E6A58'/><text x='16' y='22' font-family='Arial' font-size='18' font-weight='700' fill='white' text-anchor='middle'>W</text></svg>">
 <script>
 /* ==========================================================================
    Satu file untuk dua tempat:
@@ -613,8 +617,10 @@ function setLang(l) {
   LANG = l === "ko" ? "ko" : "id"; LOCALE = LANG === "ko" ? "ko-KR" : "id-ID";
   try { localStorage.setItem("bukuCutiLang", LANG); } catch (e) {}
   document.documentElement.lang = LANG;
+  document.title = LANG === "ko" ? "Woori Cuti – 직원 휴가 관리 시스템" : "Woori Cuti – Sistem Cuti Karyawan";
 }
 document.documentElement.lang = LANG;
+if (LANG === "ko") document.title = "Woori Cuti – 직원 휴가 관리 시스템";
 
 </script>
 <script>
@@ -632,7 +638,7 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-27";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.10.13-28";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
