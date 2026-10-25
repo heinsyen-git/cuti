@@ -249,6 +249,7 @@ dialog::backdrop{background:rgba(15,25,22,.45)}
 .login-box .foot{font-size:13px;color:var(--ink-2);margin-top:14px}
 .icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px}
 .settings{position:relative}
+label .opt{font-weight:500;color:var(--ink-2)}
 body.menu-open .alert-pop{visibility:hidden}
 .settings .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:95;min-width:220px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(10,25,20,.14);padding:6px;animation:dlgIn .18s cubic-bezier(.2,.7,.2,1)}
 .settings .mi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:9px 10px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:none}
@@ -426,6 +427,8 @@ var KO = {
   "Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD. Jika ada yang tidak sesuai, hubungi tim HRD.": "새 신청은 인사팀이 결정할 때까지 승인 대기 상태입니다. 문제가 있으면 인사팀에 문의하세요.",
   "Cari nama, divisi, jabatan, atau nomor karyawan": "이름, 부서, 직책, 사번 검색", "Cari nama, divisi, jenis, catatan, atau penyetuju": "이름, 부서, 종류, 비고, 결재자 검색",
   "Cari nama, divisi, atau jabatan": "이름, 부서, 직책 검색", "Tidak ada karyawan yang cocok dengan pencarian atau filter.": "검색 또는 필터에 맞는 직원이 없습니다.",
+  "(opsional)": "(선택)", "Siapa yang menggantikan pekerjaan Anda. Boleh dikosongkan.": "업무를 대신할 사람을 입력하세요. 비워 두어도 됩니다.",
+  "Nomor WhatsApp atau telepon yang bisa dihubungi. Boleh dikosongkan.": "연락 가능한 WhatsApp 또는 전화번호. 비워 두어도 됩니다.",
   /* tab */
   "Saldo karyawan": "직원 휴가 잔여", "Input cuti": "휴가 입력", "Ubah data cuti": "휴가 수정", "Riwayat cuti": "휴가 내역",
   "Laporan": "보고서", "Data karyawan": "직원 정보", "Hari libur": "공휴일",
@@ -638,7 +641,7 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-28";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.10.13-29";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -980,8 +983,8 @@ function myFormHTML(){
     '<div class="field full"><label for="m-note">Keperluan (apa dan di mana)</label>'+
       '<textarea id="m-note" data-m="note" maxlength="800" placeholder="Contoh: Menghadiri pernikahan adik di Bandung.">'+esc(f.note)+'</textarea>'+
       '<span class="hint" id="m-note-count" style="text-align:right">'+String(f.note||"").trim().length+' karakter (minimal 15)</span></div>'+
-    '<div class="field"><label for="m-sub">Pengganti selama cuti</label><input id="m-sub" data-m="sub" maxlength="100" placeholder="Contoh: Andi – laporan pajak bulanan" value="'+esc(f.sub)+'"><span class="hint">Siapa yang menggantikan pekerjaan Anda.</span></div>'+
-    '<div class="field"><label for="m-contact">Kontak bila mendesak</label><input id="m-contact" data-m="contact" maxlength="60" inputmode="tel" placeholder="Contoh: WhatsApp 0812-3456-7890" value="'+esc(f.contact)+'"><span class="hint">Nomor WhatsApp atau telepon yang bisa dihubungi.</span></div>'+
+    '<div class="field"><label for="m-sub">Pengganti selama cuti <span class="opt">(opsional)</span></label><input id="m-sub" data-m="sub" maxlength="100" placeholder="Contoh: Andi – laporan pajak bulanan" value="'+esc(f.sub)+'"><span class="hint">Siapa yang menggantikan pekerjaan Anda. Boleh dikosongkan.</span></div>'+
+    '<div class="field"><label for="m-contact">Kontak bila mendesak <span class="opt">(opsional)</span></label><input id="m-contact" data-m="contact" maxlength="60" inputmode="tel" placeholder="Contoh: WhatsApp 0812-3456-7890" value="'+esc(f.contact)+'"><span class="hint">Nomor WhatsApp atau telepon yang bisa dihubungi. Boleh dikosongkan.</span></div>'+
     '<div class="field full"><div class="calc" id="m-calc"></div></div>'+
   '</div><div class="err" id="m-err" role="alert"></div>'+
   '<div class="form-actions"><button class="btn" data-act="my-cancel-form">Batal</button><button class="btn btn-primary" data-act="my-submit" id="m-btn">Kirim pengajuan</button></div></section>';
@@ -1009,8 +1012,6 @@ async function submitMyLeave(){
   if(!(r1(f.days)>0)){err.textContent="Jumlah hari kerja harus lebih dari 0.";return}
   function need(id,msg){err.textContent=msg;var el=document.getElementById(id);if(el)el.focus()}
   if(f.note.trim().length<15)return need("m-note","Keperluan terlalu singkat. Tulis apa dan di mana secara spesifik (minimal 15 karakter).");
-  if(f.sub.trim().length<3)return need("m-sub","Isi nama pengganti selama cuti.");
-  if((f.contact.match(/\d/g)||[]).length<8)return need("m-contact","Isi nomor kontak yang bisa dihubungi (minimal 8 angka).");
   var e0=state.employees[0];
   if(e0&&TYPES[f.type].quota){var left0=balanceOf(e0,+f.start.slice(0,4)).left,over0=Math.min(r1(f.days),Math.max(0,-r1(left0-r1(f.days))));
     if(over0>0&&!(await askConfirm({title:"Melebihi saldo cuti",message:"Sisa cuti tahunan Anda "+fNum(left0)+" hari. Sebanyak "+fNum(over0)+" hari dari pengajuan ini akan dihitung Unpaid Leave dan terkena potongan gaji.\n\nTetap ajukan?",ok:"Tetap ajukan"})))return}
