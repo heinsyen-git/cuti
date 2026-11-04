@@ -256,6 +256,7 @@ body.menu-open .alert-pop{visibility:hidden}
 .settings .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:95;min-width:220px;max-width:calc(100vw - 16px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(10,25,20,.14);padding:6px;animation:dlgIn .18s cubic-bezier(.2,.7,.2,1)}
 .settings .mi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:9px 10px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:none}
 .settings .mi:hover{background:var(--surface-2)}
+.settings .mi.locked::before{content:"🔒";font-size:12px;margin-right:2px}
 .settings .mi[aria-checked="true"]{color:var(--pine)}
 .settings .mi[aria-checked="true"]::after{content:"✓";margin-left:auto;font-weight:800}
 .settings .mi-sep{height:1px;background:var(--line);margin:6px 4px}
@@ -295,6 +296,14 @@ dialog[open]::backdrop{animation:fadeIn .22s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .btn,.icon-btn,.tile{transition:background-color .15s ease,border-color .15s ease,transform .15s ease,box-shadow .15s ease}
 button.tile:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,25,20,.08)}
+/* ---- Penggajian ---- */
+.mod-switch{margin-left:18px;margin-right:auto}
+.mod-switch button{padding:7px 14px}
+@media (max-width:720px){.mod-switch{margin:8px 0 0;order:3;width:100%}.mod-switch button{flex:1}}
+.slip-net{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
+.slip-net span{font-weight:600}.slip-net b{font-size:20px;color:var(--pine)}
+#print-area{display:none}
+@media print{body.printing-slip>*:not(#print-area){display:none!important}body.printing-slip #print-area{display:block!important;padding:0}}
 /* ---- Laporan ---- */
 .rep-head{border-bottom:3px solid var(--pine);padding-bottom:8px;margin:0 0 14px}
 .rep-head .t{font-size:18px;font-weight:700}
@@ -431,6 +440,23 @@ var KO = {
   "Cari nama, divisi, atau jabatan": "이름, 부서, 직책 검색", "Tidak ada karyawan yang cocok dengan pencarian atau filter.": "검색 또는 필터에 맞는 직원이 없습니다.",
   "(opsional)": "(선택)", "Siapa yang menggantikan pekerjaan Anda. Boleh dikosongkan.": "업무를 대신할 사람을 입력하세요. 비워 두어도 됩니다.",
   "Nomor WhatsApp atau telepon yang bisa dihubungi. Boleh dikosongkan.": "연락 가능한 WhatsApp 또는 전화번호. 비워 두어도 됩니다.",
+  "Penggajian": "급여", "Cuti": "휴가", "Admin Payroll": "급여 관리자", "Proses gaji": "급여 계산", "Data gaji": "급여 정보", "Lembur": "초과근무", "Pengaturan gaji": "급여 설정",
+  "Hitung gaji": "급여 계산", "Hitung ulang": "다시 계산", "Kunci periode": "기간 확정", "Buka kunci": "확정 해제", "Cetak rekap": "요약 인쇄",
+  "Kirim slip ke email": "급여명세서 이메일 발송", "Dikunci": "확정", "Draft": "초안", "Belum dihitung": "미계산", "Slip gaji": "급여명세서", "Slip": "명세서",
+  "Lihat slip": "명세서 보기", "Gaji bersih": "실수령액", "Gaji + tunjangan": "급여 + 수당", "Potongan absen": "결근 공제", "BPJS karyawan": "BPJS (직원)",
+  "PPh 21": "소득세 (PPh 21)", "Gaji pokok": "기본급", "Tunjangan tetap": "고정 수당", "Tunjangan tidak tetap": "변동 수당", "PTKP": "PTKP", "BPJS": "BPJS",
+  "Rekening": "계좌", "Isi": "입력", "Belum ada data gaji": "급여 정보 없음", "Tambah lembur": "초과근무 추가", "Jam": "시간", "Jenis hari": "요일 구분",
+  "Perkiraan upah": "예상 수당", "Hari libur": "공휴일", "Hari kerja": "근무일", "Simpan pengaturan": "설정 저장", "Metode PPh 21": "소득세 방식",
+  "Total penghasilan bruto": "총 지급액", "Total potongan karyawan": "총 공제액", "Total gaji bersih (transfer)": "총 실수령액 (이체)", "Iuran ditanggung perusahaan": "회사 부담금",
+  "Cari nama atau divisi": "이름 또는 부서 검색", "Pendapatan": "지급", "Potongan": "공제", "Total pendapatan": "총 지급", "Total potongan": "총 공제",
+  "Gaji bersih diterima": "실수령액", "Slip Gaji – Woori Consulting": "급여명세서 – Woori Consulting", "Rekap Gaji – Woori Consulting": "급여 요약 – Woori Consulting",
+  "Karyawan": "직원", "Tanggal": "날짜", "Keterangan": "설명", "Jumlah jam": "시간 수", "Status PTKP": "PTKP 상태", "Bank": "은행", "No. rekening": "계좌번호",
+  "Tunjangan lain / bonus (Rp)": "기타 수당 / 보너스 (Rp)", "Potongan lain (Rp)": "기타 공제 (Rp)", "Hari alpha (tanpa keterangan)": "무단결근 일수", "Catatan di slip": "명세서 비고",
+  "Simpan dan hitung ulang": "저장 후 다시 계산", "Cetak / Simpan PDF": "인쇄 / PDF 저장", "Gaji dihitung": "급여가 계산되었습니다", "Periode dikunci": "기간이 확정되었습니다",
+  "Data gaji disimpan": "급여 정보가 저장되었습니다", "Lembur disimpan": "초과근무가 저장되었습니다", "Lembur dihapus": "초과근무가 삭제되었습니다",
+  "🔒 Masukkan password": "🔒 비밀번호 입력", "Buka": "열기", "Pengaturan terbuka selama 10 menit": "설정이 10분 동안 열립니다", "Isi password.": "비밀번호를 입력하세요.",
+  "Halaman Pengguna dikunci kembali": "사용자 페이지가 다시 잠겼습니다", "Terbuka. Klik Google Sheets sekali lagi.": "열렸습니다. Google Sheets를 다시 클릭하세요.", "Password salah.": "비밀번호가 올바르지 않습니다.",
+  "Akses pengaturan sudah berakhir. Buka lagi lewat ⚙ Pengaturan dan masukkan password.": "설정 접근 시간이 끝났습니다. ⚙ 설정에서 비밀번호를 다시 입력하세요.",
   /* tab */
   "Saldo karyawan": "직원 휴가 잔여", "Input cuti": "휴가 입력", "Ubah data cuti": "휴가 수정", "Riwayat cuti": "휴가 내역",
   "Laporan": "보고서", "Data karyawan": "직원 정보", "Hari libur": "공휴일",
@@ -536,6 +562,9 @@ var KO = {
 };
 /* teks dinamis (berisi angka atau nama) */
 var KO_RX = [
+  [/^🔒 (.+)$/, function (m, a) { return "🔒 " + trCore(a); }],
+  [/^Pengaturan akun dilindungi\. Masukkan password akun Anda \((.+)\)\. Setelah benar, pengaturan terbuka selama 10 menit\.$/, "계정 설정은 보호되어 있습니다. 본인 계정($1)의 비밀번호를 입력하세요. 확인되면 10분 동안 열립니다."],
+  [/^Penggajian (.+)$/, function (m, a) { return koSub(a) + " 급여"; }], [/^Periode (.+)$/, function (m, a) { return "기간 " + koSub(a); }],
   [/^(\d+) dari (\d+) karyawan$/, "직원 $2명 중 $1명"], [/^Subtotal (.+)$/, function (m, a) { return "소계 " + trCore(a); }],
   [/^Belum ada data cuti di tahun (\d{4}) yang cocok dengan pencarian atau filter\.$/, "$1년에 검색 또는 필터에 맞는 휴가 내역이 없습니다."],
   [/^Aplikasi akan diisi (\d+) karyawan dan (\d+) data cuti contoh\. Data contoh bisa dihapus kapan saja\.$/, "직원 $1명과 예시 휴가 $2건이 입력됩니다. 예시 데이터는 언제든지 삭제할 수 있습니다."],
@@ -643,8 +672,8 @@ var TYPES={
   bersama:{label:"Cuti bersama",quota:true,hidden:true}  /* tidak ditawarkan lagi; hanya untuk data lama */
 };
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.10.13-30";   /* harus sama dengan APP_VERSION di Kode.gs */
-var ROLE={it:"Administrator / IT",hrd:"Admin HRD",director:"Director",manager:"Manager",user:"Karyawan"};
+var CLIENT_VERSION="2026.11.01-4";   /* harus sama dengan APP_VERSION di Kode.gs */
+var ROLE={it:"Administrator / IT",hrd:"Admin HRD",payroll:"Admin Payroll",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
 function chipL(l){var lb=l.status==="pending"&&l.dirBy?"Menunggu Admin HRD":STATUS[l.status].label;return '<span class="chip '+STATUS[l.status].cls+'">'+lb+'</span>'}
@@ -742,6 +771,7 @@ function call(fn){
     var r=google.script.run.withSuccessHandler(res).withFailureHandler(function(e){
       var m=String((e&&e.message)||e||"Terjadi kesalahan.");
       if(m.indexOf("SESI_HABIS")>-1){forceLogout("Sesi Anda sudah berakhir. Silakan masuk lagi.");rej(new Error("Sesi berakhir."));return}
+      if(m.indexOf("KUNCI_PENGATURAN")>-1){ui.elevUntil=0;rej(new Error("Akses pengaturan sudah berakhir. Buka lagi lewat ⚙ Pengaturan dan masukkan password."));return}
       rej(new Error(m.replace(/^(Error|Exception):\s*/,"")));
     });
     if(typeof r[fn]!=="function"){rej(new Error("Fungsi server \""+fn+"\" belum tersedia. Administrator perlu memperbarui Kode.gs lalu menerbitkan Versi baru."));return}
@@ -752,17 +782,46 @@ function apply(p){
   state.employees=p.employees||[];state.leaves=p.leaves||[];state.holidays=p.holidays||[];state.users=p.users||[];state.managerIds=p.managerIds||[];
   me=p.me;sheetUrl=p.sheetUrl||"";TODAY=p.today||TODAY;ui.serverVersion=p.version||"(lama)";
 }
+/* Perubahan langsung tampil (optimistis); server disinkronkan di latar belakang. Bila server menolak, data dimuat ulang. */
+var MUT_SEQ=0,MAIL_FNS={submitLeave:1,decideLeave:1};
+var OPTIMISTIC={
+  deleteLeave:function(id){state.leaves=state.leaves.filter(function(l){return l.id!==id})},
+  deleteLeaves:function(ids){var w={};ids.forEach(function(i){w[i]=1});state.leaves=state.leaves.filter(function(l){return !w[l.id]})},
+  cancelMyLeave:function(id){state.leaves=state.leaves.filter(function(l){return l.id!==id})},
+  deleteHoliday:function(d){state.holidays=state.holidays.filter(function(h){return h.date!==d})},
+  deleteHolidaysBulk:function(ds){var w={};ds.forEach(function(i){w[i]=1});state.holidays=state.holidays.filter(function(h){return !w[h.date]})},
+  saveHoliday:function(o){state.holidays=state.holidays.filter(function(h){return h.date!==o.date}).concat([{date:o.date,name:o.name}])},
+  deleteEmployee:function(id){state.employees=state.employees.filter(function(e){return e.id!==id});state.leaves=state.leaves.filter(function(l){return l.empId!==id})},
+  deleteEmployees:function(ids){var w={};ids.forEach(function(i){w[i]=1});state.employees=state.employees.filter(function(e){return !w[e.id]});state.leaves=state.leaves.filter(function(l){return !w[l.empId]})},
+  deleteUser:function(un){state.users=(state.users||[]).filter(function(u){return u.username!==un})},
+  deleteUsers:function(uns){var w={};uns.forEach(function(i){w[i]=1});state.users=(state.users||[]).filter(function(u){return !w[u.username]})},
+  decideLeave:function(id,dec,note){state.leaves.forEach(function(l){if(l.id!==id)return;var who=me.name||me.username,today=TODAY;
+    if(me.role==="director"){l.dirBy=who;l.dirAt=today;l.dirTs=Date.now();if(dec==="approved")l.status="pending";else{l.status="rejected";l.approver=who;l.approvedAt=today;l.decidedTs=Date.now()}}
+    else{l.status=dec;l.approver=who;l.approvedAt=today;l.decidedTs=Date.now()}
+    if(note)l.note=(l.note?l.note+" | ":"")+"Alasan ditolak: "+note})}
+};
+function flushMailSoon(){setTimeout(function(){if(token)call("flushMail",token).catch(function(){})},400)}
 async function run(fn,args,okMsg){
+  var seq=++MUT_SEQ,opt=OPTIMISTIC[fn];
+  if(opt){try{opt.apply(null,args||[]);render();if(okMsg)toast(okMsg)}catch(e){opt=null}}
   setBusy(true);
-  try{var p=await call.apply(null,[fn,token].concat(args||[]));apply(p);render();if(okMsg)toast(okMsg);return p}
+  try{
+    var p=await call.apply(null,[fn,token].concat(args||[]));
+    if(seq===MUT_SEQ){apply(p);render()}   // hanya hasil permintaan terakhir yang ditampilkan
+    if(!opt&&okMsg)toast(okMsg);
+    if(MAIL_FNS[fn])flushMailSoon();
+    return p;
+  }
+  catch(e){if(opt)refresh(true);throw e}
   finally{setBusy(false)}
 }
 async function refresh(silent){
   if(!token||!me)return;
-  try{setBusy(true);apply(await call("getData",token));render();if(!silent)toast("Data diperbarui")}
+  try{setBusy(true);apply(await call("getData",token));render();if(!silent)toast("Data diperbarui");flushMailSoon()}
   catch(e){if(!silent)toast(e.message)}finally{setBusy(false)}
 }
 function forceLogout(msg){
+  ui.pay=null;ui.mySlips=undefined;ui.slipPrint=null;ui.module="cuti";ui.paySub="proses";ui.elevUntil=0;
   var apb=document.getElementById("alert-pop");if(apb)apb.remove();ui.alertSeen=0;
   token=null;me=null;try{sessionStorage.removeItem(TOKEN_KEY)}catch(e){}
   forcedPw=false;if(dlg.open)dlg.close();renderLogin(msg||"");
@@ -852,19 +911,21 @@ function yearOptions(){
   state.leaves.forEach(function(l){if(l.start)years[String(l.start).slice(0,4)]=1});
   return Object.keys(years).sort().reverse();
 }
+function inPay(){return me&&(me.role==="payroll"||(me.role==="it"&&ui.module==="gaji"))}
 function topbar(){
   var ys=yearOptions(),staff=isStaff(me.role)||me.role==="director";
   return '<header class="bar"><div class="wrap">'+
-    '<div class="brand"><span class="brand-mark" aria-hidden="true">W</span><span>Woori Consulting<small>'+(me.role==="director"?"Persetujuan Director":staff?"Saldo Cuti Saya":"Buku Cuti HRD")+'</small></span></div>'+
+    '<div class="brand"><span class="brand-mark" aria-hidden="true">W</span><span>Woori Consulting<small>'+(me.role==="director"?"Persetujuan Director":staff?"Saldo Cuti Saya":inPay()?"Penggajian":"Buku Cuti HRD")+'</small></span></div>'+
+    (me.role==="it"?'<div class="seg mod-switch" role="group" aria-label="Modul"><button data-module="cuti" aria-pressed="'+(!inPay())+'">Cuti</button><button data-module="gaji" aria-pressed="'+inPay()+'">Penggajian</button></div>':'')+
     '<div class="bar-right">'+
       '<span class="who">'+esc(me.name||me.username)+'</span><span class="role'+(staff?" user":"")+'">'+ROLE[me.role]+'</span>'+
       '<label for="year">Tahun</label><select id="year">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select>'+
       '<button class="icon-btn" data-act="refresh" title="Ambil data terbaru">Muat ulang</button>'+
       '<div class="settings"><button class="icon-btn" data-act="settings" aria-haspopup="menu" aria-expanded="'+(!!ui.menu)+'">⚙ <span>Pengaturan</span></button>'+
       (ui.menu?'<div class="menu" role="menu">'+
-        (canWrite()?'<button class="mi" role="menuitem" data-act="go-users">Pengguna</button>':'')+
-        (me.role==="it"&&sheetUrl?'<a class="mi" role="menuitem" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
-        (me.role==="it"?'<button class="mi" role="menuitem" data-act="password">Ganti password</button>':'')+
+        (canWrite()?'<button class="mi'+(unlocked()?'':' locked')+'" role="menuitem" data-act="go-users">Pengguna</button>':'')+
+        (me.role==="it"&&sheetUrl?'<a class="mi'+(unlocked()?'':' locked')+'" role="menuitem" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
+        (me.role==="it"?'<button class="mi'+(unlocked()?'':' locked')+'" role="menuitem" data-act="password">Ganti password</button>':'')+
         (canWrite()||me.role==="it"?'<div class="mi-sep"></div>':'')+
         '<div class="mi-label">Bahasa</div>'+
         '<button class="mi" role="menuitemradio" data-lang="id" aria-checked="'+(LANG==="id")+'">Bahasa Indonesia</button>'+
@@ -879,6 +940,8 @@ function banner(){
 }
 function tabsHTML(){
   var t=[{id:"saldo",l:"Saldo karyawan"},{id:"input",l:ui.editId?"Ubah data cuti":"Input cuti"},{id:"riwayat",l:"Riwayat cuti"},{id:"laporan",l:"Laporan"},{id:"karyawan",l:"Data karyawan"},{id:"libur",l:"Hari libur"}];
+  if(inPay()){var sub=ui.paySub||"proses";
+    return '<div class="tabs" role="tablist">'+PAY_SUBS.map(function(x){return '<button class="tab" role="tab" data-paysub="'+x[0]+'" aria-selected="'+(sub===x[0])+'">'+x[1]+'</button>'}).join("")+clockHTML()+'</div>'}
   var pn=pendingForMe().length;
   return '<div class="tabs" role="tablist">'+t.map(function(x){return '<button class="tab" role="tab" data-tab="'+x.id+'" aria-selected="'+(ui.tab===x.id)+'">'+x.l+(x.id==="riwayat"&&pn?'<span class="tab-badge" title="'+pn+' pengajuan menunggu keputusan">'+pn+'</span>':'')+'</button>'}).join("")+clockHTML()+'</div>';
 }
@@ -892,6 +955,24 @@ function fitMenu(){
   if(r.right>vw-8){m.style.left="auto";m.style.right="0"}
 }
 window.addEventListener("resize",function(){fitMenu()});
+/* ---- Kunci menu Pengaturan: perlu password akun yang sedang login ---- */
+function unlocked(){return Date.now()<(ui.elevUntil||0)}
+function requireUnlock(next){
+  if(unlocked()){next();return}
+  ui.menu=false;render();
+  cdlg.innerHTML='<div class="dlg-body" style="padding-top:22px"><h2 id="cdlg-title" style="font-size:18px;font-weight:700;margin-bottom:8px">🔒 Masukkan password</h2>'+
+    '<p class="sub" style="margin:0 0 14px">Pengaturan akun dilindungi. Masukkan password akun Anda (<b>'+esc(me.username)+'</b>). Setelah benar, pengaturan terbuka selama 10 menit.</p>'+
+    '<div class="field"><label for="ul-pw">Password</label><input id="ul-pw" type="password" autocomplete="current-password"></div>'+
+    '<div class="err" id="ul-err" role="alert"></div><div class="form-actions"><button class="btn" data-act="ul-cancel">Batal</button><button class="btn btn-primary" data-act="ul-ok">Buka</button></div></div>';
+  ui.afterUnlock=next;cdlg.showModal();setTimeout(function(){var f=document.getElementById("ul-pw");if(f)f.focus()},50);
+}
+async function submitUnlock(){
+  var f=document.getElementById("ul-pw"),err=document.getElementById("ul-err"),b=cdlg.querySelector('[data-act="ul-ok"]');
+  if(!f.value){err.textContent="Isi password.";f.focus();return}
+  b.disabled=true;b.textContent="Memeriksa...";
+  try{var r=await call("unlockSettings",token,f.value);ui.elevUntil=Date.now()+(r.minutes||10)*60000-5000;cdlg.close();var n=ui.afterUnlock;ui.afterUnlock=null;if(n)n()}
+  catch(e){err.textContent=e.message;f.value="";f.focus();b.disabled=false;b.textContent="Buka"}
+}
 /* ---- Pengajuan yang menunggu keputusan akun yang login ---- */
 function pendingForMe(){
   if(!me)return [];
@@ -919,6 +1000,9 @@ function clockParts(){
   return {time:time,date:date};
 }
 function clockHTML(){var c=clockParts();return '<div class="clock" id="clock" aria-live="off"><b id="clock-time">'+esc(c.time)+'</b><span id="clock-date">'+esc(c.date)+'</span></div>'}
+setInterval(function(){
+  if(me&&ui.tab==="pengguna"&&!unlocked()&&!(me.role==="payroll")&&!dlg.open){ui.tab="saldo";render();toast("Halaman Pengguna dikunci kembali")}
+},5000);
 setInterval(function(){var tEl=document.getElementById("clock-time");if(!tEl)return;var c=clockParts();tEl.textContent=c.time;var dEl=document.getElementById("clock-date");if(dEl&&dEl.textContent!==c.date)dEl.textContent=c.date},1000);
 function versionWarn(){
   if(!ui.serverVersion||ui.serverVersion===CLIENT_VERSION)return "";
@@ -928,10 +1012,12 @@ function render(){
   if(!me){renderLogin();return}
   var a=document.activeElement,aid=a&&a.id,sel=null;
   try{if(a&&typeof a.selectionStart==="number")sel=[a.selectionStart,a.selectionEnd]}catch(e){}
-  var viewKey=me.role+":"+(isStaff(me.role)?"saya":me.role==="director"?"dir-"+(ui.dirView||"need"):ui.tab);
+  var viewKey=me.role+":"+(isStaff(me.role)?"saya":me.role==="director"?"dir-"+(ui.dirView||"need"):inPay()?"gaji-"+(ui.paySub||"proses"):ui.tab);
   var changed=ui.lastView!==viewKey;ui.lastView=viewKey;
   if(isStaff(me.role)){app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+'<div id="view">'+viewUser()+'</div></div></main>';if(ui.myForm)updateMyCalc();}
   else if(me.role==="director"){app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+'<div id="view">'+viewDirector()+'</div></div></main>';}
+  else if(inPay()){app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+tabsHTML()+'<div id="view">'+viewGaji()+'</div></div></main>';
+    if(changed){var st2=app.querySelector('.tab[aria-selected="true"]');if(st2)st2.classList.add("tab-enter")}}
   else{
     var v=ui.tab==="input"?viewInput():ui.tab==="riwayat"?viewRiwayat():ui.tab==="karyawan"?viewKaryawan():ui.tab==="libur"?viewLibur():ui.tab==="laporan"?viewLaporan():ui.tab==="pengguna"?viewPengguna():viewSaldo();
     app.innerHTML=topbar()+'<main><div class="wrap">'+versionWarn()+banner()+tabsHTML()+'<div id="view">'+v+'</div></div></main>';
@@ -967,7 +1053,7 @@ function viewUser(){
       '<td>'+chipT(l)+'</td><td>'+decidedBy(l)+'</td><td>'+esc(l.note||"–")+'</td><td>'+(l.status==="pending"||l.status==="pending_dir"?'<button class="btn btn-sm" data-cancel-my="'+esc(l.id)+'">Batalkan</button>':'')+'</td></tr>'}).join(""):
       '<tr><td colspan="8"><div class="empty">Belum ada data cuti di tahun '+y+'.</div></td></tr>')+
     '</tbody></table></div>'+
-    '<p class="sub" style="margin-top:14px">'+(me.role==="manager"?"Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD.":"Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD.")+' Jika ada yang tidak sesuai, hubungi tim HRD.</p>';
+    '<p class="sub" style="margin-top:14px">'+(me.role==="manager"?"Pengajuan Anda disetujui berjenjang: Director terlebih dulu, lalu Admin HRD.":"Pengajuan baru berstatus Menunggu persetujuan sampai diputuskan tim HRD.")+' Jika ada yang tidak sesuai, hubungi tim HRD.</p>'+viewMySlips();
 }
 
 /* ---- Formulir pengajuan oleh karyawan ---- */
@@ -1487,6 +1573,158 @@ async function sendReportEmail(){
   catch(x){toast(x.message)}finally{setBusy(false)}
 }
 
+/* ================= Penggajian (Administrator / IT dan Admin Payroll) ================= */
+function fRp(v){return "Rp "+Math.round(+v||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")}
+function payPeriod(){if(!ui.payMonth)ui.payMonth=+String(TODAY).slice(5,7);return ui.year+"-"+pad(ui.payMonth)}
+function periodLabel(p){return MONTHS_ID[+p.slice(5,7)-1]+" "+p.slice(0,4)}
+function loadPay(){
+  var p=payPeriod();if(ui.payLoading===p)return;ui.payLoading=p;
+  call("getPayroll",token,p).then(function(r){ui.pay=r;ui.payLoading=null;render()}).catch(function(e){ui.payLoading=null;ui.payErr=e.message;render();toast(e.message)});
+}
+async function payRun(fn,args,okMsg){
+  setBusy(true);
+  try{var r=await call.apply(null,[fn,token].concat(args||[]));if(r&&r.period){ui.pay=r}render();if(okMsg)toast(okMsg);return r}
+  catch(e){toast(e.message);throw e}finally{setBusy(false)}
+}
+var PAY_SUBS=[["proses","Proses gaji"],["data","Data gaji"],["lembur","Lembur"],["atur","Pengaturan gaji"]];
+function viewGaji(){
+  var p=payPeriod(),P=ui.pay;
+  if(!P||P.period!==p){loadPay();return '<div class="page-head"><div><h1>Penggajian</h1><p>Memuat data gaji '+esc(periodLabel(p))+'...</p></div></div>'}
+  var sub=ui.paySub||"proses";
+  var head='<div class="page-head"><div><h1>Penggajian '+esc(periodLabel(p))+'</h1><p>Gaji pokok + tunjangan + lembur − (PPh 21 + BPJS + potongan absen). Data gaji hanya bisa dilihat Administrator / IT dan Admin Payroll.</p></div></div>'+
+    '<div class="filters no-print" style="align-items:center"><select id="pay-month" aria-label="Bulan">'+MONTHS_ID.map(function(m,i){return '<option value="'+(i+1)+'"'+(ui.payMonth===i+1?" selected":"")+'>'+m+'</option>'}).join("")+'</select>'+
+
+    '<span class="sub">Tahun mengikuti pilihan di kanan atas ('+ui.year+')</span></div>';
+  return head+(sub==="data"?viewPayData(P):sub==="lembur"?viewPayOt(P):sub==="atur"?viewPaySet(P):viewPayRun(P));
+}
+var PAY_METHOD={gross:"Gross (dipotong dari gaji karyawan)",grossup:"Gross-up (ditanggung lewat tunjangan PPh)",net:"Net (ditanggung perusahaan)"};
+function viewPayRun(P){
+  var st=P.status,locked=st==="locked",q=String(ui.payQ||"").trim().toLowerCase();
+  var slips=P.slips.filter(function(s){return !q||[s.name,s.dept].join(" ").toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.dept||"").localeCompare(b.dept||"","id")||a.name.localeCompare(b.name,"id")});
+  var tot={bruto:0,pot:0,net:0,co:0,pph:0};
+  P.slips.forEach(function(s){tot.bruto+=s.bruto;tot.net+=s.netto;tot.pot+=s.bruto-s.netto;tot.pph+=s.pph;tot.co+=s.kesP+s.jhtP+s.jpP+s.jkk+s.jkm+(s.method==="net"?s.pph:0)});
+  var noSal=P.salary.filter(function(x){return !x.sal||!x.sal.gp}).length;
+  var chip=st==="locked"?'<span class="chip st-ok">Dikunci</span>':st==="draft"?'<span class="chip st-wait">Draft</span>':'<span class="chip st-off">Belum dihitung</span>';
+  return '<div class="filters no-print" style="align-items:center">'+chip+
+      (!locked?'<button class="btn btn-primary" data-act="pay-calc">'+(st==="draft"?"Hitung ulang":"Hitung gaji")+'</button>':'')+
+      (st==="draft"?'<button class="btn" data-act="pay-lock">Kunci periode</button>':'')+
+      (locked&&me.role==="it"?'<button class="btn" data-act="pay-unlock">Buka kunci</button>':'')+
+      (st!=="empty"?'<button class="btn" data-act="pay-print">Cetak rekap</button>':'')+
+      (locked?'<button class="btn" data-act="pay-send">Kirim slip ke email</button>':'')+
+      '<span class="sub" style="margin-left:auto">Metode PPh 21: '+esc(PAY_METHOD[P.settings.PPH_METODE]||P.settings.PPH_METODE)+'</span></div>'+
+    (noSal?'<div class="banner warn no-print">'+noSal+' karyawan aktif belum punya data gaji dan tidak ikut dihitung. Lengkapi di menu <b>Data gaji</b>.</div>':'')+
+    (st==="draft"?'<div class="banner no-print" style="background:var(--surface-2)">Periksa hasil hitung, lalu klik <b>Kunci periode</b>. Setelah dikunci, slip bisa dilihat karyawan dan dikirim lewat email.</div>':'')+
+    '<div class="rep-head"><div class="t">Rekap Gaji – Woori Consulting</div><div class="m">Periode: '+esc(periodLabel(P.period))+' · Status: '+(locked?"Dikunci":st==="draft"?"Draft":"Belum dihitung")+' · '+P.slips.length+' karyawan</div></div>'+
+    '<div class="tiles"><div class="tile" style="--c:var(--ink)"><b>'+fRp(tot.bruto)+'</b><span>Total penghasilan bruto</span></div><div class="tile" style="--c:var(--red)"><b>'+fRp(tot.pot)+'</b><span>Total potongan karyawan</span></div>'+
+      '<div class="tile" style="--c:var(--pine)"><b>'+fRp(tot.net)+'</b><span>Total gaji bersih (transfer)</span></div><div class="tile" style="--c:var(--amber)"><b>'+fRp(tot.co)+'</b><span>Iuran ditanggung perusahaan</span></div></div>'+
+    '<div class="filters no-print"><input id="pay-q" type="search" placeholder="Cari nama atau divisi" value="'+esc(ui.payQ||"")+'" aria-label="Cari"></div>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Nama</th><th class="num">Gaji + tunjangan</th><th class="num">Lembur</th><th class="num">Potongan absen</th><th class="num">BPJS karyawan</th><th class="num">PPh 21</th><th class="num">Gaji bersih</th><th class="no-print"></th></tr></thead><tbody>'+
+    (slips.length?slips.map(function(s,i){return '<tr>'+noTd(i)+'<td><b>'+esc(s.name)+'</b><div class="s">'+esc(s.dept||"–")+' · '+esc(s.tarif)+'</div></td>'+
+      '<td class="num">'+fRp(s.gp+s.tt+s.ttt+s.tunjLain+s.tunjPph)+'</td><td class="num">'+(s.lembur?fRp(s.lembur)+'<div class="s">'+fNum(s.jam)+' jam</div>':'–')+'</td>'+
+      '<td class="num">'+(s.potAbsen?fRp(s.potAbsen)+'<div class="s">'+fNum(s.hariPotong)+' hari</div>':'–')+'</td><td class="num">'+fRp(s.kesK+s.jhtK+s.jpK)+'</td>'+
+      '<td class="num">'+fRp(s.pph)+(s.method==="net"?'<div class="s">ditanggung</div>':'')+'</td><td class="num"><b>'+fRp(s.netto)+'</b></td>'+
+      '<td class="act-cell no-print"><button class="btn btn-sm" data-payslip="'+esc(s.empId)+'">Slip</button>'+(!locked?'<button class="btn btn-sm" data-payedit="'+esc(s.empId)+'">Ubah</button>':'')+'</td></tr>'}).join("")+
+      '<tr class="rep-total"><td></td><td>Total</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">'+fRp(tot.pph)+'</td><td class="num">'+fRp(tot.net)+'</td><td class="no-print"></td></tr>'
+      :'<tr><td colspan="9"><div class="empty">'+(st==="empty"?'Gaji periode ini belum dihitung. Lengkapi <b>Data gaji</b> dan <b>Lembur</b>, lalu klik <b>Hitung gaji</b>.':'Tidak ada data yang cocok dengan pencarian.')+'</div></td></tr>')+
+    '</tbody></table></div>'+
+    '<p class="sub" style="margin-top:10px">Potongan absen = (gaji pokok + tunjangan tetap) ÷ hari kerja × hari dipotong (Unpaid Leave dari data cuti + hari alpha). PPh 21 Januari–November memakai TER; Desember dihitung setahun (Pasal 17) dari periode yang sudah dikunci.</p>';
+}
+function viewPayData(P){
+  var q=String(ui.payQ||"").trim().toLowerCase(),rows=P.salary.filter(function(x){return !q||[x.name,x.dept,x.title].join(" ").toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.dept||"").localeCompare(b.dept||"","id")||a.name.localeCompare(b.name,"id")});
+  return '<div class="filters"><input id="pay-q" type="search" placeholder="Cari nama atau divisi" value="'+esc(ui.payQ||"")+'" aria-label="Cari"><span class="sub" style="margin-left:auto">'+P.salary.filter(function(x){return x.sal&&x.sal.gp}).length+' dari '+P.salary.length+' karyawan aktif sudah punya data gaji</span></div>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Nama</th><th class="num">Gaji pokok</th><th class="num">Tunjangan tetap</th><th class="num">Tunjangan tidak tetap</th><th>PTKP</th><th>BPJS</th><th>Rekening</th><th></th></tr></thead><tbody>'+
+    (rows.length?rows.map(function(x,i){var s=x.sal;return '<tr>'+noTd(i)+'<td><b>'+esc(x.name)+'</b><div class="s">'+esc([x.dept,x.title].filter(Boolean).join(" · ")||"–")+'</div></td>'+
+      (s?'<td class="num">'+fRp(s.gp)+'</td><td class="num">'+fRp(s.tt)+'</td><td class="num">'+fRp(s.ttt)+'</td><td>'+esc(s.ptkp)+(s.npwp?'':'<div class="s">tanpa NPWP</div>')+'</td><td>'+[s.kes?"Kes":"",s.tk?"TK":""].filter(Boolean).join(" + ")+'</td><td>'+esc([s.bank,s.rek].filter(Boolean).join(" ")||"–")+'</td>'
+        :'<td colspan="6"><span style="color:var(--amber)">Belum ada data gaji</span></td>')+
+      '<td class="act-cell"><button class="btn btn-sm" data-saledit="'+esc(x.empId)+'">'+(s?"Ubah":"Isi")+'</button></td></tr>'}).join(""):'<tr><td colspan="9"><div class="empty">Tidak ada karyawan aktif.</div></td></tr>')+
+    '</tbody></table></div><p class="sub" style="margin-top:10px">Tunjangan tetap ikut menjadi dasar BPJS, lembur, dan potongan absen. Tunjangan tidak tetap (misalnya transport dan makan) hanya ditambahkan ke penghasilan.</p>';
+}
+function otUnits(h,t){h=+h||0;return t==="libur"?Math.min(h,8)*2+Math.min(Math.max(h-8,0),1)*3+Math.max(h-9,0)*4:Math.min(h,1)*1.5+Math.max(h-1,0)*2}
+function viewPayOt(P){
+  var sal={};P.salary.forEach(function(x){sal[x.empId]=x.sal});
+  var locked=P.status==="locked",list=P.overtime.slice().sort(function(a,b){return a.date<b.date?-1:1});
+  return '<div class="filters" style="align-items:center">'+(!locked?'<button class="btn btn-primary" data-act="ot-add">Tambah lembur</button>':'<span class="chip st-ok">Periode dikunci</span>')+'<span class="sub" style="margin-left:auto">'+list.length+' catatan · '+fNum(list.reduce(function(a,o){return a+o.hours},0))+' jam</span></div>'+
+    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Tanggal</th><th>Nama</th><th class="num">Jam</th><th>Jenis hari</th><th class="num">Perkiraan upah</th><th>Keterangan</th><th></th></tr></thead><tbody>'+
+    (list.length?list.map(function(o,i){var s=sal[o.empId],est=s?Math.round(otUnits(o.hours,o.dayType)*(s.gp+s.tt)/(P.settings.LEMBUR_PEMBAGI||173)):0;
+      return '<tr>'+noTd(i)+'<td>'+fDate(o.date)+'</td><td><b>'+esc(o.name)+'</b></td><td class="num">'+fNum(o.hours)+'</td><td>'+(o.dayType==="libur"?'<span class="chip st-no">Hari libur</span>':'Hari kerja')+'</td><td class="num">'+(s?fRp(est):'<span class="s">belum ada data gaji</span>')+'</td><td>'+esc(o.note||"–")+'</td>'+
+      '<td class="act-cell">'+(!locked?'<button class="btn btn-sm btn-danger" data-otdel="'+esc(o.id)+'">Hapus</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="8"><div class="empty">Belum ada lembur di periode ini.</div></td></tr>')+
+    '</tbody></table></div><p class="sub" style="margin-top:10px">Upah lembur per jam = (gaji pokok + tunjangan tetap) ÷ '+(P.settings.LEMBUR_PEMBAGI||173)+'. Hari kerja: jam pertama 1,5×, berikutnya 2×. Hari libur (Sabtu, Minggu, atau hari libur): 8 jam pertama 2×, jam ke-9 3×, jam ke-10 dan seterusnya 4×. Setelah lembur ditambah atau dihapus, klik <b>Hitung ulang</b> di Proses gaji.</p>';
+}
+var PAY_SET_LABEL={BPJS_KES_KARYAWAN:"BPJS Kesehatan karyawan (%)",BPJS_KES_PERUSAHAAN:"BPJS Kesehatan perusahaan (%)",BPJS_KES_BATAS:"Batas upah BPJS Kesehatan (Rp)",JHT_KARYAWAN:"JHT karyawan (%)",JHT_PERUSAHAAN:"JHT perusahaan (%)",JP_KARYAWAN:"JP karyawan (%)",JP_PERUSAHAAN:"JP perusahaan (%)",JP_BATAS:"Batas upah JP (Rp)",JKK:"JKK perusahaan (%)",JKM:"JKM perusahaan (%)",LEMBUR_PEMBAGI:"Pembagi upah lembur per jam",BIAYA_JABATAN_PERSEN:"Biaya jabatan (%)",BIAYA_JABATAN_MAKS_BULAN:"Biaya jabatan maksimal per bulan (Rp)",TANPA_NPWP_TAMBAHAN:"Tambahan PPh tanpa NPWP (%)"};
+function viewPaySet(P){
+  var S=P.settings;
+  return '<section class="panel" style="max-width:860px"><h2>Pengaturan gaji</h2><div class="grid2">'+
+    '<div class="field full"><label for="ps-PPH_METODE">Metode PPh 21</label><select id="ps-PPH_METODE">'+Object.keys(PAY_METHOD).map(function(k){return '<option value="'+k+'"'+(S.PPH_METODE===k?" selected":"")+'>'+PAY_METHOD[k]+'</option>'}).join("")+'</select><span class="hint">Pastikan sesuai kebijakan perusahaan bersama bagian keuangan.</span></div>'+
+    Object.keys(PAY_SET_LABEL).map(function(k){return '<div class="field"><label for="ps-'+k+'">'+PAY_SET_LABEL[k]+'</label><input id="ps-'+k+'" inputmode="decimal" value="'+esc(String(S[k]).replace(".",","))+'"></div>'}).join("")+
+    '</div><div class="err" id="ps-err" role="alert"></div><div class="form-actions"><button class="btn btn-primary" data-act="payset-save">Simpan pengaturan</button></div>'+
+    '<p class="sub" style="margin-top:12px">Tarif TER PPh 21 bulanan (kategori A, B, C) tersimpan di sheet <b>Tarif TER</b> dan bisa diperbarui bila ada aturan baru. Batas upah JP biasanya naik setiap Maret. Hasil perhitungan sebaiknya dicocokkan dengan konsultan pajak atau bagian keuangan sebelum dipakai resmi.</p></section>';
+}
+function openSalaryForm(empId){
+  var x=ui.pay.salary.find(function(r){return r.empId===empId});if(!x)return;var s=x.sal||{gp:"",tt:0,ttt:0,ptkp:"TK/0",npwp:true,kes:true,tk:true,bank:"",rek:""};
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Data gaji '+esc(x.name)+'</h2><div class="s">'+esc([x.dept,x.title].filter(Boolean).join(" · "))+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div class="grid2">'+
+    '<div class="field"><label for="sl-gp">Gaji pokok (Rp)</label><input id="sl-gp" inputmode="numeric" value="'+esc(s.gp)+'"></div>'+
+    '<div class="field"><label for="sl-tt">Tunjangan tetap (Rp)</label><input id="sl-tt" inputmode="numeric" value="'+esc(s.tt)+'"><span class="hint">Misalnya tunjangan jabatan</span></div>'+
+    '<div class="field"><label for="sl-ttt">Tunjangan tidak tetap (Rp)</label><input id="sl-ttt" inputmode="numeric" value="'+esc(s.ttt)+'"><span class="hint">Misalnya transport dan makan</span></div>'+
+    '<div class="field"><label for="sl-ptkp">Status PTKP</label><select id="sl-ptkp">'+ui.pay.ptkpList.map(function(p){return '<option'+(s.ptkp===p?" selected":"")+'>'+p+'</option>'}).join("")+'</select><span class="hint">TK = belum kawin, K = kawin; angka = jumlah tanggungan</span></div>'+
+    '<div class="field"><label for="sl-bank">Bank</label><input id="sl-bank" maxlength="40" value="'+esc(s.bank)+'"></div>'+
+    '<div class="field"><label for="sl-rek">No. rekening</label><input id="sl-rek" maxlength="40" value="'+esc(s.rek)+'"></div>'+
+    '<div class="field full"><label class="check"><input type="checkbox" id="sl-npwp"'+(s.npwp?" checked":"")+'> Punya NPWP / NIK sudah dipadankan</label>'+
+    '<label class="check"><input type="checkbox" id="sl-kes"'+(s.kes?" checked":"")+'> Ikut BPJS Kesehatan</label>'+
+    '<label class="check"><input type="checkbox" id="sl-tk"'+(s.tk?" checked":"")+'> Ikut BPJS Ketenagakerjaan (JHT, JP, JKK, JKM)</label></div>'+
+  '</div><div class="err" id="sl-err" role="alert"></div><div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="sal-save" data-emp-id="'+esc(empId)+'">Simpan</button></div></div>';
+  dlg.showModal();
+}
+function openPayManual(empId){
+  var s=ui.pay.slips.find(function(r){return r.empId===empId});if(!s)return;
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Komponen '+esc(s.name)+'</h2><div class="s">Periode '+esc(periodLabel(s.period))+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div class="grid2">'+
+    '<div class="field"><label for="pm-tl">Tunjangan lain / bonus (Rp)</label><input id="pm-tl" inputmode="numeric" value="'+esc(s.tunjLain)+'"></div>'+
+    '<div class="field"><label for="pm-pl">Potongan lain (Rp)</label><input id="pm-pl" inputmode="numeric" value="'+esc(s.potLain)+'"><span class="hint">Misalnya kasbon atau pinjaman</span></div>'+
+    '<div class="field"><label for="pm-al">Hari alpha (tanpa keterangan)</label><input id="pm-al" inputmode="decimal" value="'+esc(String(s.alpha).replace(".",","))+'"><span class="hint">Ditambah otomatis dengan '+fNum(s.hariPotong-s.alpha)+' hari Unpaid Leave dari data cuti</span></div>'+
+    '<div class="field full"><label for="pm-note">Catatan di slip</label><input id="pm-note" maxlength="200" value="'+esc(s.note)+'"></div>'+
+  '</div><div class="err" id="pm-err" role="alert"></div><div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="paym-save" data-emp-id="'+esc(empId)+'">Simpan dan hitung ulang</button></div></div>';
+  dlg.showModal();
+}
+function openOtForm(){
+  var P=ui.pay,emps=P.salary.slice().sort(function(a,b){return a.name.localeCompare(b.name,"id")});
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Tambah lembur</h2><div class="s">Periode '+esc(periodLabel(P.period))+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+  '<div class="dlg-body"><div class="grid2">'+
+    '<div class="field full"><label for="ot-emp">Karyawan</label><select id="ot-emp"><option value="">Pilih karyawan</option>'+emps.map(function(x){return '<option value="'+esc(x.empId)+'">'+esc(x.name)+(x.dept?' – '+esc(x.dept):'')+'</option>'}).join("")+'</select></div>'+
+    '<div class="field"><label for="ot-date">Tanggal</label><input id="ot-date" type="date" min="'+P.period+'-01" max="'+P.period+'-31" value="'+P.period+'-01"></div>'+
+    '<div class="field"><label for="ot-h">Jumlah jam</label><input id="ot-h" type="number" min="0.5" max="14" step="0.5" value="1"><span class="hint">Kelipatan 0,5 jam. Jenis hari (kerja / libur) ditentukan otomatis dari tanggal.</span></div>'+
+    '<div class="field full"><label for="ot-note">Keterangan</label><input id="ot-note" maxlength="300" placeholder="Contoh: Closing laporan bulanan"></div>'+
+  '</div><div class="err" id="ot-err" role="alert"></div><div class="form-actions"><button class="btn" data-act="close">Batal</button><button class="btn btn-primary" data-act="ot-save">Simpan</button></div></div>';
+  dlg.showModal();
+}
+function slipHTML(s){
+  var plus=[["Gaji pokok",s.gp],["Tunjangan tetap",s.tt],["Tunjangan tidak tetap",s.ttt],["Tunjangan lain",s.tunjLain],["Lembur ("+fNum(s.jam)+" jam)",s.lembur],["Tunjangan PPh 21",s.tunjPph]].filter(function(x){return x[1]});
+  var minus=[["Potongan absen ("+fNum(s.hariPotong)+" hari)",s.potAbsen],["BPJS Kesehatan",s.kesK],["BPJS JHT",s.jhtK],["BPJS JP",s.jpK],[s.method==="net"?"PPh 21 (ditanggung perusahaan)":"PPh 21",s.method==="net"?0:s.pph],["Potongan lain",s.potLain]].filter(function(x){return x[1]});
+  var row=function(a,b,bold){return '<tr'+(bold?' class="rep-total"':'')+'><td>'+esc(a)+'</td><td class="num">'+fRp(b)+'</td></tr>'};
+  return '<div class="slip"><div class="rep-head"><div class="t">Slip Gaji – Woori Consulting</div><div class="m">Periode '+esc(periodLabel(s.period))+' · '+esc(s.name)+(s.dept?' · '+esc(s.dept):'')+'</div></div>'+
+    '<div class="grid2" style="gap:14px"><div><div class="rep-sec" style="margin-top:0;color:var(--pine)">Pendapatan</div><div class="list"><table><tbody>'+plus.map(function(x){return row(x[0],x[1])}).join("")+row("Total pendapatan",s.bruto,true)+'</tbody></table></div></div>'+
+    '<div><div class="rep-sec" style="margin-top:0;color:var(--red)">Potongan</div><div class="list"><table><tbody>'+(minus.length?minus.map(function(x){return row(x[0],x[1])}).join(""):'<tr><td colspan="2">–</td></tr>')+row("Total potongan",s.bruto-s.netto,true)+'</tbody></table></div></div></div>'+
+    '<div class="slip-net"><span>Gaji bersih diterima</span><b>'+fRp(s.netto)+'</b></div>'+
+    '<p class="sub" style="margin-top:8px">Ditanggung perusahaan: BPJS Kesehatan '+fRp(s.kesP)+' · JHT '+fRp(s.jhtP)+' · JP '+fRp(s.jpP)+' · JKK '+fRp(s.jkk)+' · JKM '+fRp(s.jkm)+(s.method==="net"?' · PPh 21 '+fRp(s.pph):'')+'. Dasar PPh 21: '+esc(s.tarif)+'.'+(s.note?' Catatan: '+esc(s.note):'')+'</p></div>';
+}
+function openSlip(s){
+  dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">Slip gaji</h2><div class="s">'+esc(s.name)+' · '+esc(periodLabel(s.period))+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
+    '<div class="dlg-body">'+slipHTML(s)+'<div class="form-actions"><button class="btn" data-act="close">Tutup</button><button class="btn btn-primary" data-act="slip-print">Cetak / Simpan PDF</button></div></div>';
+  ui.slipPrint=s;dlg.showModal();
+}
+function printSlip(){
+  var s=ui.slipPrint;if(!s)return;var a=document.getElementById("print-area");
+  if(!a){a=document.createElement("div");a.id="print-area";document.body.appendChild(a)}
+  a.innerHTML=slipHTML(s);dlg.close();document.body.classList.add("printing-slip");
+  setTimeout(function(){window.print();setTimeout(function(){document.body.classList.remove("printing-slip")},500)},60);
+}
+function viewMySlips(){
+  if(ui.mySlips===undefined){ui.mySlips=null;call("getMySlips",token).then(function(r){ui.mySlips=r||[];render()}).catch(function(){ui.mySlips=[]});return ''}
+  if(!ui.mySlips||!ui.mySlips.length)return '';
+  return '<h2 style="font-size:18px;margin:26px 0 10px">Slip gaji</h2><div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Periode</th><th class="num">Gaji bersih</th><th></th></tr></thead><tbody>'+
+    ui.mySlips.map(function(s,i){return '<tr>'+noTd(i)+'<td>'+esc(periodLabel(s.period))+'</td><td class="num"><b>'+fRp(s.netto)+'</b></td><td class="act-cell"><button class="btn btn-sm" data-myslip="'+esc(s.period)+'">Lihat slip</button></td></tr>'}).join("")+'</tbody></table></div>';
+}
+
 function viewLibur(){
   var y=String(ui.year),list=state.holidays.filter(function(h){return h.date.slice(0,4)===y}).sort(function(a,b){return a.date<b.date?-1:1});
   list=sortBy(list,"libur",function(h,k){return k==="name"?h.name:h.date},function(h){return h.date});
@@ -1589,7 +1827,7 @@ function viewPengguna(){
 }
 function openUserForm(username){
   var u=username?state.users.find(function(x){return x.username===username}):null,isNew=!u;
-  var roles=me.role==="it"?["it","hrd","director","manager","user"]:["user","manager"];
+  var roles=me.role==="it"?["it","hrd","payroll","director","manager","user"]:["user","manager"];
   var linked={};state.users.forEach(function(x){if(x.empId&&(!u||x.username!==u.username))linked[x.empId]=x.username});
   var emps=state.employees.slice().sort(byName);
   dlg.innerHTML='<div class="dlg-head"><div><h2 id="dlg-title">'+(isNew?"Tambah akun":"Ubah akun "+esc(u.username))+'</h2><div class="s">'+(isNew?"Akun langsung bisa dipakai. Berikan username dan password ini kepada pengguna.":"Isi password hanya bila ingin mengatur ulang. Password baru langsung berlaku.")+'</div></div><button class="x" data-act="close" aria-label="Tutup">×</button></div>'+
@@ -1695,13 +1933,23 @@ async function doClear(){
 }
 
 /* ================= Event ================= */
+document.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&ev.target&&ev.target.id==="ul-pw"){ev.preventDefault();submitUnlock()}});
 document.addEventListener("click",function(ev){
+  var sl=ev.target.closest&&ev.target.closest('.settings a.mi');
+  if(sl&&!unlocked()){ev.preventDefault();ev.stopPropagation();requireUnlock(function(){ui.menu=true;render();toast("Terbuka. Klik Google Sheets sekali lagi.")});return}
   var lb=ev.target.closest&&ev.target.closest("[data-lang]");
   if(lb){ev.preventDefault();ui.menu=false;setLang(lb.dataset.lang);if(me)render();else renderLogin();return}
   if(ui.menu&&!(ev.target.closest&&ev.target.closest(".settings"))){ui.menu=false;document.body.classList.remove("menu-open");var mm=document.querySelector(".settings .menu");if(mm)mm.remove();var sb=document.querySelector('[data-act="settings"]');if(sb)sb.setAttribute("aria-expanded","false")}
 },true);
 document.addEventListener("click",function(ev){
-  var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode],[data-grpk],[data-gview],[data-gall]");if(!t)return;
+  var t=ev.target.closest("[data-sort],[data-act],[data-tab],[data-emp],[data-edit-emp],[data-edit-leave],[data-del-leave],[data-del-hol],[data-edit-user],[data-cancel-my],[data-decide],[data-dirview],[data-track],[data-libur-view],[data-cal-date],[data-grp],[data-emp-view],[data-rep-mode],[data-grpk],[data-gview],[data-gall],[data-paysub],[data-payedit],[data-payslip],[data-saledit],[data-otdel],[data-myslip],[data-module]");if(!t)return;
+  if(t.dataset.module){ui.module=t.dataset.module;ui.menu=false;render();return}
+  if(t.dataset.paysub){ui.paySub=t.dataset.paysub;ui.payQ="";render();return}
+  if(t.dataset.payedit){openPayManual(t.dataset.payedit);return}
+  if(t.dataset.payslip){var ps=ui.pay.slips.find(function(x){return x.empId===t.dataset.payslip});if(ps)openSlip(ps);return}
+  if(t.dataset.saledit){openSalaryForm(t.dataset.saledit);return}
+  if(t.dataset.myslip){var ms=(ui.mySlips||[]).find(function(x){return x.period===t.dataset.myslip});if(ms)openSlip(ms);return}
+  if(t.dataset.otdel){askConfirm({title:"Hapus lembur?",message:"Catatan lembur ini akan dihapus.",ok:"Hapus",danger:true}).then(function(ok){if(ok)payRun("deleteOvertime",[t.dataset.otdel,payPeriod()],"Lembur dihapus").catch(function(){})});return}
   if(t.dataset.grpk){var gk=t.dataset.grpk,gd=t.dataset.grpd;if(!ui.grp)ui.grp={};if(!ui.grp[gk])ui.grp[gk]={};ui.grp[gk][gd]=!(t.getAttribute("aria-expanded")==="true");render();return}
   if(t.dataset.gview){var gv=t.dataset.gview.split(":");if(!ui.gview)ui.gview={};ui.gview[gv[0]]=gv[1];render();return}
   if(t.dataset.gall){var ga=t.dataset.gall.split(":");if(!ui.grp)ui.grp={};ui.grp[ga[0]]={};depts().concat(["(Tanpa divisi)"]).forEach(function(d){ui.grp[ga[0]][d]=ga[1]==="open"});render();return}
@@ -1738,6 +1986,24 @@ document.addEventListener("click",function(ev){
   switch(t.dataset.act){
     case "close":if(!forcedPw)dlg.close();break;
     case "logout":doLogout();break;
+    case "pay-calc":payRun("calcPayroll",[payPeriod()],"Gaji dihitung").catch(function(){});break;
+    case "pay-lock":askConfirm({title:"Kunci periode "+periodLabel(payPeriod())+"?",message:"Setelah dikunci, gaji tidak bisa dihitung ulang dan slip bisa dilihat karyawan.",ok:"Kunci"}).then(function(ok){if(ok)payRun("lockPayroll",[payPeriod()],"Periode dikunci").catch(function(){})});break;
+    case "pay-unlock":askConfirm({title:"Buka kunci periode?",message:"Slip periode ini tidak tampil lagi di halaman karyawan sampai dikunci kembali.",ok:"Buka kunci",danger:true}).then(function(ok){if(ok)payRun("unlockPayroll",[payPeriod()],"Kunci dibuka").catch(function(){})});break;
+    case "pay-print":window.print();break;
+    case "slip-print":printSlip();break;
+    case "pay-send":askConfirm({title:"Kirim slip gaji?",message:"Slip dikirim ke email setiap karyawan yang akunnya punya alamat email.",ok:"Kirim"}).then(function(ok){if(!ok)return;setBusy(true);call("sendSlips",token,payPeriod()).then(function(r){toast(r.sent+" slip terkirim"+(r.skipped.length?", "+r.skipped.length+" dilewati (belum ada email)":""),true)}).catch(function(e){toast(e.message)}).then(function(){setBusy(false)})});break;
+    case "ot-add":openOtForm();break;
+    case "ot-save":(function(){var g=function(id){return document.getElementById(id).value},err=document.getElementById("ot-err");
+      if(!g("ot-emp")){err.textContent="Pilih karyawan.";return}
+      if(String(g("ot-date")).slice(0,7)!==payPeriod()){err.textContent="Tanggal lembur harus di periode "+periodLabel(payPeriod())+".";return}
+      payRun("saveOvertime",[{period:payPeriod(),empId:g("ot-emp"),date:g("ot-date"),hours:String(g("ot-h")).replace(",","."),note:g("ot-note")}],"Lembur disimpan").then(function(){dlg.close()}).catch(function(e){err.textContent=e.message})})();break;
+    case "sal-save":(function(){var g=function(id){return document.getElementById(id).value},c=function(id){return document.getElementById(id).checked},err=document.getElementById("sl-err");
+      payRun("saveSalary",[{period:payPeriod(),empId:t.dataset.empId,gp:g("sl-gp"),tt:g("sl-tt"),ttt:g("sl-ttt"),ptkp:g("sl-ptkp"),bank:g("sl-bank"),rek:g("sl-rek"),npwp:c("sl-npwp"),kes:c("sl-kes"),tk:c("sl-tk")}],"Data gaji disimpan").then(function(){dlg.close()}).catch(function(e){err.textContent=e.message})})();break;
+    case "paym-save":(function(){var g=function(id){return document.getElementById(id).value},err=document.getElementById("pm-err");
+      payRun("savePayrollManual",[payPeriod(),t.dataset.empId,{tunjLain:g("pm-tl"),potLain:g("pm-pl"),alpha:g("pm-al"),note:g("pm-note")}],"Gaji dihitung ulang").then(function(){dlg.close()}).catch(function(e){err.textContent=e.message})})();break;
+    case "payset-save":(function(){var o={period:payPeriod(),PPH_METODE:document.getElementById("ps-PPH_METODE").value};
+      Object.keys(PAY_SET_LABEL).forEach(function(k){o[k]=String(document.getElementById("ps-"+k).value).replace(/\./g,"").replace(",",".")});
+      payRun("savePaySettings",[o],"Pengaturan disimpan. Klik Hitung ulang agar berlaku.").catch(function(e){document.getElementById("ps-err").textContent=e.message})})();break;
     case "rep-print":window.print();break;
     case "rep-email":sendReportEmail();break;
     case "grp-all-open":ui.openDept={};state.employees.forEach(function(e){ui.openDept[e.dept||"(Tanpa divisi)"]=true});render();break;
@@ -1750,10 +2016,12 @@ document.addEventListener("click",function(ev){
     case "my-new":ui.myForm=newMyForm();ui.myFormEnter=true;render();var mt=document.getElementById("m-type");if(mt)mt.focus();break;
     case "my-cancel-form":ui.myForm=null;render();break;
     case "my-submit":submitMyLeave();break;
-    case "password":ui.menu=false;if(me&&me.role==="it"){render();openPassword(false)}break;
+    case "password":ui.menu=false;if(me&&me.role==="it")requireUnlock(function(){render();openPassword(false)});break;
     case "settings":ui.menu=!ui.menu;render();break;
-    case "go-users":ui.menu=false;ui.tab="pengguna";render();break;
-    case "refresh":refresh(false);break;
+    case "go-users":ui.menu=false;requireUnlock(function(){ui.module="cuti";ui.tab="pengguna";render();toast("Pengaturan terbuka selama 10 menit")});break;
+    case "ul-ok":submitUnlock();break;
+    case "ul-cancel":ui.afterUnlock=null;cdlg.close();break;
+    case "refresh":ui.pay=null;ui.mySlips=undefined;refresh(false);break;
     case "new-leave":ui.editId=null;ui.draft=newDraft();ui.tab="input";render();break;
     case "leave-for":dlg.close();ui.editId=null;ui.draft=newDraft(t.dataset.id);ui.tab="input";render();break;
     case "go-karyawan":ui.tab="karyawan";render();break;
@@ -1808,12 +2076,14 @@ function onField(ev){
   if(ev.type==="input"&&t.id==="q"){ui.q=t.value;render();return}
   if(ev.type==="input"&&t.id==="kq"){ui.kq=t.value;render();return}
   if(ev.type==="input"&&t.id==="rep-q"){ui.rep.q=t.value;render();return}
+  if(ev.type==="input"&&t.id==="pay-q"){ui.payQ=t.value;render();return}
   if(ev.type==="change"){
     if(t.id==="year"){ui.year=+t.value;render()}
     else if(t.id==="dept"){ui.dept=t.value;render()}
     else if(t.id==="fstatus"){ui.fStatus=t.value;render()}
     else if(t.id==="ftype"){ui.fType=t.value;render()}
     else if(t.id==="rep-month"){ui.rep.month=+t.value;render()}
+    else if(t.id==="pay-month"){ui.payMonth=+t.value;render()}
     else if(t.id==="rep-dept"){ui.rep.dept=t.value;render()}
   }
 }
