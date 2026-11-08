@@ -353,6 +353,63 @@ button.tile:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,25,20
 .iz-btn[aria-pressed="true"]{border-color:var(--pine);box-shadow:inset 0 0 0 1.5px var(--pine);background:var(--surface-2)}
 .iz-btn[aria-pressed="true"] b{color:var(--pine)}
 .row-btns{display:flex;gap:8px;flex-wrap:wrap}
+/* ---- Tampilan HP (ramah sentuhan) ---- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.only-m{display:none!important}
+.mi-user{padding:10px 14px 6px}.mi-user b{display:block;font-size:14.5px}.mi-user span{font-size:12px;color:var(--ink-2)}
+.mi-year{display:flex;align-items:center;gap:10px;padding:6px 14px 10px}.mi-year label{font-size:13px;font-weight:600;color:var(--ink-2)}.mi-year select{flex:1;min-height:40px}
+.mi-out{color:var(--red)!important;font-weight:700}
+@media (max-width:720px){
+  .hide-m{display:none!important}
+  .only-m{display:revert!important}
+  span.only-m,b.only-m{display:inline!important}
+  div.only-m,.mi-user.only-m{display:block!important}
+  .mi-year.only-m{display:flex!important}
+  button.only-m{display:block!important}
+  .bar .wrap{flex-wrap:nowrap;min-height:56px;gap:8px}
+  .bar-right{margin-left:auto;gap:6px;flex-wrap:nowrap}
+  .bar .brand-logo{height:32px}
+  .bar .brand-sub{font-size:11.5px;padding-left:8px}
+  .bar .icon-btn{min-width:44px;min-height:44px;padding:0 12px;font-size:20px;line-height:1}
+  .bar [data-act="refresh"] .tx{display:none}
+  .settings .menu{min-width:240px}
+  .settings .mi{min-height:46px;font-size:15px}
+  /* isian & tombol lebih besar, tanpa zoom otomatis di iPhone */
+  input,select,textarea{font-size:16px!important}
+  input:not([type=checkbox]):not([type=radio]),select{min-height:46px}
+  .btn{min-height:44px}
+  .btn-sm{min-height:40px;padding:8px 14px}
+  .page-head{flex-direction:column;align-items:stretch;gap:12px}
+  .page-head h1{font-size:22px}
+  .row-btns{width:100%}
+  .row-btns .btn{flex:1;min-height:52px;font-size:15.5px;border-radius:14px}
+  .form-actions{flex-direction:column-reverse;align-items:stretch}
+  .form-actions .btn{width:100%;min-height:50px;font-size:15.5px}
+  .iz-grid{grid-template-columns:1fr}
+  .iz-btn{padding:12px 14px}
+  .tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{min-height:44px;white-space:nowrap}
+  /* tabel menjadi kartu */
+  .rt{background:none!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+  .rt table,.rt tbody,.rt tr,.rt td{display:block;width:100%}
+  .rt thead{display:none}
+  .rt tr{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:0 0 12px}
+  .rt td{border:0!important;padding:5px 0!important;text-align:left!important}
+  .rt td.no{display:none}
+  .rt td[data-label]{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .rt td[data-label]::before{content:attr(data-label);font-size:12.5px;font-weight:600;color:var(--ink-2);flex:none}
+  .rt td.rt-block{display:block}
+  .rt td.rt-block::before{display:block;margin-bottom:3px}
+  .rt td.rt-title{font-size:15px;padding-bottom:8px!important;margin-bottom:4px;border-bottom:1px solid var(--line)!important}
+  .rt td.rt-title b.only-m{display:block!important;font-size:15.5px;margin-bottom:2px}
+  .rt td.rt-act:empty{display:none}
+  .rt td.rt-act{padding-top:10px!important}
+  .rt td.rt-act .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .rt td.rt-act .btn{width:100%;min-height:48px;font-size:15px}
+  .rt td .note-clamp{-webkit-line-clamp:unset;display:block}
+  .rt tr td[colspan]{display:block}
+}
 /* ---- Lampiran bukti ---- */
 .att-btn{border:0;background:none;cursor:pointer;font-size:15px;padding:0 2px;line-height:1;vertical-align:middle}
 .att-btn:hover{transform:scale(1.15)}
@@ -456,7 +513,7 @@ tr.grp-row td{background:var(--surface-2);padding:0;border-top:1px solid var(--l
 </head>
 <body>
 <div class="busy-bar" id="busy" hidden><span class="woori-icon" aria-hidden="true"></span><span>Memproses...</span></div>
-<div id="app"><div class="loading"><span class="woori-icon" aria-hidden="true"></span><span>Memuat...</span></div></div>
+<div id="app"><div class="loading" role="status"><span class="woori-icon" aria-hidden="true"></span><span class="sr-only">Memuat data</span></div></div>
 <dialog id="dlg" aria-labelledby="dlg-title"></dialog>
 <dialog id="cdlg" aria-labelledby="cdlg-title"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -547,6 +604,7 @@ var KO = {
   "Pengajuan Anda disetujui berjenjang: Manager divisi terlebih dulu, lalu Director. Jika ada yang tidak sesuai, hubungi tim HRD.": "신청은 부서 매니저 승인 후 이사가 최종 승인합니다. 문제가 있으면 인사팀에 문의하세요.",
   "Lampiran bukti": "증빙 첨부", "Hapus lampiran": "첨부 삭제", "📎 Lihat lampiran tersimpan": "📎 저장된 첨부 보기", "Unduh": "다운로드",
   "Foto bukti kendala, misalnya kondisi lalu lintas atau surat dokter. Format JPG/PNG, otomatis diperkecil.": "교통 상황 사진이나 진단서 등 증빙 사진. JPG/PNG, 자동으로 축소됩니다.",
+  "Periksa sebelum mengirim": "보내기 전에 확인", "Ya, kirim": "네, 보내기", "Ubah lagi": "다시 수정", "Batalkan pengajuan": "신청 취소", "Jumlah hari": "일수", "Menu": "메뉴",
   /* tab */
   "Saldo karyawan": "직원 휴가 잔여", "Input cuti": "휴가 입력", "Ubah data cuti": "휴가 수정", "Riwayat cuti": "휴가 내역",
   "Laporan": "보고서", "Data karyawan": "직원 정보", "Hari libur": "공휴일",
@@ -808,7 +866,7 @@ var KIND_INFO={cuti:{icon:"🌴",title:"Cuti",sub:"Cuti tahunan, alasan penting,
 function kindSeg(kind,attr){return '<div class="kind-cards" role="group" aria-label="Jenis pengajuan">'+["cuti","izin"].map(function(k){var I=KIND_INFO[k];
   return '<button type="button" class="kind-card k-'+k+'" '+attr+'="'+k+'"'+(kind!=null?' aria-pressed="'+(kind===k)+'"':'')+'><span class="kc-ico" aria-hidden="true">'+I.icon+'</span><span class="kc-txt"><b>'+(kind==null?"Ajukan ":"")+I.title+'</b><span>'+I.sub+'</span></span></button>'}).join("")+'</div>'}
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_mgr:{label:"Menunggu Manager",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.11.08-3";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.11.08-4";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",payroll:"Admin Payroll",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -1059,11 +1117,14 @@ function topbar(){
     '<div class="brand"><span class="brand-logo" role="img" aria-label="Woori Consulting"></span><span class="brand-sub">HR System</span></div>'+
     (SHOW_PAYROLL_SWITCH&&me.role==="it"?'<div class="seg mod-switch" role="group" aria-label="Modul"><button data-module="cuti" aria-pressed="'+(!inPay())+'">Cuti &amp; Izin</button><button data-module="gaji" aria-pressed="'+inPay()+'">Penggajian</button></div>':'')+
     '<div class="bar-right">'+
-      '<span class="who">'+esc(me.name||me.username)+'</span><span class="role'+(staff?" user":"")+'">'+ROLE[me.role]+'</span>'+
-      '<label for="year">Tahun</label><select id="year">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select>'+
-      '<button class="icon-btn" data-act="refresh" title="Ambil data terbaru">Muat ulang</button>'+
-      '<div class="settings"><button class="icon-btn" data-act="settings" aria-haspopup="menu" aria-expanded="'+(!!ui.menu)+'">⚙ <span>Pengaturan</span></button>'+
+      '<span class="who hide-m">'+esc(me.name||me.username)+'</span><span class="role hide-m'+(staff?" user":"")+'">'+ROLE[me.role]+'</span>'+
+      '<label for="year" class="hide-m">Tahun</label><select id="year" class="hide-m">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select>'+
+      '<button class="icon-btn" data-act="refresh" title="Ambil data terbaru" aria-label="Muat ulang"><span class="ic only-m" aria-hidden="true">⟳</span><span class="tx">Muat ulang</span></button>'+
+      '<div class="settings"><button class="icon-btn" data-act="settings" aria-haspopup="menu" aria-expanded="'+(!!ui.menu)+'" aria-label="Menu"><span class="ic-m only-m" aria-hidden="true">☰</span><span class="hide-m">⚙ <span>Pengaturan</span></span></button>'+
       (ui.menu?'<div class="menu" role="menu">'+
+        '<div class="mi-user only-m"><b>'+esc(me.name||me.username)+'</b><span>'+ROLE[me.role]+'</span></div>'+
+        '<div class="mi-year only-m"><label for="year-m">Tahun</label><select id="year-m">'+ys.map(function(y){return '<option value="'+y+'"'+(String(ui.year)===y?" selected":"")+'>'+y+'</option>'}).join("")+'</select></div>'+
+        '<div class="mi-sep only-m"></div>'+
         (canWrite()?'<button class="mi'+(unlocked()?'':' locked')+'" role="menuitem" data-act="go-users">Pengguna</button>':'')+
         (me.role==="it"&&sheetUrl?'<a class="mi'+(unlocked()?'':' locked')+'" role="menuitem" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener" title="Buka spreadsheet database (perlu akses ke file)">Google Sheets</a>':'')+
         (me.role==="it"?'<button class="mi'+(unlocked()?'':' locked')+'" role="menuitem" data-act="password">Ganti password</button>':'')+
@@ -1072,8 +1133,8 @@ function topbar(){
         '<div class="mi-label">Bahasa</div>'+
         '<button class="mi" role="menuitemradio" data-lang="id" aria-checked="'+(LANG==="id")+'">Bahasa Indonesia</button>'+
         '<button class="mi" role="menuitemradio" data-lang="ko" aria-checked="'+(LANG==="ko")+'">한국어</button>'+
-      '</div>':'')+'</div>'+
-      '<button class="icon-btn" data-act="logout">Keluar</button>'+
+      '<div class="mi-sep only-m"></div><button class="mi mi-out only-m" role="menuitem" data-act="logout">Keluar</button>'+'</div>':'')+'</div>'+
+      '<button class="icon-btn hide-m" data-act="logout">Keluar</button>'+
     '</div></div></header>';
 }
 function banner(){
@@ -1195,9 +1256,9 @@ function viewUser(){
     '</section>'+
     (function(){var up=unpaidOf(e,y);return up.total>0?'<div class="warn bad" style="margin:-8px 0 20px"><b>Unpaid Leave '+fNum(up.total)+' hari</b> pada '+y+'. Hari-hari ini tidak ditanggung cuti tahunan dan terkena potongan gaji.</div>':''})()+
     '<h2 style="font-size:17px;margin:0 0 12px">Riwayat cuti & izin '+y+'</h2>'+
-    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Tanggal</th><th>Jenis</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
-    (list.length?list.map(function(l,i){return '<tr>'+noTd(i)+'<td>'+whenText(l)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td>'+esc(TYPES[l.type].label)+attachBtn(l)+'</td><td class="num">'+daysCell(l)+'</td>'+
-      '<td>'+chipT(l)+'</td><td>'+decidedBy(l)+'</td><td>'+esc(l.note||"–")+'</td><td>'+(isPend(l.status)?'<button class="btn btn-sm" data-cancel-my="'+esc(l.id)+'">Batalkan</button>':'')+'</td></tr>'}).join(""):
+    '<div class="list scroll rt"><table><thead><tr><th class="no">No.</th><th>Tanggal</th><th>Jenis</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
+    (list.length?list.map(function(l,i){return '<tr>'+noTd(i)+'<td class="rt-title"><b class="only-m">'+esc(TYPES[l.type].label)+attachBtn(l)+'</b>'+whenText(l)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td class="hide-m">'+esc(TYPES[l.type].label)+attachBtn(l)+'</td><td class="num'+(isTime(l.type)?' hide-m':'')+'" data-label="Jumlah hari">'+daysCell(l)+'</td>'+
+      '<td data-label="Status">'+chipT(l)+'</td><td data-label="Diputuskan oleh">'+decidedBy(l)+'</td><td data-label="Catatan" class="rt-block">'+esc(l.note||"–")+'</td><td class="rt-act">'+(isPend(l.status)?'<button class="btn btn-sm" data-cancel-my="'+esc(l.id)+'">Batalkan pengajuan</button>':'')+'</td></tr>'}).join(""):
       '<tr><td colspan="8"><div class="empty">Belum ada data cuti di tahun '+y+'.</div></td></tr>')+
     '</tbody></table></div>'+
     '<p class="sub" style="margin-top:14px">'+(me.role==="manager"?"Pengajuan Anda diputuskan oleh Director.":"Pengajuan Anda disetujui berjenjang: Manager divisi terlebih dulu, lalu Director.")+' Jika ada yang tidak sesuai, hubungi tim HRD.</p>'+viewMySlips();
@@ -1266,6 +1327,12 @@ async function submitMyLeave(){
   var e0=state.employees[0];
   if(e0&&TYPES[f.type].quota){var left0=balanceOf(e0,+f.start.slice(0,4)).left,over0=Math.min(r1(f.days),Math.max(0,-r1(left0-r1(f.days))));
     if(over0>0&&!(await askConfirm({title:"Melebihi saldo cuti",message:"Sisa cuti tahunan Anda "+fNum(left0)+" hari. Sebanyak "+fNum(over0)+" hari dari pengajuan ini akan dihitung Unpaid Leave dan terkena potongan gaji.\n\nTetap ajukan?",ok:"Tetap ajukan"})))return}
+  var sumLines=["Jenis: "+TYPES[f.type].label,"Tanggal: "+whenText(f)];
+  if(!tmM)sumLines.push("Jumlah hari kerja: "+fNum(calcDays(f))+" hari");
+  sumLines.push("Keperluan: "+f.note.trim());
+  if(f.attach&&ATTACH_TYPES.indexOf(f.type)>-1)sumLines.push("Lampiran bukti: ada");
+  var flow=me.role==="manager"?"Pengajuan akan diputuskan oleh Director.":"Pengajuan akan disetujui Manager divisi Anda, lalu Director.";
+  if(!(await askConfirm({title:"Periksa sebelum mengirim",message:sumLines.join("\n")+"\n\n"+flow+" Status dan prosesnya bisa dilihat lewat tombol Lacak.",ok:"Ya, kirim",cancel:"Ubah lagi"})))return;
   btn.disabled=true;btn.textContent="Mengirim...";
   try{await run("submitLeave",[{type:f.type,start:f.start,end:f.end,days:calcDays(f),half:!!f.half,note:f.note,sub:f.sub,contact:f.contact,t1:f.t1,t2:f.t2,detail:f.detail,attach:ATTACH_TYPES.indexOf(f.type)>-1?(f.attach||""):""}],"Pengajuan terkirim dan menunggu persetujuan.");ui.myForm=null;render()}
   catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Kirim pengajuan"}
@@ -1341,12 +1408,12 @@ function approvalView(mode){
       (isMgr?"Tahap 1: pengajuan anggota divisi Anda. Yang Anda setujui diteruskan ke Director untuk keputusan akhir.":"Keputusan akhir untuk semua pengajuan. Pengajuan staf, supervisor, dan asisten manager sudah disetujui Manager divisinya lebih dulu.")+'</p></div></div>'+
     '<div class="tiles">'+["need","other","approved","rejected"].map(function(k){return '<button class="tile" '+attr+'="'+k+'" aria-pressed="'+(cur===k)+'" style="--c:'+cols[k]+'"><b>'+sets[k].length+'</b><span>'+labels[k]+'</span></button>'}).join("")+'</div>'+
     '<div class="list-head" style="display:flex;justify-content:space-between;align-items:baseline;margin:0 0 12px"><h2 style="font-size:17px">'+labels[cur]+' '+y+'</h2>'+(cur!=="all"?'<button class="link" '+attr+'="all">Tampilkan semua ('+all.length+')</button>':'')+'</div>'+
-    '<div class="list scroll"><table><thead><tr><th class="no">No.</th><th>Karyawan</th><th>Jenis</th><th>Tanggal</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
+    '<div class="list scroll rt"><table><thead><tr><th class="no">No.</th><th>Karyawan</th><th>Jenis</th><th>Tanggal</th><th class="num">Hari</th><th>Status</th><th>Diputuskan oleh</th><th>Catatan</th><th></th></tr></thead><tbody>'+
     (rows.length?rows.map(function(l,i){var e=emp(l.empId)||{name:"(tidak ditemukan)"},b=emp(l.empId)?balanceOf(e,y):null;
-      return '<tr>'+noTd(i)+'<td><b>'+esc(e.name)+'</b><div class="s">'+esc([e.title,e.dept].filter(Boolean).join(" · "))+(b?' · sisa '+fNum(b.left)+' hari':'')+'</div></td><td>'+esc(TYPES[l.type].label)+attachBtn(l)+'</td><td>'+whenText(l)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td class="num">'+daysCell(l)+'</td>'+
-      '<td>'+chipT(l)+'</td><td>'+decidedBy(l)+'</td>'+
-      '<td class="note-cell"'+(l.note?' title="'+esc(l.note)+'"':'')+'>'+(l.note?'<span class="note-clamp">'+esc(l.note)+'</span>':'–')+'</td>'+
-      '<td class="act-cell"><div class="act-grid">'+(l.status===stage?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button><button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button>':'')+'</div></td></tr>'}).join(""):
+      return '<tr>'+noTd(i)+'<td class="rt-title"><b>'+esc(e.name)+'</b><div class="s">'+esc([e.title,e.dept].filter(Boolean).join(" · "))+(b?' · sisa '+fNum(b.left)+' hari':'')+'</div></td><td data-label="Jenis">'+esc(TYPES[l.type].label)+attachBtn(l)+'</td><td data-label="Tanggal" class="rt-block">'+whenText(l)+'<div class="s">Diajukan '+submittedText(l)+'</div></td><td class="num'+(isTime(l.type)?' hide-m':'')+'" data-label="Jumlah hari">'+daysCell(l)+'</td>'+
+      '<td data-label="Status">'+chipT(l)+'</td><td data-label="Diputuskan oleh">'+decidedBy(l)+'</td>'+
+      '<td class="note-cell rt-block" data-label="Catatan"'+(l.note?' title="'+esc(l.note)+'"':'')+'>'+(l.note?'<span class="note-clamp">'+esc(l.note)+'</span>':'–')+'</td>'+
+      '<td class="act-cell rt-act"><div class="act-grid">'+(l.status===stage?'<button class="btn btn-sm btn-primary" data-decide="approved" data-id="'+esc(l.id)+'">Setujui</button><button class="btn btn-sm" data-decide="rejected" data-id="'+esc(l.id)+'">Tolak</button>':'')+'</div></td></tr>'}).join(""):
       '<tr><td colspan="9"><div class="empty">Tidak ada pengajuan di kategori ini.</div></td></tr>')+
     '</tbody></table></div>';
 }
@@ -1840,7 +1907,7 @@ async function payRun(fn,args,okMsg){
 var PAY_SUBS=[["proses","Proses gaji"],["data","Data gaji"],["lembur","Lembur"],["atur","Pengaturan gaji"]];
 function viewGaji(){
   var p=payPeriod(),P=ui.pay;
-  if(!P||P.period!==p){loadPay();return '<div class="loading"><span class="woori-icon" aria-hidden="true"></span><span>Memuat data gaji '+esc(periodLabel(p))+'...</span></div>'}
+  if(!P||P.period!==p){loadPay();return '<div class="loading" role="status"><span class="woori-icon" aria-hidden="true"></span><span class="sr-only">Memuat data gaji</span></div>'}
   var sub=ui.paySub||"proses";
   var head='<div class="page-head"><div><h1>Penggajian '+esc(periodLabel(p))+'</h1><p>Gaji pokok + tunjangan + lembur − (PPh 21 + BPJS + potongan absen). Data gaji hanya bisa dilihat Administrator / IT dan Admin Payroll.</p></div></div>'+
     '<div class="filters no-print" style="align-items:center"><select id="pay-month" aria-label="Bulan">'+MONTHS_ID.map(function(m,i){return '<option value="'+(i+1)+'"'+(ui.payMonth===i+1?" selected":"")+'>'+m+'</option>'}).join("")+'</select>'+
@@ -2351,7 +2418,7 @@ function onField(ev){
   if(ev.type==="input"&&t.id==="rep-q"){ui.rep.q=t.value;render();return}
   if(ev.type==="input"&&t.id==="pay-q"){ui.payQ=t.value;render();return}
   if(ev.type==="change"){
-    if(t.id==="year"){ui.year=+t.value;render()}
+    if(t.id==="year"||t.id==="year-m"){ui.year=+t.value;ui.menu=false;render()}
     else if(t.id==="dept"){ui.dept=t.value;render()}
     else if(t.id==="fstatus"){ui.fStatus=t.value;render()}
     else if(t.id==="ftype"){ui.fType=t.value;render()}
@@ -2368,7 +2435,7 @@ setInterval(function(){if(me&&!dlg.open&&!ui.myForm&&ui.tab!=="input"&&document.
 /* ================= Mulai ================= */
 (async function start(){
   if(!token){renderLogin();return}
-  app.innerHTML='<div class="loading"><span class="woori-icon" aria-hidden="true"></span><span>Memuat data...</span></div>';
+  app.innerHTML='<div class="loading" role="status"><span class="woori-icon" aria-hidden="true"></span><span class="sr-only">Memuat data</span></div>';
   try{setBusy(true);apply(await call("getData",token));ui.year=+todayIso().slice(0,4);render();if(me.mustChange)openPassword(true)}
   catch(e){forceLogout(e.message==="Sesi berakhir."?"Sesi Anda sudah berakhir. Silakan masuk lagi.":"")}
   finally{setBusy(false)}
