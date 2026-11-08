@@ -806,7 +806,7 @@ var KIND_INFO={cuti:{icon:"🌴",title:"Cuti",sub:"Cuti tahunan, alasan penting,
 function kindSeg(kind,attr){return '<div class="kind-cards" role="group" aria-label="Jenis pengajuan">'+["cuti","izin"].map(function(k){var I=KIND_INFO[k];
   return '<button type="button" class="kind-card k-'+k+'" '+attr+'="'+k+'"'+(kind!=null?' aria-pressed="'+(kind===k)+'"':'')+'><span class="kc-ico" aria-hidden="true">'+I.icon+'</span><span class="kc-txt"><b>'+(kind==null?"Ajukan ":"")+I.title+'</b><span>'+I.sub+'</span></span></button>'}).join("")+'</div>'}
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_mgr:{label:"Menunggu Manager",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.11.08-1";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.11.08-2";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",payroll:"Admin Payroll",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -869,7 +869,9 @@ function hasSample(){return state.employees.some(function(e){return e.sample})||
 function userOfEmp(id){return state.users.find(function(u){return u.empId===id})||null}
 var toastT;
 function toast(m,stay){var el=document.getElementById("toast");el.textContent=m;el.classList.add("show");clearTimeout(toastT);if(!stay)toastT=setTimeout(function(){el.classList.remove("show")},3400)}
-function setBusy(on){ui.busy+=on?1:-1;if(ui.busy<0)ui.busy=0;document.getElementById("busy").hidden=!ui.busy}
+/* Penanda "Memproses..." tidak ditampilkan selama layar memuat (ikon daun besar) sedang terlihat, agar tidak dobel */
+function syncBusy(){var b=document.getElementById("busy");if(b)b.hidden=!ui.busy||!!document.querySelector("#app .loading")}
+function setBusy(on){ui.busy+=on?1:-1;if(ui.busy<0)ui.busy=0;syncBusy()}
 
 function balanceOf(e,year,excludeId){
   var q=+e.quota||0,op=+((e.openingUsed||{})[year]||0),used=0,pend=0;
@@ -1170,6 +1172,7 @@ function render(){
     if(window.scrollY>140){try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){window.scrollTo(0,0)}}}
   updateAlert();
   document.body.classList.toggle("menu-open",!!ui.menu);
+  syncBusy();
   fitMenu();if(ui.menu){requestAnimationFrame(fitMenu);setTimeout(fitMenu,60)}   // ulangi setelah teks diterjemahkan
   if(aid){var el=document.getElementById(aid);if(el&&el!==document.body){el.focus();if(sel)try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
 }
