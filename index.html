@@ -449,7 +449,15 @@ tr.grp-row td{background:var(--surface-2);padding:0;border-top:1px solid var(--l
 .grp-btn{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;padding:11px 14px;font:inherit;cursor:pointer;text-align:left;color:var(--ink)}
 .grp-btn:hover{background:var(--grey-soft)}
 .grp-btn b{font-size:14.5px}
-.grp-arrow{width:14px;color:var(--pine);font-size:13px}
+.grp-arrow{width:14px;color:var(--pine);font-size:13px;display:inline-block;transition:transform .22s ease}
+.grp-btn[aria-expanded="true"] .grp-arrow{transform:rotate(90deg)}
+.grp-arrow.grp-turn{animation:grpTurn .22s ease}
+@keyframes grpTurn{from{transform:rotate(0)}to{transform:rotate(90deg)}}
+tr[class-anim]{animation:grpIn .32s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--gi,0)*22ms)}
+@keyframes grpIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+tr.grp-out{animation:grpOut .17s ease-in forwards;animation-delay:var(--go,0ms)}
+@keyframes grpOut{to{opacity:0;transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){tr[class-anim],tr.grp-out,.grp-arrow.grp-turn{animation:none}.grp-arrow{transition:none}}
 .grp-meta{font-size:12.5px;color:var(--ink-2)}
 /* ---- Pengingat pengajuan yang perlu ditindaklanjuti ---- */
 .tab-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--red);color:var(--pine-ink);font-size:11.5px;font-weight:700;line-height:1;vertical-align:1px;animation:badgePop .35s cubic-bezier(.2,.7,.2,1)}
@@ -866,7 +874,7 @@ var KIND_INFO={cuti:{icon:"🌴",title:"Cuti",sub:"Cuti tahunan, alasan penting,
 function kindSeg(kind,attr){return '<div class="kind-cards" role="group" aria-label="Jenis pengajuan">'+["cuti","izin"].map(function(k){var I=KIND_INFO[k];
   return '<button type="button" class="kind-card k-'+k+'" '+attr+'="'+k+'"'+(kind!=null?' aria-pressed="'+(kind===k)+'"':'')+'><span class="kc-ico" aria-hidden="true">'+I.icon+'</span><span class="kc-txt"><b>'+(kind==null?"Ajukan ":"")+I.title+'</b><span>'+I.sub+'</span></span></button>'}).join("")+'</div>'}
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_mgr:{label:"Menunggu Manager",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.11.08-4";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.11.08-5";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",payroll:"Admin Payroll",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -1176,6 +1184,18 @@ async function submitUnlock(){
   try{var r=await call("unlockSettings",token,f.value);ui.elevUntil=Date.now()+(r.minutes||10)*60000-5000;cdlg.close();var n=ui.afterUnlock;ui.afterUnlock=null;if(n)n()}
   catch(e){err.textContent=e.message;f.value="";f.focus();b.disabled=false;b.textContent="Buka"}
 }
+/* ---- Animasi tutup grup divisi: baris memudar, panah berputar balik, lalu tampilan diperbarui ---- */
+function grpCollapse(btn,gid,done){
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var rows=[].slice.call(document.querySelectorAll("tr[data-grpof]")).filter(function(r){var g=r.getAttribute("data-grpof");return gid.charAt(0)==="*"?g.indexOf(gid.slice(1)+"|")===0:g===gid});
+  if(reduce||!rows.length){done();return}
+  ui.grpBusy=true;
+  var btns=btn?[btn]:[].slice.call(document.querySelectorAll('.grp-btn[data-grpk="'+gid.slice(1)+'"][aria-expanded="true"]'));
+  btns.forEach(function(b){b.setAttribute("aria-expanded","false")});
+  var n=Math.min(rows.length,14);
+  rows.forEach(function(r,i){r.style.setProperty("--go",(Math.min(n-1,rows.length-1-i)*14)+"ms");r.classList.add("grp-out")});
+  setTimeout(function(){ui.grpBusy=false;done()},170+n*14);
+}
 /* ---- Pengajuan yang menunggu keputusan akun yang login ---- */
 function pendingForMe(){
   if(!me)return [];
@@ -1472,9 +1492,9 @@ function grpBody(key,items,deptFn,rowFn,cols,metaFn,searching){
   order.sort(function(a,b){return a==="(Tanpa divisi)"?1:b==="(Tanpa divisi)"?-1:a.localeCompare(b,"id")});
   var html="",vis=[];
   order.forEach(function(g){
-    var arr=groups[g],open=searching||grpOpen(key,g);
-    html+='<tr class="grp-row"><td colspan="'+cols+'"><button class="grp-btn" data-grpk="'+key+'" data-grpd="'+esc(g)+'" aria-expanded="'+open+'"><span class="grp-arrow" aria-hidden="true">'+(open?"▾":"▸")+'</span><b>'+esc(g)+'</b><span class="grp-meta">'+metaFn(arr)+'</span></button></td></tr>';
-    if(open){html+=arr.map(function(it,i){return rowFn(it,i)}).join("");vis=vis.concat(arr)}
+    var arr=groups[g],open=searching||grpOpen(key,g),gid=key+"|"+g,anim=ui.grpAnim&&(ui.grpAnim===gid||ui.grpAnim==="*"+key);
+    html+='<tr class="grp-row"><td colspan="'+cols+'"><button class="grp-btn" data-grpk="'+key+'" data-grpd="'+esc(g)+'" aria-expanded="'+open+'"><span class="grp-arrow'+(anim?' grp-turn':'')+'" aria-hidden="true">▸</span><b>'+esc(g)+'</b><span class="grp-meta">'+metaFn(arr)+'</span></button></td></tr>';
+    if(open){html+=arr.map(function(it,i){return rowFn(it,i).replace("<tr",'<tr data-grpof="'+esc(gid)+'"'+(anim?' class-anim style="--gi:'+Math.min(i,14)+'"':''))}).join("");vis=vis.concat(arr)}
   });
   return {html:html,vis:vis};
 }
@@ -2278,9 +2298,15 @@ document.addEventListener("click",function(ev){
   if(t.dataset.saledit){openSalaryForm(t.dataset.saledit);return}
   if(t.dataset.myslip){var ms=(ui.mySlips||[]).find(function(x){return x.period===t.dataset.myslip});if(ms)openSlip(ms);return}
   if(t.dataset.otdel){askConfirm({title:"Hapus lembur?",message:"Catatan lembur ini akan dihapus.",ok:"Hapus",danger:true}).then(function(ok){if(ok)payRun("deleteOvertime",[t.dataset.otdel,payPeriod()],"Lembur dihapus").catch(function(){})});return}
-  if(t.dataset.grpk){var gk=t.dataset.grpk,gd=t.dataset.grpd;if(!ui.grp)ui.grp={};if(!ui.grp[gk])ui.grp[gk]={};ui.grp[gk][gd]=!(t.getAttribute("aria-expanded")==="true");render();return}
+  if(t.dataset.grpk){var gk=t.dataset.grpk,gd=t.dataset.grpd,wasOpen=t.getAttribute("aria-expanded")==="true";if(!ui.grp)ui.grp={};if(!ui.grp[gk])ui.grp[gk]={};
+    if(ui.grpBusy)return;
+    if(!wasOpen){ui.grp[gk][gd]=true;ui.grpAnim=gk+"|"+gd;render();ui.grpAnim=null;return}
+    grpCollapse(t,gk+"|"+gd,function(){ui.grp[gk][gd]=false;render()});return}
   if(t.dataset.gview){var gv=t.dataset.gview.split(":");if(!ui.gview)ui.gview={};ui.gview[gv[0]]=gv[1];render();return}
-  if(t.dataset.gall){var ga=t.dataset.gall.split(":");if(!ui.grp)ui.grp={};ui.grp[ga[0]]={};depts().concat(["(Tanpa divisi)"]).forEach(function(d){ui.grp[ga[0]][d]=ga[1]==="open"});render();return}
+  if(t.dataset.gall){var ga=t.dataset.gall.split(":");if(!ui.grp)ui.grp={};
+    var applyAll=function(){ui.grp[ga[0]]={};depts().concat(["(Tanpa divisi)"]).forEach(function(d){ui.grp[ga[0]][d]=ga[1]==="open"})};
+    if(ga[1]==="open"){applyAll();ui.grpAnim="*"+ga[0];render();ui.grpAnim=null;return}
+    grpCollapse(null,"*"+ga[0],function(){applyAll();render()});return}
   if(t.dataset.repMode){ui.rep.mode=t.dataset.repMode;render();return}
   if(t.dataset.grp){if(!ui.openDept)ui.openDept={};ui.openDept[t.dataset.grp]=!ui.openDept[t.dataset.grp];render();return}
   if(t.dataset.empView){ui.empView=t.dataset.empView;render();return}
