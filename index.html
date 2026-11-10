@@ -266,7 +266,7 @@ dialog::backdrop{background:rgba(15,25,22,.45)}
 .icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px}
 .settings{position:relative}
 .chip{white-space:nowrap}
-label .opt{font-weight:500;color:var(--ink-2)}
+.opt-note{font-weight:500;font-size:12.5px;color:var(--ink-2)}
 body.menu-open .alert-pop{visibility:hidden}
 .settings .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:95;min-width:220px;max-width:calc(100vw - 16px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(10,25,20,.14);padding:6px;animation:dlgIn .18s cubic-bezier(.2,.7,.2,1)}
 .settings .mi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:9px 10px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:none}
@@ -874,7 +874,7 @@ var KIND_INFO={cuti:{icon:"🌴",title:"Cuti",sub:"Cuti tahunan, alasan penting,
 function kindSeg(kind,attr){return '<div class="kind-cards" role="group" aria-label="Jenis pengajuan">'+["cuti","izin"].map(function(k){var I=KIND_INFO[k];
   return '<button type="button" class="kind-card k-'+k+'" '+attr+'="'+k+'"'+(kind!=null?' aria-pressed="'+(kind===k)+'"':'')+'><span class="kc-ico" aria-hidden="true">'+I.icon+'</span><span class="kc-txt"><b>'+(kind==null?"Ajukan ":"")+I.title+'</b><span>'+I.sub+'</span></span></button>'}).join("")+'</div>'}
 var STATUS={approved:{label:"Disetujui",cls:"st-ok"},pending:{label:"Menunggu persetujuan",cls:"st-wait"},pending_mgr:{label:"Menunggu Manager",cls:"st-wait"},pending_dir:{label:"Menunggu Director",cls:"st-wait"},rejected:{label:"Ditolak",cls:"st-no"}};
-var CLIENT_VERSION="2026.11.08-5";   /* harus sama dengan APP_VERSION di Kode.gs */
+var CLIENT_VERSION="2026.11.08-6";   /* harus sama dengan APP_VERSION di Kode.gs */
 var ROLE={it:"Administrator / IT",hrd:"Admin HRD",payroll:"Admin Payroll",director:"Director",manager:"Manager",user:"Karyawan"};
 function isStaff(r){return r==="user"||r==="manager"}
 /* Label status: pengajuan manager yang sudah disetujui Director ditampilkan "Menunggu Admin HRD" */
@@ -1313,8 +1313,9 @@ function myFormHTML(){
     '<div class="field full"><label for="m-note">Keperluan (apa dan di mana)</label>'+
       '<textarea id="m-note" data-m="note" maxlength="800" placeholder="Contoh: Menghadiri pernikahan adik di Bandung.">'+esc(f.note)+'</textarea>'+
       '<span class="hint" id="m-note-count" style="text-align:right">'+String(f.note||"").trim().length+' karakter (minimal 15)</span></div>'+
-    '<div class="field"><label for="m-sub">Pengganti selama cuti <span class="opt">(opsional)</span></label><input id="m-sub" data-m="sub" maxlength="100" placeholder="Contoh: Andi – laporan pajak bulanan" value="'+esc(f.sub)+'"><span class="hint">Siapa yang menggantikan pekerjaan Anda. Boleh dikosongkan.</span></div>'+
-    '<div class="field"><label for="m-contact">Kontak bila mendesak <span class="opt">(opsional)</span></label><input id="m-contact" data-m="contact" maxlength="60" inputmode="tel" placeholder="Contoh: WhatsApp 0812-3456-7890" value="'+esc(f.contact)+'"><span class="hint">Nomor WhatsApp atau telepon yang bisa dihubungi. Boleh dikosongkan.</span></div>'+
+    (kindOf(f.type)==="izin"?'':
+    '<div class="field"><label for="m-sub">Pengganti selama cuti <span class="opt-note">(opsional)</span></label><input id="m-sub" data-m="sub" maxlength="100" placeholder="Contoh: Andi – laporan pajak bulanan" value="'+esc(f.sub)+'"><span class="hint">Siapa yang menggantikan pekerjaan Anda. Boleh dikosongkan.</span></div>'+
+    '<div class="field"><label for="m-contact">Kontak bila mendesak <span class="opt-note">(opsional)</span></label><input id="m-contact" data-m="contact" maxlength="60" inputmode="tel" placeholder="Contoh: WhatsApp 0812-3456-7890" value="'+esc(f.contact)+'"><span class="hint">Nomor WhatsApp atau telepon yang bisa dihubungi. Boleh dikosongkan.</span></div>')+
     '<div class="field full"><div class="calc" id="m-calc"></div></div>'+
   '</div><div class="err" id="m-err" role="alert"></div>'+
   '<div class="form-actions"><button class="btn" data-act="my-cancel-form">Batal</button><button class="btn btn-primary" data-act="my-submit" id="m-btn">Kirim pengajuan</button></div></section>';
@@ -1354,7 +1355,7 @@ async function submitMyLeave(){
   var flow=me.role==="manager"?"Pengajuan akan diputuskan oleh Director.":"Pengajuan akan disetujui Manager divisi Anda, lalu Director.";
   if(!(await askConfirm({title:"Periksa sebelum mengirim",message:sumLines.join("\n")+"\n\n"+flow+" Status dan prosesnya bisa dilihat lewat tombol Lacak.",ok:"Ya, kirim",cancel:"Ubah lagi"})))return;
   btn.disabled=true;btn.textContent="Mengirim...";
-  try{await run("submitLeave",[{type:f.type,start:f.start,end:f.end,days:calcDays(f),half:!!f.half,note:f.note,sub:f.sub,contact:f.contact,t1:f.t1,t2:f.t2,detail:f.detail,attach:ATTACH_TYPES.indexOf(f.type)>-1?(f.attach||""):""}],"Pengajuan terkirim dan menunggu persetujuan.");ui.myForm=null;render()}
+  try{await run("submitLeave",[{type:f.type,start:f.start,end:f.end,days:calcDays(f),half:!!f.half,note:f.note,sub:kindOf(f.type)==="izin"?"":f.sub,contact:kindOf(f.type)==="izin"?"":f.contact,t1:f.t1,t2:f.t2,detail:f.detail,attach:ATTACH_TYPES.indexOf(f.type)>-1?(f.attach||""):""}],"Pengajuan terkirim dan menunggu persetujuan.");ui.myForm=null;render()}
   catch(x){err.textContent=x.message;btn.disabled=false;btn.textContent="Kirim pengajuan"}
 }
 
@@ -1795,7 +1796,7 @@ var ATTACH_TYPES=["iz_telat","iz_telatpulang","sakit"];
 function attachFieldHTML(o,px){
   if(ATTACH_TYPES.indexOf(o.type)<0)return "";
   var keep=o.attachId&&!o.removeAttach;
-  return '<div class="field full"><label for="'+px+'-attach">Lampiran bukti <span class="opt">(opsional)</span></label>'+
+  return '<div class="field full"><label for="'+px+'-attach">Lampiran bukti <span class="opt-note">(opsional)</span></label>'+
     (o.attach||keep?'<div class="att-prev">'+(o.attach?'<img src="'+o.attach+'" alt="Pratinjau lampiran">':'<button type="button" class="btn btn-sm" data-attach="'+esc(o.attachLeave||"")+'">📎 Lihat lampiran tersimpan</button>')+
       '<button type="button" class="btn btn-sm" data-act="attach-clear" data-px="'+px+'">Hapus lampiran</button></div>':
       '<input type="file" id="'+px+'-attach" accept="image/*" data-attach-px="'+px+'">')+
